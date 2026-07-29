@@ -1,0 +1,75 @@
+{%- comment -%} Accepts: product (object) {%- endcomment -%}
+{%- assign first_variant = product.selected_or_first_available_variant -%}
+<div class="product-card">
+  <a href="{{ product.url }}" class="product-card__media">
+    {%- if product.featured_image -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        loading="lazy"
+        width="300" height="300"
+        class="product-card__image product-card__image--main"
+      >
+      {%- if product.images.size > 1 -%}
+        <img
+          src="{{ product.images[1] | image_url: width: 600 }}"
+          alt=""
+          loading="lazy"
+          width="300" height="300"
+          class="product-card__image product-card__image--hover"
+        >
+      {%- endif -%}
+    {%- else -%}
+      <div class="product-card__placeholder"></div>
+    {%- endif -%}
+    {%- if first_variant.compare_at_price > first_variant.price -%}
+      {%- assign pct_off = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price -%}
+      <span class="product-card__badge">-{{ pct_off }}%</span>
+    {%- endif -%}
+  </a>
+
+  <div class="product-card__info">
+    {%- if product.metafields.reviews.rating.value -%}
+      <div class="product-card__rating">
+        {%- assign rating = product.metafields.reviews.rating.value.rating -%}
+        {%- for i in (1..5) -%}
+          {% render 'icon-star', filled: true %}
+        {%- endfor -%}
+        <span>({{ product.metafields.reviews.rating_count }})</span>
+      </div>
+    {%- endif -%}
+
+    <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+    {% render 'price', product: product %}
+
+    {%- assign color_option_index = -1 -%}
+    {%- for option in product.options_with_values -%}
+      {%- if option.name == 'Color' or option.name == 'Colour' -%}
+        {%- assign color_option_index = forloop.index0 -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if color_option_index > -1 -%}
+      <div class="product-card__swatches">
+        {%- for value in product.options_with_values[color_option_index].values -%}
+          <span class="swatch" data-color="{{ value | handle }}" title="{{ value }}"></span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <form data-quick-add-form data-product-handle="{{ product.handle }}">
+      <input type="hidden" name="id" value="{{ first_variant.id }}">
+      <button
+        type="submit"
+        class="button button--secondary product-card__add"
+        {% if first_variant.available == false %}disabled{% endif %}
+      >
+        {%- if first_variant.available -%}
+          {{ 'products.product.add_to_cart' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </button>
+    </form>
+  </div>
+</div>

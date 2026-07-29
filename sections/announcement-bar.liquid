@@ -1,0 +1,35 @@
+<div class="announcement-bar">
+  <div class="announcement-bar__inner page-width">
+    {%- if section.settings.announcement_link != blank -%}<a href="{{ section.settings.announcement_link }}">{%- endif -%}
+      <span class="announcement-bar__text">{{ section.settings.announcement_text }}</span>
+    {%- if section.settings.announcement_link != blank -%}</a>{%- endif -%}
+
+    {%- if settings.show_countdown -%}
+      <span class="announcement-bar__countdown" data-countdown="{{ settings.countdown_end }}" aria-live="off">
+        <span data-countdown-days>00</span>d
+        <span data-countdown-hours>00</span>h
+        <span data-countdown-minutes>00</span>m
+        <span data-countdown-seconds>00</span>s
+      </span>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Text",
+      "default": "FREE SHIPPING ON ALL ORDERS — BUY 2, GET 1 FREE"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Link"
+    }
+  ]
+}
+{% endschema %}

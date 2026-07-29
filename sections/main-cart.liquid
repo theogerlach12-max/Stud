@@ -1,0 +1,61 @@
+<div class="page-width cart-page">
+  <h1 class="section-heading">{{ 'general.cart.title' | t }}</h1>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="cart-page__empty">
+      <p>{{ 'general.cart.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="button button--primary">{{ 'general.cart.continue_shopping' | t }}</a>
+    </div>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" novalidate>
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>{{ 'general.cart.quantity' | t }}</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for item in cart.items -%}
+            <tr>
+              <td class="cart-table__product">
+                <a href="{{ item.url }}">
+                  {%- if item.image -%}<img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="80" height="80">{%- endif -%}
+                </a>
+                <div>
+                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  {%- if item.product.has_only_default_variant == false -%}<p class="cart-table__variant">{{ item.variant.title }}</p>{%- endif -%}
+                </div>
+              </td>
+              <td>{{ item.price | money }}</td>
+              <td>
+                <input type="number" name="updates[{{ item.key }}]" value="{{ item.quantity }}" min="0" class="cart-table__qty-input">
+              </td>
+              <td>{{ item.final_line_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+
+      <div class="cart-page__footer">
+        <div class="cart-page__subtotal">
+          <span>{{ 'general.cart.subtotal' | t }}</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        <div class="cart-page__actions">
+          <button type="submit" name="update" class="button button--secondary">Update cart</button>
+          <button type="submit" name="checkout" class="button button--primary">{{ 'general.cart.checkout' | t }}</button>
+        </div>
+      </div>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart page",
+  "settings": []
+}
+{% endschema %}

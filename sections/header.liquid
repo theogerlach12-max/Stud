@@ -1,0 +1,88 @@
+<header class="site-header" data-header>
+  <div class="site-header__inner page-width">
+
+    <button type="button" class="site-header__menu-toggle" data-mobile-menu-toggle aria-label="Open menu" aria-expanded="false">
+      {% render 'icon-menu' %}
+    </button>
+
+    <a href="{{ routes.root_url }}" class="site-header__logo">
+      {%- if settings.logo != blank -%}
+        <img
+          src="{{ settings.logo | image_url: width: 400 }}"
+          alt="{{ shop.name }}"
+          width="{{ settings.logo_width }}"
+          height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio | default: settings.logo_width }}"
+          loading="eager"
+          style="width: {{ settings.logo_width }}px;"
+        >
+      {%- else -%}
+        <span class="site-header__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="site-header__nav" aria-label="Primary">
+      <ul class="site-header__nav-list">
+        {%- for link in section.settings.menu.links -%}
+          <li class="site-header__nav-item{% if link.links != blank %} has-dropdown{% endif %}">
+            <a href="{{ link.url }}" class="site-header__nav-link"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+            {%- if link.links != blank -%}
+              <ul class="site-header__dropdown">
+                {%- for childlink in link.links -%}
+                  <li><a href="{{ childlink.url }}">{{ childlink.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="site-header__icons">
+      <button type="button" class="site-header__icon-btn" data-search-open aria-label="Search">
+        {% render 'icon-search' %}
+      </button>
+      <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="site-header__icon-btn" aria-label="Account">
+        {% render 'icon-account' %}
+      </a>
+      <button type="button" class="site-header__icon-btn site-header__cart-btn" data-cart-open aria-label="Cart">
+        {% render 'icon-cart' %}
+        <span class="site-header__cart-count" data-cart-count>{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" data-mobile-menu hidden>
+    <div class="mobile-menu__overlay" data-mobile-menu-close></div>
+    <div class="mobile-menu__panel">
+      <button type="button" class="mobile-menu__close" data-mobile-menu-close aria-label="Close menu">{% render 'icon-close' %}</button>
+      <ul class="mobile-menu__list">
+        {%- for link in section.settings.menu.links -%}
+          <li>
+            <a href="{{ link.url }}">{{ link.title }}</a>
+            {%- if link.links != blank -%}
+              <ul class="mobile-menu__sublist">
+                {%- for childlink in link.links -%}
+                  <li><a href="{{ childlink.url }}">{{ childlink.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

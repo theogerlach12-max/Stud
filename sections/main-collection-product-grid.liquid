@@ -1,0 +1,48 @@
+<div class="page-width collection-grid-wrap">
+  <div class="collection-grid-header">
+    <p class="collection-grid-count">{{ collection.products_count }} products</p>
+    <form method="get" class="collection-sort">
+      <label for="SortBy">Sort by</label>
+      <select name="sort_by" id="SortBy" onchange="this.form.submit()">
+        {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+        <option value="manual" {% if current_sort == 'manual' %}selected{% endif %}>Featured</option>
+        <option value="best-selling" {% if current_sort == 'best-selling' %}selected{% endif %}>Best selling</option>
+        <option value="title-ascending" {% if current_sort == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
+        <option value="price-ascending" {% if current_sort == 'price-ascending' %}selected{% endif %}>Price, low to high</option>
+        <option value="price-descending" {% if current_sort == 'price-descending' %}selected{% endif %}>Price, high to low</option>
+        <option value="created-descending" {% if current_sort == 'created-descending' %}selected{% endif %}>Newest</option>
+      </select>
+    </form>
+  </div>
+
+  <div class="product-grid">
+    {%- paginate collection.products by 24 -%}
+      {%- for product in collection.products -%}
+        {% render 'product-card', product: product %}
+      {%- else -%}
+        <p class="product-grid__empty">No products in this collection yet.</p>
+      {%- endfor -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr; Previous</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span class="is-current">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Next &rarr;</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection product grid",
+  "settings": []
+}
+{% endschema %}

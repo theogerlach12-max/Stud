@@ -1,0 +1,174 @@
+<section class="product-detail page-width" data-product-json>
+  <div class="product-detail__media">
+    <div class="product-detail__main-image" data-product-main-image>
+      {%- if product.featured_media -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 900 }}"
+          alt="{{ product.featured_media.alt | escape }}"
+          width="600" height="600"
+          id="ProductMainImage"
+        >
+      {%- else -%}
+        <div class="product-detail__placeholder"></div>
+      {%- endif -%}
+    </div>
+    {%- if product.media.size > 1 -%}
+      <div class="product-detail__thumbs">
+        {%- for media in product.media -%}
+          <button
+            type="button"
+            class="product-detail__thumb{% if forloop.first %} is-active{% endif %}"
+            data-thumb
+            data-full-src="{{ media | image_url: width: 900 }}"
+          >
+            <img src="{{ media | image_url: width: 200 }}" alt="{{ media.alt | escape }}" width="70" height="70" loading="lazy">
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product-detail__info">
+    {%- if product.metafields.reviews.rating.value -%}
+      <div class="product-card__rating">
+        {%- for i in (1..5) -%}{% render 'icon-star', filled: true %}{%- endfor -%}
+        <span>({{ product.metafields.reviews.rating_count }} reviews)</span>
+      </div>
+    {%- endif -%}
+
+    <h1 class="product-detail__title">{{ product.title }}</h1>
+
+    <div data-product-price>
+      {% render 'price', product: product %}
+    </div>
+
+    <div class="rte product-detail__description">{{ product.description }}</div>
+
+    {% form 'product', product, data-add-to-cart-form: '', id: 'ProductForm' %}
+      {%- for option in product.options_with_values -%}
+        <div class="product-option" data-option-index="{{ forloop.index0 }}">
+          <label class="product-option__label">{{ option.name }}<span data-selected-value>{{ option.selected_value }}</span></label>
+
+          {%- if option.name == 'Color' or option.name == 'Colour' -%}
+            <div class="product-option__swatches">
+              {%- for value in option.values -%}
+                <button
+                  type="button"
+                  class="swatch swatch--large{% if value == option.selected_value %} is-selected{% endif %}"
+                  data-color="{{ value | handle }}"
+                  data-option-value="{{ value | escape }}"
+                  data-option-index="{{ forloop.parentloop.index0 }}"
+                  title="{{ value }}"
+                ></button>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="product-option__pills">
+              {%- for value in option.values -%}
+                <button
+                  type="button"
+                  class="pill{% if value == option.selected_value %} is-selected{% endif %}"
+                  data-option-value="{{ value | escape }}"
+                  data-option-index="{{ forloop.parentloop.index0 }}"
+                >{{ value }}</button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      <script type="application/json" data-product-variants>
+        {{ product.variants | json }}
+      </script>
+
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+
+      <div class="product-detail__qty" data-quantity-selector>
+        <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+        <div class="product-detail__qty-controls">
+          <button type="button" data-quantity-minus aria-label="Decrease quantity">{% render 'icon-minus' %}</button>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1" data-quantity-value>
+          <button type="button" data-quantity-plus aria-label="Increase quantity">{% render 'icon-plus' %}</button>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="button button--primary product-detail__add-to-cart"
+        data-add-to-cart-button
+        {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+      >
+        <span data-add-to-cart-text>
+          {%- if product.selected_or_first_available_variant.available -%}
+            {{ 'products.product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- endif -%}
+        </span>
+      </button>
+    {% endform %}
+
+    <div class="product-detail__trust">
+      <p>{% render 'icon-truck' %} Free shipping, arrives in 3–5 days</p>
+      <p>{% render 'icon-shield' %} 30-day money-back guarantee</p>
+      <p>{% render 'icon-magnet' %} Medical-grade magnetic hold</p>
+    </div>
+
+    <div class="accordion">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'accordion_item' -%}
+          <details class="accordion__item" {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.title }}{% render 'icon-chevron' %}</summary>
+            <div class="accordion__content rte">{{ block.settings.content }}</div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- assign related_count = 0 -%}
+<section class="related-products page-width">
+  <h2 class="section-heading">You may also like</h2>
+  <div class="product-grid">
+    {%- for related in collections[product.collections.first.handle].products -%}
+      {%- if related.id != product.id and related_count < 4 -%}
+        {%- assign related_count = related_count | plus: 1 -%}
+        {% render 'product-card', product: related %}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "blocks": [
+    {
+      "type": "accordion_item",
+      "name": "Accordion item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Details"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add details here.</p>"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "accordion_item", "settings": { "title": "Details", "content": "<p>Medical-grade magnets, nickel-free finish. Sold as a pair.</p>" } },
+      { "type": "accordion_item", "settings": { "title": "Shipping & returns", "content": "<p>Free shipping on every order. 30-day returns.</p>" } },
+      { "type": "accordion_item", "settings": { "title": "How magnetic earrings work", "content": "<p>Two magnetic pieces clasp through the earlobe from front and back — no piercing needed, no clip pinch.</p>" } }
+    ]
+  }
+}
+{% endschema %}

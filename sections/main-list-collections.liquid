@@ -1,0 +1,24 @@
+<div class="page-width">
+  <h1 class="section-heading">Shop all collections</h1>
+  <div class="category-tiles__grid">
+    {%- for collection in collections -%}
+      <a href="{{ collection.url }}" class="category-tile">
+        <div class="category-tile__image">
+          {%- if collection.featured_image -%}
+            <img src="{{ collection.featured_image | image_url: width: 500 }}" alt="{{ collection.title }}" loading="lazy" width="240" height="240">
+          {%- else -%}
+            <div class="category-tile__placeholder"></div>
+          {%- endif -%}
+        </div>
+        <span class="category-tile__title">{{ collection.title }}</span>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "All collections",
+  "settings": []
+}
+{% endschema %}

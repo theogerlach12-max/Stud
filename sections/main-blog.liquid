@@ -1,0 +1,20 @@
+<div class="page-width blog-page">
+  <h1 class="section-heading">{{ blog.title }}</h1>
+  <div class="blog-page__grid">
+    {%- paginate blog.articles by 12 -%}
+      {%- for article in blog.articles -%}
+        <a href="{{ article.url }}" class="blog-card">
+          {%- if article.image -%}
+            <img src="{{ article.image | image_url: width: 600 }}" alt="{{ article.title | escape }}" loading="lazy" width="300" height="200">
+          {%- endif -%}
+          <h3>{{ article.title }}</h3>
+          <p class="blog-card__meta">{{ article.published_at | date: '%B %d, %Y' }}</p>
+        </a>
+      {%- endfor -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Blog", "settings": [] }
+{% endschema %}

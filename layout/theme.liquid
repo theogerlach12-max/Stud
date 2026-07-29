@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_background }}">
+
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% render 'meta-tags' %}
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  {%- unless settings.type_header_font.system? -%}
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+  {%- endunless -%}
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  <script>
+    window.themeMoneyFormat = {{ shop.money_format | json }};
+    window.themeStrings = { addToCart: {{ 'products.product.add_to_cart' | t | json }} };
+  </script>
+
+  <style>
+    :root {
+      --color-background: {{ settings.color_background }};
+      --color-background-alt: {{ settings.color_background_alt }};
+      --color-text: {{ settings.color_text }};
+      --color-muted: {{ settings.color_muted }};
+      --color-accent: {{ settings.color_accent }};
+      --color-border: {{ settings.color_border }};
+      --color-button: {{ settings.color_button }};
+      --color-button-text: {{ settings.color_button_text }};
+      --color-sale: {{ settings.color_sale }};
+      --page-width: {{ settings.page_width }}px;
+      --font-heading: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+      --font-heading-weight: {{ settings.type_header_font.weight }};
+      --font-heading-style: {{ settings.type_header_font.style }};
+      --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+      --font-body-weight: {{ settings.type_body_font.weight }};
+    }
+  </style>
+
+  {{ settings.type_header_font | font_face: font_display: 'swap' }}
+  {{ settings.type_body_font | font_face: font_display: 'swap' }}
+
+  {{ content_for_header }}
+</head>
+
+<body class="template-{{ request.page_type | handle }}">
+
+  <a class="skip-to-content-link visually-hidden" href="#MainContent">Skip to content</a>
+
+  {%- if settings.show_announcement -%}
+    {% section 'announcement-bar' %}
+  {%- endif -%}
+
+  {% section 'header' %}
+
+  <main id="MainContent" class="content-for-layout" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+
+  {% section 'cart-drawer' %}
+
+  <div id="SearchDrawer" class="search-drawer" hidden>
+    <div class="search-drawer__overlay" data-search-close></div>
+    <div class="search-drawer__panel">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form">
+        <input type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" aria-label="{{ 'general.search.placeholder' | t }}" class="search-drawer__input">
+        <button type="submit" class="search-drawer__submit" aria-label="Search">{% render 'icon-search' %}</button>
+        <button type="button" class="search-drawer__close" data-search-close aria-label="Close search">{% render 'icon-close' %}</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<div class="page-width account-page">
+  <h1 class="section-heading">Addresses</h1>
+
+  {%- if customer.addresses.size == 0 -%}
+    <p>No addresses saved.</p>
+  {%- else -%}
+    {%- for address in customer.addresses -%}
+      <div class="address-card">
+        {{ address | format_address }}
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
+
+  <a href="{{ routes.account_url }}" class="account-page__link">&larr; Back to account</a>
+</div>

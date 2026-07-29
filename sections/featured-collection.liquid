@@ -1,0 +1,103 @@
+<section class="featured-collection page-width" id="shop-{{ section.id }}">
+  <div class="featured-collection__header">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="featured-collection__tabs" data-tabs>
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            class="featured-collection__tab{% if forloop.first %} is-active{% endif %}"
+            data-tab-trigger
+            data-tab-target="tab-panel-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.tab_label }}
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- for block in section.blocks -%}
+    {%- assign collection = block.settings.collection -%}
+    <div
+      class="featured-collection__panel{% if forloop.first %} is-active{% endif %}"
+      id="tab-panel-{{ block.id }}"
+      data-tab-panel
+    >
+      <div class="product-grid">
+        {%- if collection != blank -%}
+          {%- for product in collection.products limit: block.settings.products_to_show -%}
+            {% render 'product-card', product: product %}
+          {%- else -%}
+            <p class="product-grid__empty">Add products to the "{{ block.settings.tab_label }}" collection to show them here.</p>
+          {%- endfor -%}
+        {%- else -%}
+          <p class="product-grid__empty">Select a collection for the "{{ block.settings.tab_label }}" tab in the theme editor.</p>
+        {%- endif -%}
+      </div>
+      {%- if collection != blank and section.settings.show_view_all -%}
+        <a href="{{ collection.url }}" class="featured-collection__view-all">View all {{ collection.title }} {% render 'icon-arrow' %}</a>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Best sellers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best sellers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show \"view all\" link",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Collection tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab label",
+          "default": "All"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "label": "Products to show",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "default": 8
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best sellers",
+      "blocks": [
+        { "type": "tab", "settings": { "tab_label": "All" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

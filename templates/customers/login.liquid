@@ -1,0 +1,42 @@
+<div class="page-width account-page">
+  <h1 class="section-heading">Log in</h1>
+
+  {%- if form.errors -%}
+    <div class="form-error">{{ form.errors | default_errors }}</div>
+  {%- endif -%}
+
+  {% form 'customer_login' %}
+    <div class="field">
+      <label for="CustomerEmail">Email</label>
+      <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
+    </div>
+
+    {%- if form.password_needed -%}
+      <div class="field">
+        <label for="CustomerPassword">Password</label>
+        <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required>
+      </div>
+    {%- endif -%}
+
+    <button type="submit" class="button button--primary">Sign in</button>
+
+    {%- if form.password_needed -%}
+      <a href="#" data-toggle-recover class="account-page__link">Forgot your password?</a>
+    {%- endif -%}
+  {% endform %}
+
+  <div id="RecoverPassword" hidden>
+    {% form 'recover_customer_password' %}
+      {%- if form.posted_successfully? -%}
+        <p class="form-success">If that email exists, you'll receive a reset link shortly.</p>
+      {%- endif -%}
+      <div class="field">
+        <label for="RecoverEmail">Email</label>
+        <input type="email" name="email" id="RecoverEmail" autocomplete="email" required>
+      </div>
+      <button type="submit" class="button button--secondary">Send reset link</button>
+    {% endform %}
+  </div>
+
+  <a href="{{ routes.account_register_url }}" class="account-page__link">Create an account</a>
+</div>

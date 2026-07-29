@@ -1,0 +1,102 @@
+<footer class="site-footer">
+  <div class="site-footer__newsletter">
+    <div class="page-width site-footer__newsletter-inner">
+      <div>
+        <h3>{{ section.settings.newsletter_heading }}</h3>
+        <p>{{ section.settings.newsletter_subtext }}</p>
+      </div>
+      {% form 'customer' %}
+        {%- if form.posted_successfully? -%}
+          <p class="form-success">Thanks — you're on the list.</p>
+        {%- endif -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="site-footer__newsletter-form">
+          <input type="email" name="contact[email]" placeholder="Email address" required aria-label="Email address">
+          <button type="submit" class="button button--primary">Sign up</button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+
+  <div class="page-width site-footer__main">
+    <div class="site-footer__col site-footer__col--brand">
+      {%- if settings.logo != blank -%}
+        <img src="{{ settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" width="110" loading="lazy">
+      {%- else -%}
+        <p class="site-footer__logo-text">{{ shop.name }}</p>
+      {%- endif -%}
+      <p class="site-footer__blurb">{{ section.settings.brand_text }}</p>
+      <div class="site-footer__social">
+        {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" aria-label="Instagram">Instagram</a>{%- endif -%}
+        {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" aria-label="TikTok">TikTok</a>{%- endif -%}
+        {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" aria-label="Facebook">Facebook</a>{%- endif -%}
+        {%- if settings.social_pinterest != blank -%}<a href="{{ settings.social_pinterest }}" aria-label="Pinterest">Pinterest</a>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="site-footer__col">
+      <h4>Shop</h4>
+      <ul>
+        {%- for link in section.settings.shop_menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h4>Support</h4>
+      <ul>
+        {%- for link in section.settings.support_menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-width site-footer__bottom">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+    <div class="site-footer__payment-icons">
+      {%- for type in shop.enabled_payment_types -%}
+        {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+      {%- endfor -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Get 10% off your first order"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtext",
+      "label": "Newsletter subtext",
+      "default": "Sign up for restocks, new drops, and styling tips."
+    },
+    {
+      "type": "textarea",
+      "id": "brand_text",
+      "label": "Brand blurb",
+      "default": "Magnetic earrings for anyone. No piercing, no commitment, no compromise on style."
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop menu",
+      "default": "footer"
+    },
+    {
+      "type": "link_list",
+      "id": "support_menu",
+      "label": "Support menu",
+      "default": "footer"
+    }
+  ]
+}
+{% endschema %}

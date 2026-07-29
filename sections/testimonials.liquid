@@ -1,0 +1,62 @@
+<section class="testimonials page-width">
+  {%- if section.settings.heading != blank -%}
+    <h2 class="section-heading section-heading--center">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+  <div class="testimonials__grid">
+    {%- for block in section.blocks -%}
+      <div class="testimonial-card" {{ block.shopify_attributes }}>
+        <div class="testimonial-card__stars">
+          {%- for i in (1..5) -%}
+            {% render 'icon-star', filled: true %}
+          {%- endfor -%}
+        </div>
+        <p class="testimonial-card__quote">&ldquo;{{ block.settings.quote }}&rdquo;</p>
+        <p class="testimonial-card__name">{{ block.settings.name }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by customers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Replace with a real customer review."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Customer name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

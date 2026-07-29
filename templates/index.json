@@ -1,0 +1,74 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "MAGNETIC. NO PIERCING NEEDED.",
+        "heading": "Earrings that stay on your terms",
+        "subheading": "Studio-grade magnetic hold, zero piercing required. Buy 2, get 1 free.",
+        "button_label": "Shop best sellers",
+        "button_link": "",
+        "show_rating": true,
+        "rating_text": "Trusted by 12,000+ customers"
+      }
+    },
+    "category-tiles": {
+      "type": "category-tiles",
+      "blocks": {
+        "tile-1": { "type": "tile", "settings": { "title": "Studs" } },
+        "tile-2": { "type": "tile", "settings": { "title": "Hoops" } },
+        "tile-3": { "type": "tile", "settings": { "title": "Huggies" } },
+        "tile-4": { "type": "tile", "settings": { "title": "Bundles" } },
+        "tile-5": { "type": "tile", "settings": { "title": "Gifting" } }
+      },
+      "block_order": ["tile-1", "tile-2", "tile-3", "tile-4", "tile-5"],
+      "settings": {
+        "heading": "Shop by style"
+      }
+    },
+    "best-sellers": {
+      "type": "featured-collection",
+      "blocks": {
+        "tab-1": { "type": "tab", "settings": { "tab_label": "All" } }
+      },
+      "block_order": ["tab-1"],
+      "settings": {
+        "heading": "Best sellers",
+        "show_view_all": true
+      }
+    },
+    "trust-badges": {
+      "type": "trust-badges",
+      "blocks": {
+        "badge-1": { "type": "badge", "settings": { "icon": "magnet", "title": "No piercing needed", "text": "Strong magnetic hold that looks just like the real thing." } },
+        "badge-2": { "type": "badge", "settings": { "icon": "shield", "title": "Hypoallergenic", "text": "Nickel-free finishes safe for sensitive ears." } },
+        "badge-3": { "type": "badge", "settings": { "icon": "truck", "title": "Free shipping", "text": "On every order, no minimum." } },
+        "badge-4": { "type": "badge", "settings": { "icon": "gift", "title": "30-day guarantee", "text": "Not in love with it? Full refund, no questions." } }
+      },
+      "block_order": ["badge-1", "badge-2", "badge-3", "badge-4"]
+    },
+    "brand-story": {
+      "type": "brand-story",
+      "settings": {
+        "eyebrow": "WHY MAGNETIC",
+        "heading": "All the style. None of the piercing.",
+        "text": "<p>Every Stud pair is built around a set of medical-grade magnets strong enough to hold through a full day, gentle enough for sensitive ears. Swap them in seconds — no holes, no scar tissue, no commitment.</p>",
+        "button_label": "How it works",
+        "button_link": ""
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "t-1": { "type": "testimonial" },
+        "t-2": { "type": "testimonial" },
+        "t-3": { "type": "testimonial" }
+      },
+      "block_order": ["t-1", "t-2", "t-3"],
+      "settings": {
+        "heading": "Loved by customers"
+      }
+    }
+  },
+  "order": ["hero", "category-tiles", "best-sellers", "trust-badges", "brand-story", "testimonials"]
+}
