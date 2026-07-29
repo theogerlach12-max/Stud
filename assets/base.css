@@ -68,18 +68,32 @@ s { text-decoration: line-through; }
 .display--sm { font-size: clamp(1.6rem, 3.2vw, 2.4rem); }
 .display--xs { font-size: clamp(1.2rem, 2.2vw, 1.6rem); letter-spacing: -0.02em; }
 
-/* The wordmark: capitalized, italic, neo-grotesque. */
+/* The wordmark: capitalized, italic, neo-grotesque.
+   Weight and tracking match the HAUS reference — very heavy, very tight. */
 .wordmark {
   font-family: var(--font-grotesque);
   font-style: italic;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
-  font-size: 1.6rem;
+  letter-spacing: -0.045em;
+  font-size: 1.75rem;
   line-height: 1;
   display: inline-block;
 }
-.wordmark--footer { font-size: 2rem; }
+.wordmark--footer { font-size: 2.25rem; }
+
+/* Star rating */
+.rating { display: inline-flex; align-items: center; gap: 0.7rem; }
+.rating__stars { display: inline-flex; gap: 0.12em; }
+.rating__stars svg { width: 17px; height: 17px; }
+.rating__count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  white-space: nowrap;
+}
 
 .eyebrow {
   text-transform: uppercase;
@@ -345,56 +359,52 @@ input[type="password"], input[type="number"], select, textarea {
 }
 .hero-single__media { position: absolute; inset: 0; }
 .hero-single__media img,
-.hero-single__placeholder { width: 100%; height: 100%; object-fit: cover; }
+.hero-single__placeholder {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* Weighted low: the subject sits in the lower half of the hero photo, and a
+     straight centre crop cuts his head off at the bottom edge. */
+  object-position: center 68%;
+}
 .hero-single__image--mobile { display: none; }
 .hero-single__scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 35%, rgba(0,0,0,0.78) 100%);
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 42%, rgba(0,0,0,0) 68%),
+    linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.6) 100%);
+}
+/* Film grain. Also does real work here: it breaks up the softness of an
+   upscaled source image, which is why it defaults on. */
+.hero-single__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
 }
 .hero-single__content {
   position: relative;
   z-index: 1;
   width: 100%;
   padding-top: clamp(5rem, 12vw, 9rem);
-  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
 }
-.hero-single__eyebrow { color: rgba(255,255,255,0.8); }
-.hero-single__heading { max-width: 15ch; margin-bottom: 0.35em; }
-.hero-single__subheading {
-  max-width: 44ch;
-  font-size: clamp(1rem, 1.4vw, 1.15rem);
+/* Constrain the headline, not the lockup: `ch` resolves against the element's
+   own font-size, and on the lockup that is body text, which wrapped the
+   headline into a five-line column. */
+.hero-single__lockup { max-width: 100%; }
+.hero-single__heading { max-width: 13ch; margin-bottom: 0.45em; }
+.hero-single__rating { color: #fff; }
+.hero-single__rating .rating__count { color: rgba(255,255,255,0.85); }
+.editor-note--hero {
+  background: rgba(0,0,0,0.55);
+  border-color: rgba(255,255,255,0.4);
   color: rgba(255,255,255,0.85);
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  max-width: 46ch;
 }
-.hero-single__actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-.hero-single__price {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-}
-.hero-single__price-note {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.7);
-  letter-spacing: 0;
-}
-.hero-single__bullets {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem 2rem;
-  margin-top: 2.25rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255,255,255,0.25);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 600;
-}
-.hero-single__bullets li::before { content: "— "; opacity: 0.5; }
 
 /* ==========================================================================
    2. Problem
@@ -489,8 +499,10 @@ input[type="password"], input[type="number"], select, textarea {
   border: 1px solid rgba(255,255,255,0.2);
   overflow: hidden;
 }
-.stay-on__media video,
-.stay-on__media img { width: 100%; height: auto; display: block; }
+.stay-on__media video { width: 100%; height: auto; display: block; }
+/* This slot is sized for footage. A portrait still dropped in as the fallback
+   would otherwise render metres tall, so crop it to the same frame. */
+.stay-on__media img { width: 100%; aspect-ratio: 16/9; object-fit: cover; object-position: center 30%; display: block; }
 .stay-on__embed { position: relative; padding-bottom: 56.25%; height: 0; }
 .stay-on__embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .stay-on__placeholder { aspect-ratio: 16/9; }
@@ -735,8 +747,11 @@ input[type="password"], input[type="number"], select, textarea {
    ========================================================================== */
 .final-cta { position: relative; overflow: hidden; text-align: center; }
 .final-cta__media { position: absolute; inset: 0; }
-.final-cta__media img { width: 100%; height: 100%; object-fit: cover; }
-.final-cta__scrim { position: absolute; inset: 0; background: rgba(0,0,0,0.62); }
+.final-cta__media img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+.final-cta__scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.68) 100%);
+}
 .final-cta__content { position: relative; z-index: 1; }
 .final-cta__heading { max-width: 18ch; margin-left: auto; margin-right: auto; }
 .final-cta__text { max-width: 44ch; margin: 0 auto 2.25rem; color: rgba(255,255,255,0.8); font-size: 1.05rem; }
@@ -895,11 +910,12 @@ input[type="password"], input[type="number"], select, textarea {
   .site-header__inner { padding: 0.9rem 1.25rem; }
   .wordmark { font-size: 1.35rem; }
   .site-header__cta { display: none; }
-  .hero-single { min-height: 92vh; }
-  .hero-single__image--desktop { display: none; }
+  .hero-single { min-height: 88vh; }
+  /* Swap to the mobile crop only when one was actually supplied, otherwise the
+     desktop image has to stay or the hero has no image at all. */
   .hero-single__image--mobile { display: block; }
-  .hero-single__actions .button { width: 100%; }
-  .hero-single__bullets { flex-direction: column; gap: 0.4rem; }
+  .hero-single__media:has(.hero-single__image--mobile) .hero-single__image--desktop { display: none; }
+  .hero-single__lockup { max-width: none; }
   .sizing__grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .size-card__media { max-width: 20rem; margin-inline: auto; }
   .social__grid { grid-template-columns: repeat(2, 1fr); }

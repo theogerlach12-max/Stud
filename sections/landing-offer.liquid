@@ -33,6 +33,8 @@
               height="{{ section.settings.image.height }}"
               loading="lazy"
             >
+          {%- elsif section.settings.image_asset != blank -%}
+            <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy">
           {%- else -%}
             <div class="box__placeholder">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
           {%- endif -%}
@@ -195,6 +197,8 @@
       "id": "image",
       "label": "Box / product image"
     },
+    { "type": "text", "id": "image_asset", "label": "Bundled image filename", "info": "A file in assets/. Used when no image is picked above.", "default": "athlete-shades.png" },
+    { "type": "text", "id": "image_alt", "label": "Bundled image alt text", "default": "Man in sunglasses wearing a Stud" },
     {
       "type": "text",
       "id": "box_title",

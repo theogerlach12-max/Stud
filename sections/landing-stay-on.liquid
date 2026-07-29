@@ -49,6 +49,8 @@
           height="{{ section.settings.image.height }}"
           loading="lazy"
         >
+      {%- elsif section.settings.image_asset != blank -%}
+        <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy">
       {%- else -%}
         <div class="stay-on__placeholder">
           {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -118,6 +120,8 @@
       "label": "Fallback image",
       "info": "Shown if there is no video yet."
     },
+    { "type": "text", "id": "image_asset", "label": "Bundled image filename", "info": "A file in assets/. Used when there is no video and no image picked above.", "default": "athlete-football.png" },
+    { "type": "text", "id": "image_alt", "label": "Bundled image alt text", "default": "Footballer wearing a stud mid-match" },
     {
       "type": "checkbox",
       "id": "autoplay",

@@ -2,21 +2,13 @@
   "sections": {
     "hero": {
       "type": "landing-hero",
-      "blocks": {
-        "b1": { "type": "bullet", "settings": { "text": "No piercing needed" } },
-        "b2": { "type": "bullet", "settings": { "text": "3 sizes in every kit" } },
-        "b3": { "type": "bullet", "settings": { "text": "Built to stay on" } }
-      },
-      "block_order": ["b1", "b2", "b3"],
       "settings": {
-        "eyebrow": "Magnetic. No piercing.",
-        "heading": "Look good. Feel good. Play good.",
-        "subheading": "A real-looking diamond stud that clamps on in two seconds, holds through contact, and comes off when you want it to. No holes, no healing, no eligibility problems.",
-        "button_label": "Get your kit",
-        "button_link": "",
-        "use_product_price": true,
-        "price_text": "$39",
-        "price_note": "3 sizes included · free shipping"
+        "image_asset": "hero-porsche.png",
+        "image_alt": "Man in a suit lying across the hood of a Porsche at night",
+        "show_grain": true,
+        "heading": "Look good, feel good, play good.",
+        "review_count": "",
+        "rating": 5
       }
     },
     "problem": {
@@ -44,7 +36,11 @@
           }
         }
       },
-      "block_order": ["p1", "p2", "p3"],
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ],
       "settings": {
         "eyebrow": "Why this exists",
         "heading": "Piercings and sports don't mix.",
@@ -57,30 +53,64 @@
       "blocks": {
         "s1": {
           "type": "size",
-          "settings": { "size": "4mm", "name": "Clean", "text": "Subtle. Reads as jewelry, not a statement. The safe first pick." }
+          "settings": {
+            "image_asset": "athlete-sweater.png",
+            "image_alt": "Profile of a man wearing a small stud",
+            "size": "4mm",
+            "name": "Clean",
+            "text": "Subtle. Reads as jewelry, not a statement. The safe first pick."
+          }
         },
         "s2": {
           "type": "size",
-          "settings": { "size": "5mm", "name": "Standard", "text": "The one most guys land on. Visible from across the court, not from space." }
+          "settings": {
+            "image_asset": "athlete-shades.png",
+            "image_alt": "Man in sunglasses wearing a mid-size stud",
+            "size": "5mm",
+            "name": "Standard",
+            "text": "The one most guys land on. Visible from across the court, not from space."
+          }
         },
         "s3": {
           "type": "size",
-          "settings": { "size": "6mm", "name": "Loud", "text": "You want people to notice. They will." }
+          "settings": {
+            "image_asset": "athlete-chain.png",
+            "image_alt": "Man in water wearing a large stud and chain",
+            "size": "6mm",
+            "name": "Loud",
+            "text": "You want people to notice. They will."
+          }
         },
         "t1": {
           "type": "step",
-          "settings": { "title": "Try all three", "text": "They are all in the box. No ordering the wrong size and waiting a week to find out." }
+          "settings": {
+            "title": "Try all three",
+            "text": "They are all in the box. No ordering the wrong size and waiting a week to find out."
+          }
         },
         "t2": {
           "type": "step",
-          "settings": { "title": "Clamp it on", "text": "Front on the outside, magnet behind the lobe. It snaps into place on its own." }
+          "settings": {
+            "title": "Clamp it on",
+            "text": "Front on the outside, magnet behind the lobe. It snaps into place on its own."
+          }
         },
         "t3": {
           "type": "step",
-          "settings": { "title": "Keep your pick", "text": "Wear the one that fits your face. Keep the other two for a different look, or hand them to a teammate." }
+          "settings": {
+            "title": "Keep your pick",
+            "text": "Wear the one that fits your face. Keep the other two for a different look, or hand them to a teammate."
+          }
         }
       },
-      "block_order": ["s1", "s2", "s3", "t1", "t2", "t3"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "t1",
+        "t2",
+        "t3"
+      ],
       "settings": {
         "eyebrow": "The kit",
         "heading": "Find your fit in 10 seconds.",
@@ -92,18 +122,42 @@
     "stay-on": {
       "type": "landing-stay-on",
       "blocks": {
-        "f1": { "type": "proof", "settings": { "stat": "Contact", "label": "Tested through contact, not a photoshoot" } },
-        "f2": { "type": "proof", "settings": { "stat": "Sweat", "label": "Grip holds when your ear doesn't stay dry" } },
-        "f3": { "type": "proof", "settings": { "stat": "Helmets", "label": "Sits flat enough for headgear to go over it" } }
+        "f1": {
+          "type": "proof",
+          "settings": {
+            "stat": "Contact",
+            "label": "Tested through contact, not a photoshoot"
+          }
+        },
+        "f2": {
+          "type": "proof",
+          "settings": {
+            "stat": "Sweat",
+            "label": "Grip holds when your ear doesn't stay dry"
+          }
+        },
+        "f3": {
+          "type": "proof",
+          "settings": {
+            "stat": "Helmets",
+            "label": "Sits flat enough for headgear to go over it"
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3"],
+      "block_order": [
+        "f1",
+        "f2",
+        "f3"
+      ],
       "settings": {
         "eyebrow": "The stay-on test",
         "heading": "To be the best you need to feel like it.",
         "intro": "Confidence is not a small thing. It is also useless if you spend the whole game checking your ear. So we tested it the only way that counts.",
         "autoplay": true,
         "loop": true,
-        "caption": "Full practice, no tape, no adjustments."
+        "caption": "Full practice, no tape, no adjustments.",
+        "image_asset": "athlete-football.png",
+        "image_alt": "Footballer wearing a stud mid-match"
       }
     },
     "easy": {
@@ -111,37 +165,95 @@
       "blocks": {
         "e1": {
           "type": "item",
-          "settings": { "label": "On", "text": "Front on the lobe, magnet behind it. It pulls itself into place. Two seconds, one hand, no mirror." }
+          "settings": {
+            "label": "On",
+            "text": "Front on the lobe, magnet behind it. It pulls itself into place. Two seconds, one hand, no mirror."
+          }
         },
         "e2": {
           "type": "item",
-          "settings": { "label": "Stays on", "text": "It will not shake loose, sweat off, or get dragged out by a jersey coming over your head." }
+          "settings": {
+            "label": "Stays on",
+            "text": "It will not shake loose, sweat off, or get dragged out by a jersey coming over your head."
+          }
         },
         "e3": {
           "type": "item",
-          "settings": { "label": "Off", "text": "Pinch and pull. Comes out clean when a ref asks, and goes straight back in after the whistle." }
+          "settings": {
+            "label": "Off",
+            "text": "Pinch and pull. Comes out clean when a ref asks, and goes straight back in after the whistle."
+          }
         }
       },
-      "block_order": ["e1", "e2", "e3"],
+      "block_order": [
+        "e1",
+        "e2",
+        "e3"
+      ],
       "settings": {
         "eyebrow": "On and off",
         "heading": "Easy on. Stays on. Off when you say so.",
         "text": "<p>Two seconds to put on, and it holds through everything you do in it. Coming off takes a deliberate pull with two fingers — which is exactly what you want when a ref asks you to take it out before tip-off.</p>",
         "button_label": "Get the kit",
-        "button_link": ""
+        "button_link": "",
+        "image_asset": "athlete-barber.jpg",
+        "image_alt": "Close-up of a stud worn during a barber cut"
       }
     },
     "social": {
       "type": "landing-social",
       "blocks": {
-        "g1": { "type": "photo", "settings": {} },
-        "g2": { "type": "photo", "settings": {} },
-        "g3": { "type": "photo", "settings": {} },
-        "g4": { "type": "photo", "settings": {} },
-        "g5": { "type": "photo", "settings": {} },
-        "g6": { "type": "photo", "settings": {} }
+        "g1": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-vest.png",
+            "image_alt": "Man in a tactical vest wearing a stud"
+          }
+        },
+        "g2": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-football.png",
+            "image_alt": "Footballer wearing a stud mid-match"
+          }
+        },
+        "g3": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-chain.png",
+            "image_alt": "Man in water wearing a stud and chain"
+          }
+        },
+        "g4": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-barber.jpg",
+            "image_alt": "Man wearing a stud in the barber chair"
+          }
+        },
+        "g5": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-sweater.png",
+            "image_alt": "Profile of a man wearing a stud"
+          }
+        },
+        "g6": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-shades.png",
+            "image_alt": "Man in sunglasses wearing a stud"
+          }
+        }
       },
-      "block_order": ["g1", "g2", "g3", "g4", "g5", "g6"],
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5",
+        "g6"
+      ],
       "settings": {
         "eyebrow": "In the wild",
         "heading": "On the court, on the field, on the bus home.",
@@ -152,10 +264,34 @@
     "offer": {
       "type": "landing-offer",
       "blocks": {
-        "i1": { "type": "included", "settings": { "title": "3 studs", "text": "4mm, 5mm and 6mm, so your size is already in the box" } },
-        "i2": { "type": "included", "settings": { "title": "3 magnetic backs", "text": "Matched to each front" } },
-        "i3": { "type": "included", "settings": { "title": "Hard-shell case", "text": "Small enough to live in a gym bag" } },
-        "i4": { "type": "included", "settings": { "title": "Microfiber cloth", "text": "For the days it stops looking new" } },
+        "i1": {
+          "type": "included",
+          "settings": {
+            "title": "3 studs",
+            "text": "4mm, 5mm and 6mm, so your size is already in the box"
+          }
+        },
+        "i2": {
+          "type": "included",
+          "settings": {
+            "title": "3 magnetic backs",
+            "text": "Matched to each front"
+          }
+        },
+        "i3": {
+          "type": "included",
+          "settings": {
+            "title": "Hard-shell case",
+            "text": "Small enough to live in a gym bag"
+          }
+        },
+        "i4": {
+          "type": "included",
+          "settings": {
+            "title": "Microfiber cloth",
+            "text": "For the days it stops looking new"
+          }
+        },
         "x1": {
           "type": "tier",
           "settings": {
@@ -192,13 +328,23 @@
           }
         }
       },
-      "block_order": ["i1", "i2", "i3", "i4", "x1", "x2", "x3"],
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "x1",
+        "x2",
+        "x3"
+      ],
       "settings": {
         "eyebrow": "The offer",
         "heading": "One kit. Every size. One price.",
         "intro": "No subscriptions, no size roulette, nothing to send back.",
         "box_title": "What's in the box",
-        "reassurance": "Free shipping · 30-day returns · Secure checkout"
+        "reassurance": "Free shipping · 30-day returns · Secure checkout",
+        "image_asset": "athlete-shades.png",
+        "image_alt": "Man in sunglasses wearing a Stud"
       }
     },
     "faq": {
@@ -275,7 +421,18 @@
           }
         }
       },
-      "block_order": ["g1", "g2", "g3", "q1", "q2", "q3", "q4", "q5", "q6", "q7"],
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7"
+      ],
       "settings": {
         "eyebrow": "Questions",
         "heading": "Everything else.",
@@ -295,7 +452,9 @@
         "use_product_price": true,
         "price_text": "$39",
         "urgency": "",
-        "footnote": "Free shipping · 30-day returns"
+        "footnote": "Free shipping · 30-day returns",
+        "image_asset": "athlete-vest.png",
+        "image_alt": "Man in a tactical vest wearing a stud, waterfront at dusk"
       }
     }
   },

@@ -17,6 +17,8 @@
           height="{{ section.settings.image.height }}"
           loading="lazy"
         >
+      {%- elsif section.settings.image_asset != blank -%}
+        <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy">
       {%- else -%}
         <div class="easy__placeholder">
           {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -68,6 +70,8 @@
       "label": "Image",
       "info": "A close-up of the magnet going on or coming off works best here."
     },
+    { "type": "text", "id": "image_asset", "label": "Bundled image filename", "info": "A file in assets/. Used when no image is picked above.", "default": "athlete-barber.jpg" },
+    { "type": "text", "id": "image_alt", "label": "Bundled image alt text", "default": "Close-up of a stud worn during a barber cut" },
     {
       "type": "text",
       "id": "eyebrow",

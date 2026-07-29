@@ -1,10 +1,12 @@
-{%- liquid
-  assign product = section.settings.product
-  assign price_text = section.settings.price_text
-  if product != blank and section.settings.use_product_price
-    assign price_text = product.price | money
-  endif
--%}
+{%- comment -%}
+  Stripped hero: image, headline, rating. Nothing else by design.
+  The buy button lives in the header and in the sticky buy bar that appears the
+  moment this section scrolls away, so the page is never without one.
+
+  Image resolution: image_picker (Shopify Files) wins, then a file bundled in
+  assets/ via image_asset, then a placeholder. The bundled fallback is what
+  makes the theme look finished before a store exists.
+{%- endcomment -%}
 
 <section class="hero-single" data-hero>
   <div class="hero-single__media">
@@ -17,8 +19,14 @@
                 {{ section.settings.image | image_url: width: 2400 }} 2400w"
         sizes="100vw"
         alt="{{ section.settings.image.alt | escape }}"
-        width="{{ section.settings.image.width }}"
-        height="{{ section.settings.image.height }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- elsif section.settings.image_asset != blank -%}
+      <img
+        class="hero-single__image hero-single__image--desktop"
+        src="{{ section.settings.image_asset | asset_url }}"
+        alt="{{ section.settings.image_alt | escape }}"
         loading="eager"
         fetchpriority="high"
       >
@@ -37,42 +45,36 @@
       >
     {%- endif -%}
 
+    {%- if section.settings.show_grain -%}
+      <div class="hero-single__grain" aria-hidden="true"></div>
+    {%- endif -%}
     <div class="hero-single__scrim"></div>
   </div>
 
   <div class="hero-single__content page-width">
-    {%- if section.settings.eyebrow != blank -%}
-      <p class="eyebrow hero-single__eyebrow">{{ section.settings.eyebrow }}</p>
-    {%- endif -%}
+    <div class="hero-single__lockup">
+      <h1 class="hero-single__heading display">{{ section.settings.heading }}</h1>
 
-    <h1 class="hero-single__heading display">{{ section.settings.heading }}</h1>
-
-    {%- if section.settings.subheading != blank -%}
-      <p class="hero-single__subheading">{{ section.settings.subheading }}</p>
-    {%- endif -%}
-
-    <div class="hero-single__actions">
-      {%- comment -%} Inverted: a black button disappears against the dark hero scrim. {%- endcomment -%}
-      <a href="{{ section.settings.button_link | default: '#offer' }}" class="button button--invert button--large">
-        {{ section.settings.button_label }}
-      </a>
-      {%- if price_text != blank -%}
-        <span class="hero-single__price">
-          {{ price_text }}
-          {%- if section.settings.price_note != blank -%}
-            <span class="hero-single__price-note">{{ section.settings.price_note }}</span>
-          {%- endif -%}
-        </span>
+      {%- if section.settings.review_count != blank -%}
+        <div class="rating hero-single__rating">
+          <span class="rating__stars" role="img" aria-label="{{ section.settings.rating | default: 5 }} out of 5 stars">
+            {%- for i in (1..5) -%}
+              {% render 'icon-star', filled: true %}
+            {%- endfor -%}
+          </span>
+          <span class="rating__count">{{ section.settings.review_count }}</span>
+        </div>
+      {%- elsif request.design_mode -%}
+        <p class="editor-note editor-note--hero">
+          Editor note: the star rating renders here as soon as you fill in
+          "Review count" in this section's settings. It is empty because the
+          store has no reviews yet — publishing a review count you don't have is
+          what the FTC's fake-review rule is about, and it is the single easiest
+          thing for a competitor to report. Put the real number in the moment
+          you have one.
+        </p>
       {%- endif -%}
     </div>
-
-    {%- if section.blocks.size > 0 -%}
-      <ul class="hero-single__bullets">
-        {%- for block in section.blocks -%}
-          <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
   </div>
 </section>
 
@@ -85,96 +87,62 @@
       "type": "image_picker",
       "id": "image",
       "label": "Background image",
-      "info": "Product shot on an athlete. Shoot it with headroom on the left so the headline has somewhere to sit."
+      "info": "Overrides the bundled image below once you upload one to Shopify."
+    },
+    {
+      "type": "text",
+      "id": "image_asset",
+      "label": "Bundled image filename",
+      "default": "hero-porsche.png",
+      "info": "A file in the theme's assets/ folder. Used when no image is picked above."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Bundled image alt text",
+      "default": "Man in a suit lying across the hood of a Porsche at night"
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
-      "label": "Background image (mobile, optional)",
-      "info": "A tighter crop for portrait screens. Falls back to the desktop image."
+      "label": "Background image (mobile, optional)"
     },
     {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "Magnetic. No piercing."
+      "type": "checkbox",
+      "id": "show_grain",
+      "label": "Film grain overlay",
+      "default": true,
+      "info": "Adds photographic grain. Also hides softness when the source image is small."
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Headline",
-      "default": "Look good. Feel good. Play good."
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subheadline",
-      "default": "A real-looking diamond stud that clamps on in two seconds, holds through contact, and comes off when you want it to. No holes, no healing, no eligibility problems."
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Button label",
-      "default": "Get your kit"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "label": "Button link",
-      "info": "Leave empty to scroll to the pricing section."
+      "default": "Look good, feel good, play good."
     },
     {
       "type": "header",
-      "content": "Price"
-    },
-    {
-      "type": "product",
-      "id": "product",
-      "label": "Product"
-    },
-    {
-      "type": "checkbox",
-      "id": "use_product_price",
-      "label": "Use the live Shopify price",
-      "default": true,
-      "info": "Off (or no product selected) falls back to the text below, so the page reads correctly before the product exists."
+      "content": "Rating"
     },
     {
       "type": "text",
-      "id": "price_text",
-      "label": "Price text (fallback)",
-      "default": "$39"
+      "id": "review_count",
+      "label": "Review count",
+      "info": "Example: \"15,000 reviews\". Leave empty until the number is real — the stars do not render without it.",
+      "default": ""
     },
     {
-      "type": "text",
-      "id": "price_note",
-      "label": "Price note",
-      "default": "3 sizes included · free shipping"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "bullet",
-      "name": "Bullet",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "No piercing needed"
-        }
-      ]
+      "type": "range",
+      "id": "rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Stars shown",
+      "default": 5
     }
   ],
   "presets": [
-    {
-      "name": "Hero",
-      "blocks": [
-        { "type": "bullet", "settings": { "text": "No piercing needed" } },
-        { "type": "bullet", "settings": { "text": "3 sizes in every kit" } },
-        { "type": "bullet", "settings": { "text": "Built to stay on" } }
-      ]
-    }
+    { "name": "Hero" }
   ]
 }
 {% endschema %}

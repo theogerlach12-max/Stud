@@ -26,6 +26,8 @@
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                 >
+              {%- elsif block.settings.image_asset != blank -%}
+                <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.image_alt | escape }}" loading="lazy">
               {%- else -%}
                 {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
@@ -103,6 +105,8 @@
       "name": "Size",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "image_asset", "label": "Bundled image filename", "info": "A file in assets/. Used when no image is picked above." },
+        { "type": "text", "id": "image_alt", "label": "Bundled image alt text" },
         { "type": "text", "id": "size", "label": "Size", "default": "4mm" },
         { "type": "text", "id": "name", "label": "Name", "default": "Clean" },
         { "type": "textarea", "id": "text", "label": "Text", "default": "Subtle. Reads as jewelry, not a statement." }

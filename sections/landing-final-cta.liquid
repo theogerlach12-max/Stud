@@ -16,6 +16,11 @@
       >
       <div class="final-cta__scrim"></div>
     </div>
+  {%- elsif section.settings.image_asset != blank -%}
+    <div class="final-cta__media">
+      <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ section.settings.image_alt | escape }}" loading="lazy">
+      <div class="final-cta__scrim"></div>
+    </div>
   {%- endif -%}
 
   <div class="page-width final-cta__content">
@@ -58,6 +63,8 @@
       "id": "image",
       "label": "Background image (optional)"
     },
+    { "type": "text", "id": "image_asset", "label": "Bundled image filename", "info": "A file in assets/. Used when no image is picked above.", "default": "athlete-vest.png" },
+    { "type": "text", "id": "image_alt", "label": "Bundled image alt text", "default": "Man in a tactical vest wearing a stud, waterfront at dusk" },
     {
       "type": "text",
       "id": "eyebrow",
