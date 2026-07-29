@@ -64,20 +64,6 @@
     if (e.target.closest('[data-cart-close]')) {
       closeDrawer(document.querySelector('[data-cart-drawer]'));
     }
-    if (e.target.closest('[data-search-open]')) {
-      openDrawer(document.getElementById('SearchDrawer'));
-      const input = document.querySelector('.search-drawer__input');
-      if (input) input.focus();
-    }
-    if (e.target.closest('[data-search-close]')) {
-      closeDrawer(document.getElementById('SearchDrawer'));
-    }
-    if (e.target.closest('[data-mobile-menu-toggle]')) {
-      openDrawer(document.querySelector('[data-mobile-menu]'));
-    }
-    if (e.target.closest('[data-mobile-menu-close]')) {
-      closeDrawer(document.querySelector('[data-mobile-menu]'));
-    }
     if (e.target.closest('[data-toggle-recover]')) {
       e.preventDefault();
       const recover = document.getElementById('RecoverPassword');
@@ -88,8 +74,6 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       closeDrawer(document.querySelector('[data-cart-drawer]'));
-      closeDrawer(document.getElementById('SearchDrawer'));
-      closeDrawer(document.querySelector('[data-mobile-menu]'));
     }
   });
 
@@ -206,22 +190,30 @@
   });
 
   /* ------------------------------------------------------------------ */
-  /* Featured collection tabs                                             */
+  /* Sticky buy bar                                                       */
+  /* Appears once the hero has scrolled out of view, so there is always   */
+  /* a buy button on screen without one covering the hero itself.         */
   /* ------------------------------------------------------------------ */
-  document.addEventListener('click', function (e) {
-    const trigger = e.target.closest('[data-tab-trigger]');
-    if (!trigger) return;
-    const tabs = trigger.closest('[data-tabs]');
-    const targetId = trigger.dataset.tabTarget;
-    const section = trigger.closest('.featured-collection');
-    if (!section) return;
+  function initStickyBuy() {
+    const bar = document.querySelector('[data-sticky-buy]');
+    if (!bar) return;
 
-    tabs.querySelectorAll('[data-tab-trigger]').forEach(function (t) { t.classList.remove('is-active'); });
-    section.querySelectorAll('[data-tab-panel]').forEach(function (p) { p.classList.remove('is-active'); });
-    trigger.classList.add('is-active');
-    const panel = document.getElementById(targetId);
-    if (panel) panel.classList.add('is-active');
-  });
+    const hero = document.querySelector('[data-hero]');
+    if (!hero || !('IntersectionObserver' in window)) {
+      bar.hidden = false;
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      function (entries) {
+        bar.hidden = entries[0].isIntersecting;
+      },
+      { rootMargin: '-80px 0px 0px 0px' }
+    );
+    observer.observe(hero);
+  }
+
+  document.addEventListener('DOMContentLoaded', initStickyBuy);
 
   /* ------------------------------------------------------------------ */
   /* Product gallery thumbnails                                           */

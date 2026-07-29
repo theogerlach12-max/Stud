@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Stud",
-    "theme_version": "1.0.0",
+    "theme_version": "2.0.0",
     "theme_author": "Stud",
     "theme_documentation_url": "",
     "theme_support_url": ""
@@ -11,9 +11,20 @@
     "name": "Logo",
     "settings": [
       {
+        "type": "paragraph",
+        "content": "Leave the logo image empty to use the STUD wordmark (italic, capitalized). That is the intended brand mark."
+      },
+      {
+        "type": "text",
+        "id": "wordmark",
+        "label": "Wordmark text",
+        "default": "Stud",
+        "info": "Rendered uppercase and italic."
+      },
+      {
         "type": "image_picker",
         "id": "logo",
-        "label": "Logo image"
+        "label": "Logo image (optional, replaces wordmark)"
       },
       {
         "type": "range",
@@ -23,7 +34,7 @@
         "step": 5,
         "unit": "px",
         "label": "Logo width",
-        "default": 130
+        "default": 110
       },
       {
         "type": "image_picker",
@@ -36,58 +47,62 @@
     "name": "Colors",
     "settings": [
       {
+        "type": "paragraph",
+        "content": "Stud is a black and white brand. Changing these away from black/white will break the look."
+      },
+      {
         "type": "color",
         "id": "color_background",
         "label": "Background",
-        "default": "#F7F3EC"
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
         "id": "color_background_alt",
         "label": "Background (alternate section)",
-        "default": "#EFE8DA"
+        "default": "#F4F4F4"
       },
       {
         "type": "color",
         "id": "color_text",
         "label": "Text",
-        "default": "#211D18"
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_muted",
         "label": "Muted text",
-        "default": "#7A7263"
+        "default": "#6E6E6E"
       },
       {
         "type": "color",
         "id": "color_accent",
-        "label": "Accent (gold)",
-        "default": "#B08D4C"
+        "label": "Accent",
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_border",
-        "label": "Border",
-        "default": "#DDD3BF"
+        "label": "Border / hairline",
+        "default": "#E0E0E0"
       },
       {
         "type": "color",
         "id": "color_button",
         "label": "Button background",
-        "default": "#211D18"
+        "default": "#000000"
       },
       {
         "type": "color",
         "id": "color_button_text",
         "label": "Button text",
-        "default": "#F7F3EC"
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
         "id": "color_sale",
-        "label": "Sale price / badge",
-        "default": "#A23B2E"
+        "label": "Sale price",
+        "default": "#000000"
       }
     ]
   },
@@ -95,10 +110,17 @@
     "name": "Typography",
     "settings": [
       {
+        "type": "checkbox",
+        "id": "use_grotesque_display",
+        "label": "Use Helvetica-style display type",
+        "default": true,
+        "info": "On: the wordmark and all landing-page headlines use a neo-grotesque stack (Helvetica Neue / Inter / Arial), matching the Haus wordmark look. Off: they use the heading font below."
+      },
+      {
         "type": "font_picker",
         "id": "type_header_font",
         "label": "Heading font",
-        "default": "playfair-display_n7"
+        "default": "assistant_n7"
       },
       {
         "type": "font_picker",
@@ -136,14 +158,25 @@
         "type": "checkbox",
         "id": "show_countdown",
         "label": "Show countdown timer",
-        "default": true
+        "default": false,
+        "info": "Only turn this on for a real, dated deadline. The timer rolls over to a fresh 48 hours once the date passes, which is a fake-urgency pattern if the deadline is not real."
       },
       {
         "type": "text",
         "id": "countdown_end",
         "label": "Countdown end date (YYYY-MM-DD HH:MM)",
-        "info": "Timer resets to 48 hours from now if this date has already passed.",
-        "default": "2026-12-31 23:59"
+        "default": ""
+      }
+    ]
+  },
+  {
+    "name": "Buy bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_sticky_buy",
+        "label": "Show sticky buy bar after the hero",
+        "default": true
       }
     ]
   },
@@ -162,13 +195,8 @@
       },
       {
         "type": "text",
-        "id": "social_facebook",
-        "label": "Facebook URL"
-      },
-      {
-        "type": "text",
-        "id": "social_pinterest",
-        "label": "Pinterest URL"
+        "id": "social_youtube",
+        "label": "YouTube URL"
       }
     ]
   },

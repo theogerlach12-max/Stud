@@ -1,0 +1,152 @@
+<section class="landing-section sizing" id="sizing">
+  <div class="page-width">
+    <div class="section-head section-head--center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="display display--md">{{ section.settings.heading }}</h2>
+      {%- if section.settings.intro != blank -%}
+        <p class="section-head__intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- assign steps = section.blocks | where: 'type', 'step' -%}
+    {%- assign sizes = section.blocks | where: 'type', 'size' -%}
+
+    {%- if sizes.size > 0 -%}
+      <div class="sizing__grid">
+        {%- for block in sizes -%}
+          <div class="size-card" {{ block.shopify_attributes }}>
+            <div class="size-card__media">
+              {%- if block.settings.image != blank -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <p class="size-card__size">{{ block.settings.size }}</p>
+            <h3 class="size-card__name">{{ block.settings.name }}</h3>
+            <p class="size-card__text">{{ block.settings.text }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if steps.size > 0 -%}
+      <ol class="sizing__steps">
+        {%- for block in steps -%}
+          <li class="sizing__step" {{ block.shopify_attributes }}>
+            <span class="sizing__step-num">{{ forloop.index }}</span>
+            <div>
+              <h3 class="sizing__step-title">{{ block.settings.title }}</h3>
+              <p class="sizing__step-text">{{ block.settings.text }}</p>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="sizing__cta">
+        <a href="{{ section.settings.button_link | default: '#offer' }}" class="button button--primary button--large">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sizing kit",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The kit"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find your fit in 10 seconds."
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Every kit ships with all three sizes. Put each one on, look in the mirror, keep the one that looks like it was made for your face. No measuring, no guessing, no exchange."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Get the kit"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size",
+      "name": "Size",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "size", "label": "Size", "default": "4mm" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Clean" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Subtle. Reads as jewelry, not a statement." }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Try all three" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Every kit has all three sizes in it." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sizing kit",
+      "blocks": [
+        {
+          "type": "size",
+          "settings": { "size": "4mm", "name": "Clean", "text": "Subtle. Reads as jewelry, not a statement. The safe first pick." }
+        },
+        {
+          "type": "size",
+          "settings": { "size": "5mm", "name": "Standard", "text": "The one most guys land on. Visible from across the court, not from space." }
+        },
+        {
+          "type": "size",
+          "settings": { "size": "6mm", "name": "Loud", "text": "You want people to notice. They will." }
+        },
+        {
+          "type": "step",
+          "settings": { "title": "Try all three", "text": "They are all in the box. No ordering the wrong size and waiting a week." }
+        },
+        {
+          "type": "step",
+          "settings": { "title": "Clamp it on", "text": "Front on the outside, magnet behind the lobe. It snaps into place on its own." }
+        },
+        {
+          "type": "step",
+          "settings": { "title": "Keep your pick", "text": "Wear the one that fits your face. Keep the other two for a different look, or hand them to a teammate." }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

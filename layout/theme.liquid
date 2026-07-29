@@ -41,9 +41,18 @@
       --page-width: {{ settings.page_width }}px;
       --font-heading: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
       --font-heading-weight: {{ settings.type_header_font.weight }};
-      --font-heading-style: {{ settings.type_header_font.style }};
       --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
       --font-body-weight: {{ settings.type_body_font.weight }};
+      /* Neo-grotesque stack for the wordmark and landing display type.
+         Matches the Haus wordmark look (Basis Grotesque / Suisse Int'l family
+         of typefaces) using faces that ship on every OS, so there is no
+         webfont to load and nothing to license. */
+      --font-grotesque: "Helvetica Neue", Helvetica, Inter, "Segoe UI", Arial, sans-serif;
+      {%- if settings.use_grotesque_display -%}
+      --font-display: var(--font-grotesque);
+      {%- else -%}
+      --font-display: var(--font-heading);
+      {%- endif -%}
     }
   </style>
 
@@ -70,17 +79,6 @@
   {% section 'footer' %}
 
   {% section 'cart-drawer' %}
-
-  <div id="SearchDrawer" class="search-drawer" hidden>
-    <div class="search-drawer__overlay" data-search-close></div>
-    <div class="search-drawer__panel">
-      <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form">
-        <input type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" aria-label="{{ 'general.search.placeholder' | t }}" class="search-drawer__input">
-        <button type="submit" class="search-drawer__submit" aria-label="Search">{% render 'icon-search' %}</button>
-        <button type="button" class="search-drawer__close" data-search-close aria-label="Close search">{% render 'icon-close' %}</button>
-      </form>
-    </div>
-  </div>
 
 </body>
 </html>

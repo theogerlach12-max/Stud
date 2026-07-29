@@ -1,0 +1,170 @@
+{%- liquid
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign quotes = section.blocks | where: 'type', 'quote'
+  assign wearers = section.blocks | where: 'type', 'wearer'
+-%}
+
+<section class="landing-section social">
+  <div class="page-width">
+    <div class="section-head section-head--center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="display display--md">{{ section.settings.heading }}</h2>
+      {%- if section.settings.intro != blank -%}
+        <p class="section-head__intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if photos.size > 0 -%}
+    <div class="social__grid">
+      {%- for block in photos -%}
+        <figure class="social__cell" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 900 }}"
+              alt="{{ block.settings.image.alt | escape }}"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="social__placeholder">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+          {%- if block.settings.caption != blank -%}
+            <figcaption class="social__caption">{{ block.settings.caption }}</figcaption>
+          {%- endif -%}
+        </figure>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if wearers.size > 0 -%}
+    <div class="page-width">
+      <div class="social__strip">
+        <span class="social__strip-label">{{ section.settings.wearers_label }}</span>
+        <ul class="social__strip-list">
+          {%- for block in wearers -%}
+            <li {{ block.shopify_attributes }}>
+              {{ block.settings.name }}
+              {%- if block.settings.detail != blank -%}
+                <span>{{ block.settings.detail }}</span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if quotes.size > 0 -%}
+    <div class="page-width">
+      <div class="social__quotes">
+        {%- for block in quotes -%}
+          {%- if block.settings.quote != blank -%}
+            <blockquote class="quote-card" {{ block.shopify_attributes }}>
+              <p class="quote-card__text">{{ block.settings.quote }}</p>
+              <footer class="quote-card__by">
+                {{ block.settings.name }}
+                {%- if block.settings.detail != blank -%}
+                  <span>{{ block.settings.detail }}</span>
+                {%- endif -%}
+              </footer>
+            </blockquote>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if request.design_mode -%}
+    <div class="page-width">
+      <p class="editor-note">
+        Editor note: this section ships with no sample reviews on purpose. Add a
+        "Customer quote" block only for something a real customer actually said,
+        and a "Worn by" block only for someone actually wearing it. Invented
+        social proof on a landing page is the fastest way to lose a store.
+      </p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Athlete photos & proof",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "In the wild"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "On the court, on the field, on the bus home."
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Real photos from real games. Send us yours and we'll put it up here."
+    },
+    {
+      "type": "text",
+      "id": "wearers_label",
+      "label": "\"As worn by\" label",
+      "default": "As worn by"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "caption", "label": "Caption or handle" }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Customer quote",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Only add quotes you actually received. Leave the quote field empty and the block will not render."
+        },
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "detail", "label": "Detail (sport, school, city)" }
+      ]
+    },
+    {
+      "type": "wearer",
+      "name": "Worn by",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "detail", "label": "Detail" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Athlete photos & proof",
+      "blocks": [
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

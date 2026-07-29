@@ -1,0 +1,122 @@
+{%- comment -%}
+  Messaging note: "easy off" directly undercuts "it stays on during play" if the
+  two claims are left sitting next to each other unexplained. The copy below
+  resolves it on purpose — off is a decision you make with your fingers, not
+  something the game does to you. Do not shorten this back to a bare
+  "easy on, easy off" headline without keeping that distinction somewhere.
+{%- endcomment -%}
+
+<section class="landing-section easy">
+  <div class="page-width easy__inner">
+    <div class="easy__media">
+      {%- if section.settings.image != blank -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 1200 }}"
+          alt="{{ section.settings.image.alt | escape }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="easy__placeholder">
+          {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="easy__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="display display--md">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}
+        <div class="easy__text rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="easy__list">
+          {%- for block in section.blocks -%}
+            <li class="easy__item" {{ block.shopify_attributes }}>
+              <span class="easy__item-label">{{ block.settings.label }}</span>
+              <span class="easy__item-text">{{ block.settings.text }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: '#offer' }}" class="button button--primary">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Easy on, stays on, easy off",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Keep the 'off is your call' distinction in this copy. A bare 'easy on, easy off' contradicts the stay-on section directly above it."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "A close-up of the magnet going on or coming off works best here."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "On and off"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Easy on. Stays on. Off when you say so."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Two seconds to put on, and it holds through everything you do in it. Coming off takes a deliberate pull with two fingers — which is exactly what you want when a ref asks you to take it out before tip-off.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Get the kit"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "On" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Front on the lobe, magnet behind it. It finds itself." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Easy on, stays on, easy off",
+      "blocks": [
+        { "type": "item", "settings": { "label": "On", "text": "Front on the lobe, magnet behind it. It pulls itself into place. Two seconds, one hand, no mirror." } },
+        { "type": "item", "settings": { "label": "Stays on", "text": "It will not shake loose, sweat off, or get dragged out by a jersey coming over your head." } },
+        { "type": "item", "settings": { "label": "Off", "text": "Pinch and pull. Comes out clean when a ref asks, and goes straight back in after the whistle." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

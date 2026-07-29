@@ -1,55 +1,49 @@
 <footer class="site-footer">
-  <div class="site-footer__newsletter">
-    <div class="page-width site-footer__newsletter-inner">
-      <div>
-        <h3>{{ section.settings.newsletter_heading }}</h3>
-        <p>{{ section.settings.newsletter_subtext }}</p>
-      </div>
-      {% form 'customer' %}
-        {%- if form.posted_successfully? -%}
-          <p class="form-success">Thanks — you're on the list.</p>
-        {%- endif -%}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="site-footer__newsletter-form">
-          <input type="email" name="contact[email]" placeholder="Email address" required aria-label="Email address">
-          <button type="submit" class="button button--primary">Sign up</button>
+  {%- if section.settings.show_newsletter -%}
+    <div class="site-footer__newsletter">
+      <div class="page-width site-footer__newsletter-inner">
+        <div>
+          <h3 class="display display--xs">{{ section.settings.newsletter_heading }}</h3>
+          <p>{{ section.settings.newsletter_subtext }}</p>
         </div>
-      {% endform %}
+        {% form 'customer' %}
+          {%- if form.posted_successfully? -%}
+            <p class="form-success">Thanks — you're on the list.</p>
+          {%- endif -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="site-footer__newsletter-form">
+            <input type="email" name="contact[email]" placeholder="Email address" required aria-label="Email address">
+            <button type="submit" class="button button--invert">Sign up</button>
+          </div>
+        {% endform %}
+      </div>
     </div>
-  </div>
+  {%- endif -%}
 
   <div class="page-width site-footer__main">
-    <div class="site-footer__col site-footer__col--brand">
+    <div class="site-footer__brand">
       {%- if settings.logo != blank -%}
-        <img src="{{ settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" width="110" loading="lazy">
+        <img src="{{ settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" width="100" loading="lazy">
       {%- else -%}
-        <p class="site-footer__logo-text">{{ shop.name }}</p>
+        <span class="wordmark wordmark--footer">{{ settings.wordmark | default: shop.name }}</span>
       {%- endif -%}
       <p class="site-footer__blurb">{{ section.settings.brand_text }}</p>
+    </div>
+
+    <div class="site-footer__links">
+      {%- if section.settings.menu != blank -%}
+        <ul>
+          {%- for link in section.settings.menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
       <div class="site-footer__social">
-        {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" aria-label="Instagram">Instagram</a>{%- endif -%}
-        {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" aria-label="TikTok">TikTok</a>{%- endif -%}
-        {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" aria-label="Facebook">Facebook</a>{%- endif -%}
-        {%- if settings.social_pinterest != blank -%}<a href="{{ settings.social_pinterest }}" aria-label="Pinterest">Pinterest</a>{%- endif -%}
+        {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}">Instagram</a>{%- endif -%}
+        {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}">TikTok</a>{%- endif -%}
+        {%- if settings.social_youtube != blank -%}<a href="{{ settings.social_youtube }}">YouTube</a>{%- endif -%}
       </div>
-    </div>
-
-    <div class="site-footer__col">
-      <h4>Shop</h4>
-      <ul>
-        {%- for link in section.settings.shop_menu.links -%}
-          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-        {%- endfor -%}
-      </ul>
-    </div>
-
-    <div class="site-footer__col">
-      <h4>Support</h4>
-      <ul>
-        {%- for link in section.settings.support_menu.links -%}
-          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-        {%- endfor -%}
-      </ul>
     </div>
   </div>
 
@@ -68,34 +62,35 @@
   "name": "Footer",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "newsletter_heading",
       "label": "Newsletter heading",
-      "default": "Get 10% off your first order"
+      "default": "Not ready yet?"
     },
     {
       "type": "text",
       "id": "newsletter_subtext",
       "label": "Newsletter subtext",
-      "default": "Sign up for restocks, new drops, and styling tips."
+      "default": "Drop your email and we'll send you the stay-on footage plus restock news."
     },
     {
       "type": "textarea",
       "id": "brand_text",
       "label": "Brand blurb",
-      "default": "Magnetic earrings for anyone. No piercing, no commitment, no compromise on style."
+      "default": "Magnetic diamond studs built for people who play. No piercing, no downtime, no excuses."
     },
     {
       "type": "link_list",
-      "id": "shop_menu",
-      "label": "Shop menu",
-      "default": "footer"
-    },
-    {
-      "type": "link_list",
-      "id": "support_menu",
-      "label": "Support menu",
-      "default": "footer"
+      "id": "menu",
+      "label": "Footer menu",
+      "default": "footer",
+      "info": "Keep this to policies and contact. Every other link is a way off the page."
     }
   ]
 }

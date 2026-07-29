@@ -2,7 +2,7 @@
   <h1 class="section-heading">Search results</h1>
   <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
     <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
-    <button type="submit">{% render 'icon-search' %}</button>
+    <button type="submit" class="button button--primary">Search</button>
   </form>
 
   {%- if search.performed -%}

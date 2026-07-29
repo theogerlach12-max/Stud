@@ -1,0 +1,188 @@
+{%- liquid
+  assign promises = section.blocks | where: 'type', 'promise'
+  assign faqs = section.blocks | where: 'type', 'faq'
+-%}
+
+<section class="landing-section faq" id="faq">
+  <div class="page-width">
+
+    {%- if promises.size > 0 -%}
+      <div class="promises">
+        {%- for block in promises -%}
+          <div class="promise" {{ block.shopify_attributes }}>
+            <h3 class="promise__title">{{ block.settings.title }}</h3>
+            <p class="promise__text">{{ block.settings.text }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if faqs.size > 0 -%}
+      <div class="faq__inner">
+        <div class="faq__head">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+          <h2 class="display display--sm">{{ section.settings.heading }}</h2>
+          {%- if section.settings.contact_text != blank -%}
+            <p class="faq__contact">
+              {{ section.settings.contact_text }}
+              {%- if section.settings.contact_link != blank -%}
+                <a href="{{ section.settings.contact_link }}">{{ section.settings.contact_link_label }}</a>
+              {%- endif -%}
+            </p>
+          {%- endif -%}
+        </div>
+
+        <div class="faq__list">
+          {%- for block in faqs -%}
+            <details class="accordion__item" {{ block.shopify_attributes }}>
+              <summary>
+                {{ block.settings.question }}
+                {% render 'icon-plus' %}
+              </summary>
+              <div class="accordion__content rte">{{ block.settings.answer }}</div>
+            </details>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Guarantee & FAQ",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only promise here what you will actually honour. A stay-on guarantee you won't pay out on turns into chargebacks."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Questions"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Everything else."
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Contact text",
+      "default": "Still not sure?"
+    },
+    {
+      "type": "text",
+      "id": "contact_link_label",
+      "label": "Contact link label",
+      "default": "Ask us."
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promise",
+      "name": "Promise",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Stay-on guarantee" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "If it comes off during play, tell us and we'll make it right." }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Does it hurt?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>No. There is no needle and no hole. It clamps.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Guarantee & FAQ",
+      "blocks": [
+        {
+          "type": "promise",
+          "settings": {
+            "title": "Stay-on guarantee",
+            "text": "Wear it for a full game. If it comes off on you, email us and we'll replace it or refund you."
+          }
+        },
+        {
+          "type": "promise",
+          "settings": {
+            "title": "30-day returns",
+            "text": "Not your look? Send it back within 30 days. You keep the case."
+          }
+        },
+        {
+          "type": "promise",
+          "settings": {
+            "title": "Hypoallergenic",
+            "text": "Nickel-free surgical steel, safe against skin all day."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Will it really stay on?",
+            "answer": "<p>It holds through contact, sweat and a jersey coming over your head. It is not glued on — a hard direct pull will take it off, which is the point.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Is it legal to play in?",
+            "answer": "<p>Rules vary by league, and most say no visible jewelry during play regardless of how it attaches. Check with your ref or coach. It comes out in a second when you need it to.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What size should I get?",
+            "answer": "<p>All three sizes come in every kit, so you don't have to decide before you order.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What is it made of?",
+            "answer": "<p>Nickel-free surgical steel with a cubic zirconia stone and a neodymium magnet back.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Is it a real diamond?",
+            "answer": "<p>No. It is cubic zirconia, cut and set to read like a diamond at conversation distance, at a price you won't panic about losing.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can I shower or swim in it?",
+            "answer": "<p>Yes. Dry it after and it will keep its shine longer.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How fast does it ship?",
+            "answer": "<p>Orders go out within one business day, with free shipping on every order.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
