@@ -1,0 +1,74 @@
+{%- comment -%}
+  Right-to-left marquee. The track is rendered twice so the loop is seamless;
+  the second copy is hidden from screen readers.
+{%- endcomment -%}
+
+<section class="marquee" aria-label="{{ section.settings.label | default: 'Featured in' | escape }}">
+  {%- if section.settings.label != blank -%}
+    <p class="marquee__label page-width">{{ section.settings.label }}</p>
+  {%- endif -%}
+
+  <div class="marquee__viewport">
+    <div class="marquee__track" style="--marquee-duration: {{ section.settings.speed }}s;">
+      {%- for i in (1..2) -%}
+        <ul class="marquee__list"{% if forloop.index == 2 %} aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <li class="marquee__item" {{ block.shopify_attributes }}>{{ block.settings.name }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Press marquee",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A scrolling row of publication names reads as press coverage. Only keep names that have actually written about Stud — replace or delete the rest before you take payments."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label above the marquee",
+      "info": "Leave empty for no label."
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 15,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "label": "Seconds per loop",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "name",
+      "name": "Publication",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "GQ" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Press marquee",
+      "blocks": [
+        { "type": "name", "settings": { "name": "GQ" } },
+        { "type": "name", "settings": { "name": "Esquire" } },
+        { "type": "name", "settings": { "name": "Highsnobiety" } },
+        { "type": "name", "settings": { "name": "Complex" } },
+        { "type": "name", "settings": { "name": "Hypebeast" } },
+        { "type": "name", "settings": { "name": "Men's Health" } },
+        { "type": "name", "settings": { "name": "Vogue" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

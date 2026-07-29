@@ -1,6 +1,6 @@
 <footer class="site-footer">
   {%- if section.settings.show_newsletter -%}
-    <div class="site-footer__newsletter">
+    <div class="site-footer__newsletter" id="signup">
       <div class="page-width site-footer__newsletter-inner">
         <div>
           <h3 class="display display--xs">{{ section.settings.newsletter_heading }}</h3>
@@ -13,7 +13,7 @@
           <input type="hidden" name="contact[tags]" value="newsletter">
           <div class="site-footer__newsletter-form">
             <input type="email" name="contact[email]" placeholder="Email address" required aria-label="Email address">
-            <button type="submit" class="button button--invert">Sign up</button>
+            <button type="submit" class="button button--invert">Get my 10%</button>
           </div>
         {% endform %}
       </div>
@@ -71,13 +71,13 @@
       "type": "text",
       "id": "newsletter_heading",
       "label": "Newsletter heading",
-      "default": "Not ready yet?"
+      "default": "Save 10% on launch day"
     },
     {
       "type": "text",
       "id": "newsletter_subtext",
       "label": "Newsletter subtext",
-      "default": "Drop your email and we'll send you the stay-on footage plus restock news."
+      "default": "Drop your email. We'll send your code the day we open."
     },
     {
       "type": "textarea",

@@ -216,6 +216,41 @@
   document.addEventListener('DOMContentLoaded', initStickyBuy);
 
   /* ------------------------------------------------------------------ */
+  /* Photo carousel                                                       */
+  /* Native scroll-snap does the work; the arrows just nudge it by one    */
+  /* item and grey out at each end.                                       */
+  /* ------------------------------------------------------------------ */
+  function initCarousels() {
+    document.querySelectorAll('[data-carousel]').forEach(function (carousel) {
+      const track = carousel.querySelector('[data-carousel-track]');
+      const prev = carousel.querySelector('[data-carousel-prev]');
+      const next = carousel.querySelector('[data-carousel-next]');
+      if (!track) return;
+
+      function step() {
+        const item = track.querySelector('.carousel__item');
+        if (!item) return track.clientWidth * 0.8;
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return item.getBoundingClientRect().width + gap;
+      }
+
+      function syncArrows() {
+        const max = track.scrollWidth - track.clientWidth;
+        if (prev) prev.disabled = track.scrollLeft <= 1;
+        if (next) next.disabled = track.scrollLeft >= max - 1;
+      }
+
+      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+      if (next) next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+      track.addEventListener('scroll', syncArrows, { passive: true });
+      window.addEventListener('resize', syncArrows);
+      syncArrows();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initCarousels);
+
+  /* ------------------------------------------------------------------ */
   /* Product gallery thumbnails                                           */
   /* ------------------------------------------------------------------ */
   document.addEventListener('click', function (e) {

@@ -1,62 +1,16 @@
 {%- comment -%}
-  Stripped hero: image, headline, rating. Nothing else by design.
-  The buy button lives in the header and in the sticky buy bar that appears the
-  moment this section scrolls away, so the page is never without one.
-
-  Image resolution: image_picker (Shopify Files) wins, then a file bundled in
-  assets/ via image_asset, then a placeholder. The bundled fallback is what
-  makes the theme look finished before a store exists.
+  Split hero: copy on the left, photograph on the right.
+  The CTA points at the email capture rather than a cart — there is no
+  purchasable product yet, so the whole page funnels to the 10% signup.
 {%- endcomment -%}
 
-<section class="hero-single" data-hero>
-  <div class="hero-single__media">
-    {%- if section.settings.image != blank -%}
-      <img
-        class="hero-single__image hero-single__image--desktop"
-        src="{{ section.settings.image | image_url: width: 2400 }}"
-        srcset="{{ section.settings.image | image_url: width: 900 }} 900w,
-                {{ section.settings.image | image_url: width: 1400 }} 1400w,
-                {{ section.settings.image | image_url: width: 2400 }} 2400w"
-        sizes="100vw"
-        alt="{{ section.settings.image.alt | escape }}"
-        loading="eager"
-        fetchpriority="high"
-      >
-    {%- elsif section.settings.image_asset != blank -%}
-      <img
-        class="hero-single__image hero-single__image--desktop"
-        src="{{ section.settings.image_asset | asset_url }}"
-        alt="{{ section.settings.image_alt | escape }}"
-        loading="eager"
-        fetchpriority="high"
-      >
-    {%- else -%}
-      <div class="hero-single__placeholder">
-        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      </div>
-    {%- endif -%}
-
-    {%- if section.settings.image_mobile != blank -%}
-      <img
-        class="hero-single__image hero-single__image--mobile"
-        src="{{ section.settings.image_mobile | image_url: width: 1200 }}"
-        alt="{{ section.settings.image_mobile.alt | escape }}"
-        loading="eager"
-      >
-    {%- endif -%}
-
-    {%- if section.settings.show_grain -%}
-      <div class="hero-single__grain" aria-hidden="true"></div>
-    {%- endif -%}
-    <div class="hero-single__scrim"></div>
-  </div>
-
-  <div class="hero-single__content page-width">
-    <div class="hero-single__lockup">
-      <h1 class="hero-single__heading display">{{ section.settings.heading }}</h1>
+<section class="hero-split" data-hero>
+  <div class="hero-split__content">
+    <div class="hero-split__inner">
+      <h1 class="hero-split__heading display">{{ section.settings.heading }}</h1>
 
       {%- if section.settings.review_count != blank -%}
-        <div class="rating hero-single__rating">
+        <div class="rating hero-split__rating">
           <span class="rating__stars" role="img" aria-label="{{ section.settings.rating | default: 5 }} out of 5 stars">
             {%- for i in (1..5) -%}
               {% render 'icon-star', filled: true %}
@@ -65,16 +19,43 @@
           <span class="rating__count">{{ section.settings.review_count }}</span>
         </div>
       {%- elsif request.design_mode -%}
-        <p class="editor-note editor-note--hero">
-          Editor note: the star rating renders here as soon as you fill in
-          "Review count" in this section's settings. It is empty because the
-          store has no reviews yet — publishing a review count you don't have is
-          what the FTC's fake-review rule is about, and it is the single easiest
-          thing for a competitor to report. Put the real number in the moment
-          you have one.
+        <p class="editor-note">
+          Editor note: the star rating renders here as soon as "Review count" is
+          filled in. It is empty because the store has no reviews yet.
         </p>
       {%- endif -%}
+
+      <a href="{{ section.settings.button_link | default: '#signup' }}" class="button button--primary button--large hero-split__cta">
+        {{ section.settings.button_label }}
+      </a>
+
+      {%- if section.settings.note != blank -%}
+        <p class="hero-split__note">{{ section.settings.note }}</p>
+      {%- endif -%}
     </div>
+  </div>
+
+  <div class="hero-split__media">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1600 }}"
+        srcset="{{ section.settings.image | image_url: width: 800 }} 800w,
+                {{ section.settings.image | image_url: width: 1600 }} 1600w"
+        sizes="(min-width: 750px) 50vw, 100vw"
+        alt="{{ section.settings.image.alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- elsif section.settings.image_asset != blank -%}
+      <img
+        src="{{ section.settings.image_asset | asset_url }}"
+        alt="{{ section.settings.image_alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
   </div>
 </section>
 
@@ -83,37 +64,6 @@
   "name": "Hero",
   "tag": "section",
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Background image",
-      "info": "Overrides the bundled image below once you upload one to Shopify."
-    },
-    {
-      "type": "text",
-      "id": "image_asset",
-      "label": "Bundled image filename",
-      "default": "hero-porsche.png",
-      "info": "A file in the theme's assets/ folder. Used when no image is picked above."
-    },
-    {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Bundled image alt text",
-      "default": "Man in a suit lying across the hood of a Porsche at night"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_mobile",
-      "label": "Background image (mobile, optional)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_grain",
-      "label": "Film grain overlay",
-      "default": true,
-      "info": "Adds photographic grain. Also hides softness when the source image is small."
-    },
     {
       "type": "text",
       "id": "heading",
@@ -139,6 +89,50 @@
       "step": 1,
       "label": "Stars shown",
       "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Save 10%"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Leave empty to scroll to the email signup at the bottom of the page. Point it at a dedicated landing page once you have one."
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note under the button",
+      "default": "Enter your email, get 10% off launch day."
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_asset",
+      "label": "Bundled image filename",
+      "default": "hero-porsche.png",
+      "info": "A file in assets/. Used when no image is picked above."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Bundled image alt text",
+      "default": "Man in a suit lying across the hood of a Porsche at night"
     }
   ],
   "presets": [

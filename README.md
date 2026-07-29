@@ -3,92 +3,98 @@
 A Shopify Online Store 2.0 theme for Stud, magnetic diamond studs for men who
 play sports. Black and white: white background, black type, no accent colour.
 
-The home page is a **single-product long-scroll landing page** — no nav tabs, no
-category pages, no exit ramps between the shopper and the buy button. The
-structure is modeled on Gruns' one-product flow.
+The home page is a **single long-scroll landing page** with no nav links. It is
+currently a **pre-launch email capture** — there is no pricing section and no
+add-to-cart on the page. Every call to action points at `#signup`, the email
+form in the footer, offering 10% off on launch day.
 
 ## Page order
 
 | # | Section file | Does |
 |---|---|---|
-| 1 | `sections/landing-hero.liquid` | Athlete shot, "Look good. Feel good. Play good.", price + CTA above the fold |
-| 2 | `sections/landing-problem.liquid` | Why piercings don't work for athletes (bans, healing, losing one) |
-| 3 | `sections/landing-sizing.liquid` | The 3 sizes and "find your fit in 10 seconds" |
-| 4 | `sections/landing-stay-on.liquid` | Stay-on proof — the game/practice footage |
-| 5 | `sections/landing-easy.liquid` | Easy on, stays on, off when you say so |
-| 6 | `sections/landing-social.liquid` | Athlete photo grid, "as worn by" strip, customer quotes |
-| 7 | `sections/landing-offer.liquid` | What's in the box + pricing tiers (`#offer` — every CTA scrolls here) |
-| 8 | `sections/landing-faq.liquid` | Guarantee band + FAQ accordion |
-| 9 | `sections/landing-final-cta.liquid` | Repeat the offer |
+| 1 | `sections/landing-hero.liquid` | Split hero: headline, star rating and "Save 10%" on the left, photograph on the right |
+| 2 | `sections/landing-marquee.liquid` | Right-to-left scrolling row of publication names |
+| 3 | `sections/landing-media-accordion.liquid` | "Why this exists" — photo left, expandable copy right |
+| 4 | `sections/landing-sizing.liquid` | The 3 sizes, then the CTA |
+| 5 | `sections/landing-media-accordion.liquid` | Stay-on / easy on / off — photo left, expandable copy right, black background |
+| 6 | `sections/landing-social.liquid` | "Why do something permanent when you don't have to?" photo carousel |
+| 7 | `sections/landing-final-cta.liquid` | Repeat the offer |
 
-Order and content are editable in **Customize** — the copy lives in
-`templates/index.json`, not hardcoded in the sections.
+Sections 3 and 5 are the same section type used twice with different copy and
+`Image side` flipped. Order and content are editable in **Customize** — the copy
+lives in `templates/index.json`, not hardcoded in the sections.
 
 ## Brand
 
 - **Wordmark**: "STUD", uppercase and italic, in a neo-grotesque stack
-  (`Helvetica Neue → Helvetica → Inter → Segoe UI → Arial`) — the Haus wordmark
-  look, using faces that ship on every OS, so there is no webfont to load or
-  license. Set in `layout/theme.liquid` as `--font-grotesque`; the same stack
-  drives every landing headline via `--font-display`.
-  Turn it off under **Theme settings → Typography** to fall back to the
-  Shopify heading font instead.
-- **Colour**: `#FFFFFF` background, `#000000` text, `#F4F4F4` for the one grey
-  section, plus full-black inverted sections (2, 4, 9) for rhythm. There is no
-  accent colour by design.
+  (`Helvetica Neue → Helvetica → Inter → Segoe UI → Arial`), weighted and
+  tracked to match the HAUS reference. Set in `layout/theme.liquid` as
+  `--font-grotesque`; the same stack drives every headline via `--font-display`.
+  Turn it off under **Theme settings → Typography** to fall back to the Shopify
+  heading font instead.
+- **Colour**: `#FFFFFF` background, `#000000` text, `#F4F4F4` for grey fills,
+  plus full-black inverted sections for rhythm. There is no accent colour.
+
+## Photography
+
+Seven black-and-white photos ship in `assets/` and are wired into the template:
+
+| File | Used in |
+|---|---|
+| `hero-porsche.png` | Hero |
+| `athlete-football.png` | "Why this exists", carousel |
+| `athlete-barber.jpg` | Stay-on, carousel |
+| `athlete-sweater.png` | 4mm size card, carousel |
+| `athlete-shades.png` | 5mm size card, carousel |
+| `athlete-chain.png` | 6mm size card, carousel |
+| `athlete-vest.png` | Carousel, final CTA |
+
+Every image slot resolves in this order: **Theme Editor image → bundled
+`assets/` file → placeholder.** So the theme looks finished before a store
+exists, and picking an image in Customize silently takes over. The bundled
+filename is a per-slot text setting, so nothing needs a code change to swap.
+
+**These photos are not licensed and one of them is a recognisable professional
+footballer.** They are fine for a mockup and a real problem the day the store
+takes payments. Replace them with your own shoot before launch.
 
 ## Uploading to Shopify
 
-You need a Shopify store (any plan, including a free dev store) before this can
-go live — theme files alone don't create a store.
-
-1. Zip the **contents** of this folder (the zip's top level should contain
-   `layout/`, `sections/`, `templates/`, etc. directly). `stud-theme.zip` in
-   this folder is a pre-built copy.
+1. Zip the **contents** of this folder (`layout/`, `sections/`, `templates/`…
+   at the zip's top level). `stud-theme.zip` here is a pre-built copy.
 2. Shopify Admin: **Online Store → Themes → Add theme → Upload zip file**.
 3. **Customize** to preview, **Publish** to go live.
 
-To push with the CLI instead once a store exists: `shopify theme push`.
+Or `shopify theme push` with the CLI once a store exists.
 
-## First steps once uploaded
+## Before you publish
 
-1. Create the product in Shopify (the kit), then open **Customize** and select it
-   under the **Pricing & what's in the box** section, the **Hero**, and the
-   **Final CTA**. Every price on the page then comes from Shopify, and the
-   pricing buttons become real add-to-cart buttons.
-2. Add photos through the Theme Editor image pickers: hero, size cards, the
-   easy-on/off close-up, the athlete photo grid, the box shot.
-3. Add the stay-on footage to section 4 — upload to Shopify, or paste a YouTube
-   or Vimeo URL.
-4. Set the footer menu under **Online Store → Navigation** (keep it to policies
-   and contact).
+- **The review count is empty on purpose.** The stars in the hero do not render
+  until you fill in **Customize → Hero → Review count**. Publishing a review
+  count you don't have is what the FTC's fake-review rule covers.
+- **The press marquee names are placeholders.** A scrolling row of publication
+  names reads as press coverage. Keep only titles that have actually written
+  about Stud, or delete the section.
+- **Claims to verify**: "free shipping" in the announcement bar, "10% off launch
+  day", and the material and sizing copy throughout. Confirm each against your
+  supplier and your actual policies.
 
-## Things to know
+## Local preview
 
-- **Prices**: connect the product and prices come from Shopify. Until then each
-  section falls back to editable price text, so the page reads correctly before
-  the product exists.
-- **Bundle tiers**: a tier with quantity 2 adds 2 of the product, which is 2× the
-  price — not a discount. For a real bundle, create a 2-pack product priced
-  below 2× and select it in that tier's own product picker.
-- **Cart**: AJAX drawer backed by Shopify's native cart. `/cart` also works as a
-  full page.
-- **Sticky buy bar**: appears once the hero scrolls out of view (bottom on
-  mobile, top on desktop). Toggle under **Theme settings → Buy bar**.
-- **No invented social proof**: the photo/quote section ships with zero sample
-  reviews, and quote blocks don't render until you put a real quote in them.
-- **Countdown timer**: off by default. Only turn it on for a real dated
-  deadline — it rolls over to a fresh 48 hours once the date passes, which is a
-  fake-urgency pattern if the deadline isn't real.
-- **Claims to verify before launch**: "nickel-free surgical steel",
-  "hypoallergenic", "cubic zirconia", "ships within one business day",
-  "free shipping", the 30-day return window and the stay-on guarantee all appear
-  in the default copy. Confirm each against your actual supplier and policies,
-  or edit them in Customize.
+`..\Stud-preview\build_preview.py` renders a static approximation of the landing
+page from `templates/index.json` and `assets/base.css`, so the design can be
+checked in a browser without a Shopify store:
+
+```
+python ..\Stud-preview\build_preview.py
+```
+
+Then open `..\Stud-preview\preview.html`. It is a mockup — the email form and
+cart do nothing, and it fills in the review count so the lockup can be judged.
 
 ## Structure
 
 Standard Shopify OS 2.0 — `layout/theme.liquid`, `sections/`, `snippets/`,
 `templates/*.json`, `config/settings_schema.json`, `locales/en.default.json`.
 Product, collection, cart, blog, search and account templates are all still
-there and styled, they are just not linked from the landing page.
+there and styled, ready for when there is something to sell.

@@ -18,7 +18,7 @@
 
     <div class="site-header__end">
       {%- if section.settings.show_header_cta -%}
-        <a href="{{ section.settings.cta_link | default: '#offer' }}" class="button button--primary button--small site-header__cta">
+        <a href="{{ section.settings.cta_link | default: '#signup' }}" class="button button--primary button--small site-header__cta">
           {{ section.settings.cta_label }}
         </a>
       {%- endif -%}
@@ -45,7 +45,7 @@
           <span class="sticky-buy__price">{{ section.settings.sticky_price }}</span>
         {%- endif -%}
       </div>
-      <a href="{{ section.settings.cta_link | default: '#offer' }}" class="button button--primary sticky-buy__button">
+      <a href="{{ section.settings.cta_link | default: '#signup' }}" class="button button--primary sticky-buy__button">
         {{ section.settings.cta_label }}
       </a>
     </div>
@@ -63,20 +63,20 @@
     {
       "type": "checkbox",
       "id": "show_header_cta",
-      "label": "Show buy button in header",
+      "label": "Show call-to-action in header",
       "default": true
     },
     {
       "type": "text",
       "id": "cta_label",
       "label": "Buy button label",
-      "default": "Shop now"
+      "default": "Save 10%"
     },
     {
       "type": "url",
       "id": "cta_link",
       "label": "Buy button link",
-      "info": "Leave empty to scroll to the pricing section on the home page."
+      "info": "Leave empty to scroll to the email signup at the bottom of the page."
     },
     {
       "type": "header",
@@ -86,13 +86,13 @@
       "type": "text",
       "id": "sticky_product_name",
       "label": "Product name",
-      "default": "The Stud Kit — 3 sizes"
+      "default": "10% off launch day"
     },
     {
       "type": "text",
       "id": "sticky_price",
       "label": "Price text",
-      "default": "$39"
+      "default": ""
     }
   ]
 }

@@ -10,7 +10,6 @@
       {%- endif -%}
     </div>
 
-    {%- assign steps = section.blocks | where: 'type', 'step' -%}
     {%- assign sizes = section.blocks | where: 'type', 'size' -%}
 
     {%- if sizes.size > 0 -%}
@@ -40,23 +39,9 @@
       </div>
     {%- endif -%}
 
-    {%- if steps.size > 0 -%}
-      <ol class="sizing__steps">
-        {%- for block in steps -%}
-          <li class="sizing__step" {{ block.shopify_attributes }}>
-            <span class="sizing__step-num">{{ forloop.index }}</span>
-            <div>
-              <h3 class="sizing__step-title">{{ block.settings.title }}</h3>
-              <p class="sizing__step-text">{{ block.settings.text }}</p>
-            </div>
-          </li>
-        {%- endfor -%}
-      </ol>
-    {%- endif -%}
-
     {%- if section.settings.button_label != blank -%}
       <div class="sizing__cta">
-        <a href="{{ section.settings.button_link | default: '#offer' }}" class="button button--primary button--large">
+        <a href="{{ section.settings.button_link | default: '#signup' }}" class="button button--primary button--large">
           {{ section.settings.button_label }}
         </a>
       </div>
@@ -91,7 +76,7 @@
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "Get the kit"
+      "default": "Save 10%"
     },
     {
       "type": "url",
@@ -111,14 +96,6 @@
         { "type": "text", "id": "name", "label": "Name", "default": "Clean" },
         { "type": "textarea", "id": "text", "label": "Text", "default": "Subtle. Reads as jewelry, not a statement." }
       ]
-    },
-    {
-      "type": "step",
-      "name": "Step",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Try all three" },
-        { "type": "textarea", "id": "text", "label": "Text", "default": "Every kit has all three sizes in it." }
-      ]
     }
   ],
   "presets": [
@@ -136,18 +113,6 @@
         {
           "type": "size",
           "settings": { "size": "6mm", "name": "Loud", "text": "You want people to notice. They will." }
-        },
-        {
-          "type": "step",
-          "settings": { "title": "Try all three", "text": "They are all in the box. No ordering the wrong size and waiting a week." }
-        },
-        {
-          "type": "step",
-          "settings": { "title": "Clamp it on", "text": "Front on the outside, magnet behind the lobe. It snaps into place on its own." }
-        },
-        {
-          "type": "step",
-          "settings": { "title": "Keep your pick", "text": "Wear the one that fits your face. Keep the other two for a different look, or hand them to a teammate." }
         }
       ]
     }

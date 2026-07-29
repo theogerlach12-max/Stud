@@ -1,6 +1,6 @@
 /* ==========================================================================
    Stud — base theme stylesheet
-   Black and white. White page, black type, one product, one long scroll.
+   Black and white. White page, black type, one long scroll to an email capture.
    ========================================================================== */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -30,7 +30,6 @@ p { margin: 0 0 1em; }
 s { text-decoration: line-through; }
 
 ::selection { background: var(--color-text); color: var(--color-background); }
-
 :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
 .visually-hidden {
@@ -115,7 +114,7 @@ s { text-decoration: line-through; }
   padding: 1rem 1.25rem;
   font-size: 0.85rem;
   color: var(--color-muted);
-  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Buttons
@@ -149,11 +148,7 @@ s { text-decoration: line-through; }
   border-color: var(--color-background);
 }
 .button--invert:hover { opacity: 0.85; }
-.button--outline {
-  background: transparent;
-  color: currentColor;
-  border-color: currentColor;
-}
+.button--outline { background: transparent; color: currentColor; border-color: currentColor; }
 .button--outline:hover { background: var(--color-text); color: var(--color-background); }
 .button--secondary { background: transparent; color: var(--color-text); border-color: var(--color-text); }
 .button--large { padding: 1.2em 2.8em; font-size: 0.95rem; }
@@ -175,8 +170,7 @@ input[type="password"], input[type="number"], select, textarea {
 }
 .field { margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.4em; }
 .field label { font-size: 0.85rem; color: var(--color-muted); }
-.form-error { border: 1px solid var(--color-text); padding: 0.9em 1.2em; margin-bottom: 1.25rem; }
-.form-success { border: 1px solid var(--color-text); padding: 0.9em 1.2em; margin-bottom: 1.25rem; }
+.form-error, .form-success { border: 1px solid var(--color-text); padding: 0.9em 1.2em; margin-bottom: 1.25rem; }
 
 .placeholder-svg {
   width: 100%; height: 100%;
@@ -257,7 +251,7 @@ input[type="password"], input[type="number"], select, textarea {
   padding: 0 4px;
 }
 
-/* Sticky buy bar */
+/* Sticky CTA bar */
 .sticky-buy[hidden] { display: none; }
 .sticky-buy {
   position: fixed;
@@ -346,98 +340,141 @@ input[type="password"], input[type="number"], select, textarea {
 .section-head--center .section-head__intro { margin-left: auto; margin-right: auto; }
 
 /* ==========================================================================
-   1. Hero
+   1. Hero — copy left, photograph right
    ========================================================================== */
-.hero-single {
-  position: relative;
-  min-height: min(88vh, 860px);
-  display: flex;
-  align-items: flex-end;
-  color: #fff;
-  background: #111;
-  overflow: hidden;
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: min(84vh, 820px);
 }
-.hero-single__media { position: absolute; inset: 0; }
-.hero-single__media img,
-.hero-single__placeholder {
+.hero-split__content {
+  display: flex;
+  align-items: center;
+  /* Left edge lines up with the .page-width gutter the header uses. */
+  padding: clamp(3rem, 7vw, 6rem) clamp(2rem, 4vw, 4.5rem)
+           clamp(3rem, 7vw, 6rem)
+           max(1.5rem, calc((100vw - var(--page-width)) / 2 + 1.5rem));
+}
+.hero-split__inner { width: 100%; }
+.hero-split__heading { margin-bottom: 0.5em; }
+.hero-split__rating { margin-bottom: 2.25rem; }
+.hero-split__note { margin: 1rem 0 0; font-size: 0.88rem; color: var(--color-muted); }
+.hero-split__media { position: relative; overflow: hidden; background: var(--color-background-alt); }
+.hero-split__media img,
+.hero-split__media .placeholder-svg {
   width: 100%; height: 100%;
   object-fit: cover;
-  /* Weighted low: the subject sits in the lower half of the hero photo, and a
-     straight centre crop cuts his head off at the bottom edge. */
-  object-position: center 68%;
-}
-.hero-single__image--mobile { display: none; }
-.hero-single__scrim {
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(90deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 42%, rgba(0,0,0,0) 68%),
-    linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.6) 100%);
-}
-/* Film grain. Also does real work here: it breaks up the softness of an
-   upscaled source image, which is why it defaults on. */
-.hero-single__grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.28;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 140px 140px;
-}
-.hero-single__content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  padding-top: clamp(5rem, 12vw, 9rem);
-  padding-bottom: clamp(3rem, 6vw, 5rem);
-}
-/* Constrain the headline, not the lockup: `ch` resolves against the element's
-   own font-size, and on the lockup that is body text, which wrapped the
-   headline into a five-line column. */
-.hero-single__lockup { max-width: 100%; }
-.hero-single__heading { max-width: 13ch; margin-bottom: 0.45em; }
-.hero-single__rating { color: #fff; }
-.hero-single__rating .rating__count { color: rgba(255,255,255,0.85); }
-.editor-note--hero {
-  background: rgba(0,0,0,0.55);
-  border-color: rgba(255,255,255,0.4);
-  color: rgba(255,255,255,0.85);
-  margin-top: 1rem;
-  max-width: 46ch;
+  object-position: center 60%;
 }
 
 /* ==========================================================================
-   2. Problem
+   2. Press marquee
    ========================================================================== */
-.problem__list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: rgba(255,255,255,0.2);
-  border-top: 1px solid rgba(255,255,255,0.2);
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+.marquee {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1.6rem 0;
+  overflow: hidden;
 }
-.problem__item { background: var(--color-text); padding: 2.5rem 2rem; }
-.problem__num {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.45;
-  margin-bottom: 2.5rem;
+.marquee__label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-muted);
+  margin-bottom: 1rem;
 }
-.problem__title {
+.marquee__viewport {
+  overflow: hidden;
+  /* Fade the ends so names enter and leave instead of being chopped. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+}
+.marquee__list { display: flex; align-items: center; }
+.marquee__item {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2.1vw, 1.7rem);
   letter-spacing: -0.02em;
-  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  padding: 0 clamp(1.5rem, 3.5vw, 3.25rem);
+  white-space: nowrap;
+  opacity: 0.85;
 }
-.problem__text { color: rgba(255,255,255,0.72); margin: 0; font-size: 0.98rem; }
-.problem__closer { margin: clamp(2.5rem, 5vw, 4rem) 0 0; max-width: 20ch; }
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+  .marquee__viewport { overflow-x: auto; }
+}
 
 /* ==========================================================================
-   3. Sizing kit
+   Media + accordion (used for "why this exists" and the stay-on block)
+   ========================================================================== */
+.media-accordion__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+.media-accordion__inner--flip .media-accordion__media { order: 2; }
+.media-accordion__media img,
+.media-accordion__media video,
+.media-accordion__placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  background: var(--color-background-alt);
+}
+.media-accordion__intro {
+  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  color: var(--color-muted);
+  margin-bottom: 1.75rem;
+  max-width: 42ch;
+}
+.landing-section--invert .media-accordion__intro { color: rgba(255,255,255,0.72); }
+.media-accordion__list { border-top: 1px solid var(--color-border); }
+.landing-section--invert .media-accordion__list,
+.landing-section--invert .accordion__item { border-color: rgba(255,255,255,0.22); }
+.landing-section--invert .accordion__content { color: rgba(255,255,255,0.72); }
+.media-accordion__closer {
+  margin: 1.75rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+.media-accordion__cta { margin-top: 2rem; }
+
+/* Accordion (shared)
+   ========================================================================== */
+.accordion__item { border-bottom: 1px solid var(--color-border); }
+.accordion__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  list-style: none;
+  padding: 1.15rem 0;
+}
+.accordion__item summary::-webkit-details-marker { display: none; }
+.accordion__item summary svg { flex-shrink: 0; transition: transform 0.2s ease; }
+.accordion__item[open] summary svg { transform: rotate(45deg); }
+.accordion__content { padding-bottom: 1.35rem; color: var(--color-muted); max-width: 56ch; }
+
+/* ==========================================================================
+   Sizing
    ========================================================================== */
 .sizing__grid {
   display: grid;
@@ -450,6 +487,7 @@ input[type="password"], input[type="number"], select, textarea {
   background: var(--color-background-alt);
   overflow: hidden;
   margin-bottom: 1.25rem;
+  border-radius: 14px;
 }
 .size-card__media img { width: 100%; height: 100%; object-fit: cover; }
 .size-card__size {
@@ -467,141 +505,64 @@ input[type="password"], input[type="number"], select, textarea {
   margin: 0.25rem 0 0.75rem;
 }
 .size-card__text { color: var(--color-muted); font-size: 0.95rem; margin: 0 auto; max-width: 26ch; }
-
-.sizing__steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1.5rem, 3vw, 3rem);
-  margin-top: clamp(3rem, 6vw, 5rem);
-  padding-top: clamp(2.5rem, 5vw, 3.5rem);
-  border-top: 1px solid var(--color-border);
-}
-.sizing__step { display: flex; gap: 1rem; align-items: flex-start; }
-.sizing__step-num {
-  flex-shrink: 0;
-  width: 2rem; height: 2rem;
-  border: 1px solid var(--color-text);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-.sizing__step-title { font-size: 1.05rem; margin-bottom: 0.25rem; }
-.sizing__step-text { color: var(--color-muted); font-size: 0.95rem; margin: 0; }
 .sizing__cta { margin-top: clamp(2.5rem, 5vw, 4rem); text-align: center; }
 
 /* ==========================================================================
-   4. Stay-on proof
+   Photo carousel
    ========================================================================== */
-.stay-on__media {
-  background: #000;
-  border: 1px solid rgba(255,255,255,0.2);
-  overflow: hidden;
+.carousel { position: relative; }
+.carousel__track {
+  display: flex;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 0 max(1.5rem, calc((100vw - var(--page-width)) / 2 + 1.5rem));
 }
-.stay-on__media video { width: 100%; height: auto; display: block; }
-/* This slot is sized for footage. A portrait still dropped in as the fallback
-   would otherwise render metres tall, so crop it to the same frame. */
-.stay-on__media img { width: 100%; aspect-ratio: 16/9; object-fit: cover; object-position: center 30%; display: block; }
-.stay-on__embed { position: relative; padding-bottom: 56.25%; height: 0; }
-.stay-on__embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.stay-on__placeholder { aspect-ratio: 16/9; }
-.stay-on__caption {
-  margin: 1.25rem 0 0;
-  text-align: center;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.6);
+.carousel__track::-webkit-scrollbar { display: none; }
+.carousel__item {
+  flex: 0 0 clamp(240px, 26vw, 360px);
+  scroll-snap-align: center;
 }
-.stay-on__proof {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: clamp(3rem, 6vw, 4.5rem);
-  padding-top: clamp(2.5rem, 5vw, 3.5rem);
-  border-top: 1px solid rgba(255,255,255,0.2);
-  text-align: center;
+.carousel__figure { margin: 0; position: relative; }
+.carousel__figure img,
+.carousel__placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 20px;
+  background: var(--color-background-alt);
 }
-.stay-on__proof-stat { display: block; margin-bottom: 0.4rem; }
-.stay-on__proof-label { color: rgba(255,255,255,0.65); font-size: 0.9rem; }
-
-/* ==========================================================================
-   5. Easy on / stays on / easy off
-   ========================================================================== */
-.easy__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 6vw, 5rem);
-  align-items: center;
-}
-.easy__media img,
-.easy__placeholder { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: var(--color-background-alt); }
-.easy__text { color: var(--color-muted); }
-.easy__list { margin: 2rem 0; border-top: 1px solid var(--color-border); }
-.easy__item {
-  display: grid;
-  grid-template-columns: 7rem 1fr;
-  gap: 1rem;
-  padding: 1.15rem 0;
-  border-bottom: 1px solid var(--color-border);
-  align-items: baseline;
-}
-.easy__item-label {
-  font-family: var(--font-display);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.78rem;
-}
-.easy__item-text { color: var(--color-muted); font-size: 0.98rem; }
-
-/* ==========================================================================
-   6. Athlete photos / social proof
-   ========================================================================== */
-.social__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-}
-.social__cell { margin: 0; position: relative; }
-.social__cell img,
-.social__placeholder { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: var(--color-background-alt); }
-.social__caption {
+.carousel__caption {
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  padding: 2.5rem 1rem 0.9rem;
+  padding: 2.5rem 1.15rem 1rem;
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+  border-radius: 0 0 20px 20px;
   color: #fff;
   font-size: 0.78rem;
   letter-spacing: 0.06em;
 }
-.social__strip {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  padding-top: 2rem;
-  border-top: 1px solid var(--color-border);
+.carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.12);
 }
-.social__strip-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--color-muted);
-  font-weight: 700;
-}
-.social__strip-list { display: flex; flex-wrap: wrap; gap: 1rem 2.25rem; }
-.social__strip-list li { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
-.social__strip-list li span {
-  display: block;
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 0.8rem;
-  color: var(--color-muted);
-  letter-spacing: 0;
-}
+.carousel__arrow:hover { background: var(--color-text); color: var(--color-background); border-color: var(--color-text); }
+.carousel__arrow--prev { left: clamp(0.5rem, 2vw, 1.75rem); }
+.carousel__arrow--next { right: clamp(0.5rem, 2vw, 1.75rem); }
+.carousel__arrow--prev svg { transform: rotate(180deg); }
+.carousel__arrow[disabled] { opacity: 0.25; pointer-events: none; }
+
+.social__cta { margin-top: clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
 .social__quotes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -621,129 +582,7 @@ input[type="password"], input[type="number"], select, textarea {
 }
 
 /* ==========================================================================
-   7. Offer — what's in the box + pricing tiers
-   ========================================================================== */
-.offer { background: var(--color-background-alt); }
-.offer__layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: start;
-}
-.box__media { background: var(--color-background); margin-bottom: 2rem; }
-.box__media img,
-.box__placeholder { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
-.box__title {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  margin-bottom: 1.25rem;
-}
-.box__list { border-top: 1px solid var(--color-border); }
-.box__item {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.95rem;
-}
-.box__item-title { font-weight: 700; }
-.box__item-text { color: var(--color-muted); text-align: right; }
-
-.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.tier {
-  position: relative;
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  padding: 2rem 1.35rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-.tier--featured {
-  border: 2px solid var(--color-text);
-  padding-top: 2.5rem;
-}
-.tier__badge {
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--color-text);
-  color: var(--color-background);
-  font-size: 0.62rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  padding: 0.45em 0.9em;
-  white-space: nowrap;
-}
-.tier__name { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: -0.02em; margin-bottom: 0.15rem; }
-.tier__sublabel { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-muted); margin-bottom: 1.25rem; }
-.tier__price { margin: 0 0 0.25rem; }
-.tier__compare { color: var(--color-muted); font-weight: 400; margin-right: 0.5rem; font-size: 0.7em; }
-.tier__unit { font-size: 0.8rem; color: var(--color-muted); margin-bottom: 0.5rem; }
-.tier__note { font-size: 0.85rem; color: var(--color-muted); margin-bottom: 1rem; }
-.tier form,
-.tier > .button { margin-top: auto; }
-.tier form { padding-top: 1rem; }
-.tier > .button { margin-top: auto; }
-/* Narrow columns: keep "Add to cart" on one line. */
-.tier .button { padding-left: 0.9rem; padding-right: 0.9rem; white-space: nowrap; letter-spacing: 0.06em; }
-.tier__variant { width: 100%; margin-bottom: 0.6rem; }
-.tiers__reassurance {
-  grid-column: 1 / -1;
-  text-align: center;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-muted);
-  margin: 1rem 0 0;
-}
-
-/* ==========================================================================
-   8. Guarantee + FAQ
-   ========================================================================== */
-.promises {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1.5rem, 3vw, 3rem);
-  padding-bottom: clamp(3rem, 6vw, 5rem);
-  margin-bottom: clamp(3rem, 6vw, 5rem);
-  border-bottom: 1px solid var(--color-border);
-}
-.promise__title {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  margin-bottom: 0.75rem;
-}
-.promise__text { color: var(--color-muted); margin: 0; font-size: 0.98rem; }
-
-.faq__inner { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
-.faq__head { position: sticky; top: 6rem; }
-.faq__contact { font-size: 0.95rem; color: var(--color-muted); }
-.faq__contact a { text-decoration: underline; color: var(--color-text); }
-.faq__list { border-top: 1px solid var(--color-border); }
-
-.accordion__item { border-bottom: 1px solid var(--color-border); }
-.accordion__item summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  cursor: pointer;
-  font-weight: 700;
-  list-style: none;
-  padding: 1.35rem 0;
-}
-.accordion__item summary::-webkit-details-marker { display: none; }
-.accordion__item summary svg { flex-shrink: 0; transition: transform 0.2s ease; }
-.accordion__item[open] summary svg { transform: rotate(45deg); }
-.accordion__content { padding-bottom: 1.5rem; color: var(--color-muted); max-width: 60ch; }
-
-/* ==========================================================================
-   9. Final CTA
+   Final CTA
    ========================================================================== */
 .final-cta { position: relative; overflow: hidden; text-align: center; }
 .final-cta__media { position: absolute; inset: 0; }
@@ -771,8 +610,8 @@ input[type="password"], input[type="number"], select, textarea {
    ========================================================================== */
 .site-footer { background: var(--color-text); color: var(--color-background); }
 .site-footer a:hover { opacity: 0.7; }
-.site-footer__newsletter { border-bottom: 1px solid rgba(255,255,255,0.18); }
-.site-footer__newsletter-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 3rem 1.5rem; flex-wrap: wrap; }
+.site-footer__newsletter { border-bottom: 1px solid rgba(255,255,255,0.18); scroll-margin-top: 5rem; }
+.site-footer__newsletter-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 3.5rem 1.5rem; flex-wrap: wrap; }
 .site-footer__newsletter-inner p { margin: 0; opacity: 0.7; font-size: 0.92rem; }
 .site-footer__newsletter-form { display: flex; gap: 0.6rem; }
 .site-footer__newsletter-form input { min-width: 260px; background: transparent; color: inherit; border-color: rgba(255,255,255,0.3); }
@@ -793,6 +632,7 @@ input[type="password"], input[type="number"], select, textarea {
 
 /* ==========================================================================
    Product / collection / cart / account pages
+   (not linked from the landing page, kept working for Shopify)
    ========================================================================== */
 .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem 1.25rem; }
 .product-grid__empty { grid-column: 1 / -1; color: var(--color-muted); text-align: center; padding: 2rem; }
@@ -885,23 +725,19 @@ input[type="password"], input[type="number"], select, textarea {
    Responsive
    ========================================================================== */
 @media (min-width: 990px) {
-  /* Sticky buy bar sits at the top on desktop, under the header. */
+  /* Sticky CTA sits at the top on desktop, under the header. */
   .sticky-buy { top: 0; bottom: auto; animation: sticky-buy-down 0.25s ease; }
   @keyframes sticky-buy-down { from { transform: translateY(-100%); } to { transform: translateY(0); } }
 }
 
 @media (max-width: 989px) {
   body { font-size: 16px; }
-  .problem__list { grid-template-columns: 1fr; }
-  .problem__num { margin-bottom: 1rem; }
-  .sizing__steps { grid-template-columns: 1fr; }
-  .stay-on__proof { grid-template-columns: 1fr; text-align: left; }
-  .easy__inner { grid-template-columns: 1fr; }
+  .media-accordion__inner { grid-template-columns: 1fr; }
+  .media-accordion__inner--flip .media-accordion__media { order: 0; }
+  .media-accordion__media img,
+  .media-accordion__media video,
+  .media-accordion__placeholder { aspect-ratio: 16/10; }
   .social__quotes { grid-template-columns: 1fr; }
-  .offer__layout { grid-template-columns: 1fr; }
-  .promises { grid-template-columns: 1fr; gap: 2rem; }
-  .faq__inner { grid-template-columns: 1fr; }
-  .faq__head { position: static; }
   .product-grid, .blog-page__grid { grid-template-columns: repeat(2, 1fr); }
   .product-detail { grid-template-columns: 1fr; gap: 2rem; }
 }
@@ -910,20 +746,16 @@ input[type="password"], input[type="number"], select, textarea {
   .site-header__inner { padding: 0.9rem 1.25rem; }
   .wordmark { font-size: 1.35rem; }
   .site-header__cta { display: none; }
-  .hero-single { min-height: 88vh; }
-  /* Swap to the mobile crop only when one was actually supplied, otherwise the
-     desktop image has to stay or the hero has no image at all. */
-  .hero-single__image--mobile { display: block; }
-  .hero-single__media:has(.hero-single__image--mobile) .hero-single__image--desktop { display: none; }
-  .hero-single__lockup { max-width: none; }
+
+  .hero-split { grid-template-columns: 1fr; min-height: 0; }
+  .hero-split__content { padding: clamp(2.5rem, 8vw, 3.5rem) 1.5rem; }
+  .hero-split__media { aspect-ratio: 4/3; }
+  .hero-split__cta { width: 100%; }
+
   .sizing__grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .size-card__media { max-width: 20rem; margin-inline: auto; }
-  .social__grid { grid-template-columns: repeat(2, 1fr); }
-  .tiers { grid-template-columns: 1fr; gap: 1.5rem; }
-  .tier--featured { order: -1; }
-  .box__item { flex-direction: column; gap: 0.15rem; }
-  .box__item-text { text-align: left; }
-  .easy__item { grid-template-columns: 1fr; gap: 0.25rem; }
+  .carousel__item { flex-basis: 74vw; }
+  .carousel__arrow { display: none; }
   .site-footer__newsletter-inner { flex-direction: column; align-items: flex-start; }
   .site-footer__newsletter-form { width: 100%; flex-direction: column; }
   .site-footer__newsletter-form input { min-width: 0; width: 100%; }

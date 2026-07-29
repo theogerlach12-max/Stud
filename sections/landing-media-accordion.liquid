@@ -1,0 +1,153 @@
+{%- comment -%}
+  Photograph on one side, expandable copy on the other. Used twice on the home
+  page (the "why this exists" block and the stay-on block) with the media side
+  flipped, so both stay one file.
+{%- endcomment -%}
+
+<section class="media-accordion landing-section{% if section.settings.invert %} landing-section--invert{% endif %}"
+         {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %}>
+  <div class="page-width media-accordion__inner{% if section.settings.media_side == 'right' %} media-accordion__inner--flip{% endif %}">
+
+    <div class="media-accordion__media">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video
+          | video_tag: image_size: '1200x', autoplay: true, loop: true, muted: true, controls: true, playsinline: true
+        }}
+      {%- elsif section.settings.image != blank -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 1200 }}"
+          alt="{{ section.settings.image.alt | escape }}"
+          loading="lazy"
+        >
+      {%- elsif section.settings.image_asset != blank -%}
+        <img
+          src="{{ section.settings.image_asset | asset_url }}"
+          alt="{{ section.settings.image_alt | escape }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="media-accordion__placeholder">
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="media-accordion__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="display display--md">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.intro != blank -%}
+        <p class="media-accordion__intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+
+      <div class="media-accordion__list">
+        {%- for block in section.blocks -%}
+          <details class="accordion__item"{% if forloop.first and section.settings.open_first %} open{% endif %} {{ block.shopify_attributes }}>
+            <summary>
+              <span>{{ block.settings.title }}</span>
+              {% render 'icon-plus' %}
+            </summary>
+            <div class="accordion__content rte">{{ block.settings.body }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.closer != blank -%}
+        <p class="media-accordion__closer">{{ section.settings.closer }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: '#signup' }}" class="button {% if section.settings.invert %}button--invert{% else %}button--primary{% endif %} media-accordion__cta">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Media + accordion",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_side",
+      "label": "Image side",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "invert",
+      "label": "Black background",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open the first item by default",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor id",
+      "info": "Optional. Lets links jump to this section."
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "text",
+      "id": "image_asset",
+      "label": "Bundled image filename",
+      "info": "A file in assets/. Used when no image is picked above."
+    },
+    { "type": "text", "id": "image_alt", "label": "Bundled image alt text" },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video (overrides the image)"
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "intro", "label": "Intro" },
+    { "type": "text", "id": "closer", "label": "Closing line" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Expandable item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "The rulebook" },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body",
+          "default": "<p>Most leagues won't let you play in pierced jewelry.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Media + accordion" }
+  ]
+}
+{% endschema %}
