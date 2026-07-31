@@ -223,6 +223,25 @@ input[type="password"], input[type="number"], select, textarea {
   text-align: center;
   flex-wrap: wrap;
 }
+/* Messages are stacked on top of each other so swapping one for the next does
+   not change the bar's height or nudge the page. The wrapper is sized by the
+   tallest message, which stays in flow; the rest are taken out of flow. */
+.announcement-bar__rotator { position: relative; display: grid; }
+.announcement-bar__message {
+  grid-area: 1 / 1;
+  margin: 0;
+  transition: opacity 0.5s ease;
+}
+.announcement-bar__rotator.is-rotating .announcement-bar__message { opacity: 0; }
+.announcement-bar__rotator.is-rotating .announcement-bar__message.is-active { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  /* No cycling: show the first message and leave it there. */
+  .announcement-bar__rotator.is-rotating .announcement-bar__message { display: none; }
+  .announcement-bar__rotator.is-rotating .announcement-bar__message:first-child {
+    display: block;
+    opacity: 1;
+  }
+}
 .announcement-bar__countdown { font-variant-numeric: tabular-nums; font-weight: 700; }
 
 /* ==========================================================================
@@ -458,24 +477,16 @@ input[type="password"], input[type="number"], select, textarea {
    2. Press marquee
    ========================================================================== */
 .marquee {
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
-  padding: 1.6rem 0;
+  /* No rules top or bottom: the marquee floats in the gap between sections
+     rather than being boxed off from them. */
+  padding: clamp(3rem, 6vw, 5rem) 0;
   overflow: hidden;
 }
 .marquee--invert {
   background: var(--color-text);
   color: var(--color-background);
-  border-color: rgba(255,255,255,0.18);
 }
 .marquee--invert .marquee__label { color: var(--color-accent); }
-.marquee__label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--color-muted);
-  margin-bottom: 1rem;
-}
 .marquee__viewport {
   overflow: hidden;
   /* Fade the ends so names enter and leave instead of being chopped. */
@@ -489,15 +500,29 @@ input[type="password"], input[type="number"], select, textarea {
 }
 .marquee__list { display: flex; align-items: center; }
 .marquee__item {
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 3.5vw, 3.25rem);
+  white-space: nowrap;
+}
+.marquee__name {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(1.1rem, 2.1vw, 1.7rem);
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  padding: 0 clamp(1.5rem, 3.5vw, 3.25rem);
-  white-space: nowrap;
   opacity: 0.85;
 }
+/* Real mastheads vary wildly in proportion, so height is the constant and
+   width follows. object-fit keeps wide marks from being squashed. */
+.marquee__logo {
+  height: var(--marquee-logo-height, 30px);
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  opacity: 0.9;
+}
+.marquee--flip-logos .marquee__logo { filter: invert(1) brightness(1.6); }
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }

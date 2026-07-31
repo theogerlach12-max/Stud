@@ -1,29 +1,95 @@
-<div class="announcement-bar">
-  <div class="announcement-bar__inner page-width">
-    {%- if section.settings.announcement_link != blank -%}<a href="{{ section.settings.announcement_link }}">{%- endif -%}
-      <span class="announcement-bar__text">{{ section.settings.announcement_text }}</span>
-    {%- if section.settings.announcement_link != blank -%}</a>{%- endif -%}
+{%- comment -%}
+  Rotating announcement. Each non-empty message is stacked in the same spot and
+  theme.js cross-fades between them on a timer, so one replaces the other in
+  place rather than the bar growing or shifting.
 
-    {%- if settings.show_countdown -%}
-      <span class="announcement-bar__countdown" data-countdown="{{ settings.countdown_end }}" aria-live="off">
-        <span data-countdown-days>00</span>d
-        <span data-countdown-hours>00</span>h
-        <span data-countdown-minutes>00</span>m
-        <span data-countdown-seconds>00</span>s
-      </span>
-    {%- endif -%}
+  Static sections cannot carry merchant-added blocks, so the messages are plain
+  settings rather than a block list.
+{%- endcomment -%}
+
+{%- liquid
+  assign messages = ''
+  if section.settings.message_1 != blank
+    assign messages = messages | append: section.settings.message_1 | append: '|~|'
+  endif
+  if section.settings.message_2 != blank
+    assign messages = messages | append: section.settings.message_2 | append: '|~|'
+  endif
+  if section.settings.message_3 != blank
+    assign messages = messages | append: section.settings.message_3 | append: '|~|'
+  endif
+  assign message_list = messages | split: '|~|'
+-%}
+
+{%- if message_list.size > 0 -%}
+  <div class="announcement-bar">
+    <div class="announcement-bar__inner page-width">
+      <div
+        class="announcement-bar__rotator{% if message_list.size > 1 %} is-rotating{% endif %}"
+        data-announcement-rotator
+        style="--announcement-interval: {{ section.settings.interval }}s;"
+      >
+        {%- for message in message_list -%}
+          <p
+            class="announcement-bar__message{% if forloop.first %} is-active{% endif %}"
+            data-announcement-message
+            {% unless forloop.first %}aria-hidden="true"{% endunless %}
+          >
+            {%- if section.settings.announcement_link != blank -%}
+              <a href="{{ section.settings.announcement_link }}">{{ message }}</a>
+            {%- else -%}
+              {{ message }}
+            {%- endif -%}
+          </p>
+        {%- endfor -%}
+      </div>
+
+      {%- if settings.show_countdown -%}
+        <span class="announcement-bar__countdown" data-countdown="{{ settings.countdown_end }}" aria-live="off">
+          <span data-countdown-days>00</span>d
+          <span data-countdown-hours>00</span>h
+          <span data-countdown-minutes>00</span>m
+          <span data-countdown-seconds>00</span>s
+        </span>
+      {%- endif -%}
+    </div>
   </div>
-</div>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Announcement bar",
   "settings": [
     {
+      "type": "paragraph",
+      "content": "Fill in two or more messages and the bar will cycle through them, fading one out as the next fades in. Leave a field empty to skip it."
+    },
+    {
       "type": "text",
-      "id": "announcement_text",
-      "label": "Text",
+      "id": "message_1",
+      "label": "Message 1",
+      "default": "Free shipping over $25"
+    },
+    {
+      "type": "text",
+      "id": "message_2",
+      "label": "Message 2",
       "default": "Magnetic diamond studs · No piercing, no downtime"
+    },
+    {
+      "type": "text",
+      "id": "message_3",
+      "label": "Message 3"
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Seconds per message",
+      "default": 4
     },
     {
       "type": "url",

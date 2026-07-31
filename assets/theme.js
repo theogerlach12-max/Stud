@@ -381,6 +381,30 @@
   document.addEventListener('DOMContentLoaded', initReveal);
 
   /* ------------------------------------------------------------------ */
+  /* Announcement bar: cycle the messages in place                        */
+  /* ------------------------------------------------------------------ */
+  function initAnnouncementRotator() {
+    document.querySelectorAll('[data-announcement-rotator]').forEach(function (rotator) {
+      const messages = rotator.querySelectorAll('[data-announcement-message]');
+      if (messages.length < 2) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const seconds = parseFloat(getComputedStyle(rotator).getPropertyValue('--announcement-interval')) || 4;
+      let index = 0;
+
+      setInterval(function () {
+        messages[index].classList.remove('is-active');
+        messages[index].setAttribute('aria-hidden', 'true');
+        index = (index + 1) % messages.length;
+        messages[index].classList.add('is-active');
+        messages[index].removeAttribute('aria-hidden');
+      }, seconds * 1000);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initAnnouncementRotator);
+
+  /* ------------------------------------------------------------------ */
   /* Product gallery thumbnails                                           */
   /* ------------------------------------------------------------------ */
   document.addEventListener('click', function (e) {

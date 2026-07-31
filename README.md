@@ -13,11 +13,11 @@ you scroll rather than cutting.
 | # | Section file | Tone | Does |
 |---|---|---|---|
 | 1 | `landing-hero.liquid` | black | Full-bleed photograph, headline, star rating, "Save 10%" |
-| 2 | `landing-marquee.liquid` | black | Right-to-left scrolling row of publication names |
-| 3 | `landing-media-accordion.liquid` | black | "Why this exists" — photo left, expandable copy right |
+| 2 | `landing-marquee.liquid` | black | Right-to-left scrolling row of publication logos |
+| 3 | `landing-media-accordion.liquid` | black | "To be the best…" — photo left, expandable copy right |
 | 4 | `landing-tone-shift.liquid` | black → white | Gradient band that fades the page to white |
 | 5 | `landing-sizing.liquid` | white | The sizes (5mm and 6mm), then the CTA |
-| 6 | `landing-media-accordion.liquid` | white | Stay-on / easy on / off — photo **right**, copy left |
+| 6 | `landing-media-accordion.liquid` | white | "Piercings and sports don't mix" — photo **right**, copy left |
 | 7 | `landing-social.liquid` | white | "Why do something permanent…" rotating photo carousel |
 | 8 | `landing-tone-shift.liquid` | white → black | Fades back down into the footer |
 
@@ -64,7 +64,11 @@ store takes payments. Replace them with your own shoot before launch.
   (`[data-reveal]`, `initReveal` in `theme.js`).
 - **Header** — retracts on scroll down, returns on scroll up
   (`initHeaderScroll`).
-- **Press marquee** — loops continuously.
+- **Press marquee** — loops continuously, with no rules above or below so it
+  floats in the gap between sections.
+- **Announcement bar** — cycles through the messages set in Customize, fading
+  one out as the next fades in. Messages are stacked in a grid cell so the bar
+  never changes height.
 - **Photo carousel** — drifts right to left forever. Each card is turned away
   from the viewer at the edges, squares up as it crosses the middle, and turns
   the other way as it leaves; the angle is a function of distance from centre
@@ -91,9 +95,13 @@ Or `shopify theme push` with the CLI once a store exists.
 - **The review count is empty on purpose.** The stars in the hero do not render
   until you fill in **Customize → Hero → Review count**. Publishing a review
   count you don't have is what the FTC's fake-review rule covers.
-- **The press marquee names are placeholders.** A scrolling row of publication
-  names reads as press coverage. Keep only titles that have actually written
-  about Stud, or delete the section.
+- **The press marquee has no logo files in it.** Each block takes a logo image
+  (**Customize → Press marquee → [publication] → Logo image**, or drop a file in
+  `assets/` and name it in "Bundled logo filename"); it falls back to the
+  publication name as text, which is what you are seeing now. Logo height and
+  "Flip logos to white" are section settings. Only use mastheads for real
+  placements — an unearned logo is both a false endorsement and someone else's
+  trademark.
 - **Claims to verify**: the 10% offer and the material and sizing copy
   throughout. Confirm each against your supplier and your actual policies.
 

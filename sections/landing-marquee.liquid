@@ -1,19 +1,43 @@
 {%- comment -%}
   Right-to-left marquee. The track is rendered twice so the loop is seamless;
   the second copy is hidden from screen readers.
+
+  Each block renders a logo image when one is supplied and falls back to the
+  publication name as text. Logos are expected to be single-colour artwork on a
+  transparent background; "Flip logos to white" inverts black artwork for the
+  dark background.
 {%- endcomment -%}
 
-<section class="marquee{% if section.settings.invert %} marquee--invert{% endif %}" aria-label="{{ section.settings.label | default: 'Featured in' | escape }}">
+<section class="marquee{% if section.settings.invert %} marquee--invert{% endif %}{% if section.settings.flip_logos %} marquee--flip-logos{% endif %}"
+         aria-label="{{ section.settings.label | default: 'Featured in' | escape }}">
   {%- if section.settings.label != blank -%}
     <p class="marquee__label page-width">{{ section.settings.label }}</p>
   {%- endif -%}
 
   <div class="marquee__viewport">
-    <div class="marquee__track" style="--marquee-duration: {{ section.settings.speed }}s;">
+    <div class="marquee__track" style="--marquee-duration: {{ section.settings.speed }}s; --marquee-logo-height: {{ section.settings.logo_height }}px;">
       {%- for i in (1..2) -%}
         <ul class="marquee__list"{% if forloop.index == 2 %} aria-hidden="true"{% endif %}>
           {%- for block in section.blocks -%}
-            <li class="marquee__item" {{ block.shopify_attributes }}>{{ block.settings.name }}</li>
+            <li class="marquee__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.logo != blank -%}
+                <img
+                  class="marquee__logo"
+                  src="{{ block.settings.logo | image_url: width: 400 }}"
+                  alt="{{ block.settings.name | escape }}"
+                  loading="lazy"
+                >
+              {%- elsif block.settings.logo_asset != blank -%}
+                <img
+                  class="marquee__logo"
+                  src="{{ block.settings.logo_asset | asset_url }}"
+                  alt="{{ block.settings.name | escape }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <span class="marquee__name">{{ block.settings.name }}</span>
+              {%- endif -%}
+            </li>
           {%- endfor -%}
         </ul>
       {%- endfor -%}
@@ -27,14 +51,21 @@
   "tag": "section",
   "settings": [
     {
+      "type": "paragraph",
+      "content": "A row of publication logos is a claim that those publications covered Stud. Only use logos for real placements — a masthead you have not earned is both a false endorsement and someone else's trademark."
+    },
+    {
       "type": "checkbox",
       "id": "invert",
       "label": "Black background",
       "default": true
     },
     {
-      "type": "paragraph",
-      "content": "A scrolling row of publication names reads as press coverage. Only keep names that have actually written about Stud — replace or delete the rest before you take payments."
+      "type": "checkbox",
+      "id": "flip_logos",
+      "label": "Flip logos to white",
+      "default": true,
+      "info": "For black artwork on a transparent background. Turn off if your logo files are already white."
     },
     {
       "type": "text",
@@ -51,6 +82,16 @@
       "unit": "s",
       "label": "Seconds per loop",
       "default": 40
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 14,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo height",
+      "default": 30
     }
   ],
   "blocks": [
@@ -58,7 +99,24 @@
       "type": "name",
       "name": "Publication",
       "settings": [
-        { "type": "text", "id": "name", "label": "Name", "default": "GQ" }
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "GQ",
+          "info": "Used as the logo's alt text, and shown as text if there is no logo."
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image"
+        },
+        {
+          "type": "text",
+          "id": "logo_asset",
+          "label": "Bundled logo filename",
+          "info": "A file in assets/. Used when no logo is picked above."
+        }
       ]
     }
   ],

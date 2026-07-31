@@ -3,7 +3,7 @@
     "hero": {
       "type": "landing-hero",
       "settings": {
-        "heading": "Look good, feel good, play good.",
+        "heading": "Look good, feel good.",
         "review_count": "",
         "rating": 5,
         "button_label": "Save 10%",
@@ -71,50 +71,52 @@
       "settings": {
         "label": "",
         "speed": 40,
-        "invert": true
+        "invert": true,
+        "flip_logos": true,
+        "logo_height": 30
       }
     },
-    "problem": {
+    "stay-on": {
       "type": "landing-media-accordion",
       "blocks": {
-        "p1": {
+        "e1": {
           "type": "item",
           "settings": {
-            "title": "The rulebook",
-            "body": "<p>Most leagues won't let you play in pierced jewelry. Tape over it, take it out, or sit out. A magnetic stud comes off in a second when a ref asks, and goes straight back in after the whistle.</p>"
+            "title": "Easy on",
+            "body": "<p>Front on the lobe, magnet behind it. It pulls itself into place. Two seconds, one hand, no mirror, no help from anyone.</p>"
           }
         },
-        "p2": {
+        "e2": {
           "type": "item",
           "settings": {
-            "title": "The healing",
-            "body": "<p>A fresh piercing wants weeks of downtime and no contact, and it can reject or get infected if you sweat into it. Nobody is giving up a season for an earring. There is nothing to heal here because there is no hole.</p>"
+            "title": "Stays on",
+            "body": "<p>It will not shake loose, sweat off, or get dragged out by a jersey coming over your head. It holds through contact and sits flat enough for headgear to go over it.</p>"
           }
         },
-        "p3": {
+        "e3": {
           "type": "item",
           "settings": {
-            "title": "The one you lose",
-            "body": "<p>Backs work loose. Helmets and headgear rip them out. You find one stud in the gym bag and never the other. Every kit ships with both sizes, so losing one is an inconvenience instead of a write-off.</p>"
+            "title": "Off when you say so",
+            "body": "<p>Pinch and pull. Coming off takes a deliberate move with two fingers, which is exactly what you want when a ref asks you to take it out before tip-off.</p>"
           }
         }
       },
       "block_order": [
-        "p1",
-        "p2",
-        "p3"
+        "e1",
+        "e2",
+        "e3"
       ],
       "settings": {
         "media_side": "left",
         "invert": true,
         "open_first": true,
-        "anchor": "why",
+        "anchor": "stay-on",
         "image_asset": "athlete-chain.png",
         "image_alt": "Man wearing a stud, shot in low light",
-        "eyebrow": "Why this exists",
-        "heading": "Piercings and sports don't mix.",
-        "intro": "Every athlete who has wanted a stud has run into the same three walls.",
-        "closer": "So we built one that doesn't need a hole.",
+        "eyebrow": "The stay-on test",
+        "heading": "To be the best you need to feel like it.",
+        "intro": "Confidence is not a small thing. It is also useless if you spend the whole game checking your ear.",
+        "closer": "",
         "button_label": "",
         "button_link": ""
       }
@@ -156,47 +158,47 @@
         "invert": false
       }
     },
-    "stay-on": {
+    "why-this-exists": {
       "type": "landing-media-accordion",
       "blocks": {
-        "e1": {
+        "p1": {
           "type": "item",
           "settings": {
-            "title": "Easy on",
-            "body": "<p>Front on the lobe, magnet behind it. It pulls itself into place. Two seconds, one hand, no mirror, no help from anyone.</p>"
+            "title": "The rulebook",
+            "body": "<p>Most leagues won't let you play in pierced jewelry. Tape over it, take it out, or sit out. A magnetic stud comes off in a second when a ref asks, and goes straight back in after the whistle.</p>"
           }
         },
-        "e2": {
+        "p2": {
           "type": "item",
           "settings": {
-            "title": "Stays on",
-            "body": "<p>It will not shake loose, sweat off, or get dragged out by a jersey coming over your head. It holds through contact and sits flat enough for headgear to go over it.</p>"
+            "title": "The healing",
+            "body": "<p>A fresh piercing wants weeks of downtime and no contact, and it can reject or get infected if you sweat into it. Nobody is giving up a season for an earring. There is nothing to heal here because there is no hole.</p>"
           }
         },
-        "e3": {
+        "p3": {
           "type": "item",
           "settings": {
-            "title": "Off when you say so",
-            "body": "<p>Pinch and pull. Coming off takes a deliberate move with two fingers, which is exactly what you want when a ref asks you to take it out before tip-off.</p>"
+            "title": "The one you lose",
+            "body": "<p>Backs work loose. Helmets and headgear rip them out. You find one stud in the gym bag and never the other. Every kit ships with both sizes, so losing one is an inconvenience instead of a write-off.</p>"
           }
         }
       },
       "block_order": [
-        "e1",
-        "e2",
-        "e3"
+        "p1",
+        "p2",
+        "p3"
       ],
       "settings": {
         "media_side": "right",
         "invert": false,
         "open_first": true,
-        "anchor": "stay-on",
+        "anchor": "why",
         "image_asset": "athlete-barber.jpg",
         "image_alt": "Man wearing a stud in the barber chair",
-        "eyebrow": "The stay-on test",
-        "heading": "To be the best you need to feel like it.",
-        "intro": "Confidence is not a small thing. It is also useless if you spend the whole game checking your ear.",
-        "closer": "",
+        "eyebrow": "Why this exists",
+        "heading": "Piercings and sports don't mix.",
+        "intro": "Every athlete who has wanted a stud has run into the same three walls.",
+        "closer": "So we built one that doesn't need a hole.",
         "button_label": "Save 10%",
         "button_link": ""
       }
@@ -274,10 +276,10 @@
   "order": [
     "hero",
     "marquee",
-    "problem",
+    "stay-on",
     "tone-to-white",
     "sizing",
-    "stay-on",
+    "why-this-exists",
     "social",
     "tone-to-black"
   ]
