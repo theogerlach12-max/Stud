@@ -15,9 +15,9 @@ you scroll rather than cutting.
 | 1 | `landing-hero.liquid` | black | Full-bleed photograph, headline, star rating, "Save 10%" |
 | 2 | `landing-marquee.liquid` | black | Right-to-left scrolling row of publication logos |
 | 3 | `landing-media-accordion.liquid` | black | "To be the best…" — photo left, expandable copy right |
-| 4 | `landing-tone-shift.liquid` | black → white | Fades to white with the diamond clip playing behind it |
+| 4 | `landing-tone-shift.liquid` | black → white | Pinned scroll stage: black, diamond fades in, white rises |
 | 5 | `landing-sizing.liquid` | white | The sizes (5mm and 6mm), then the CTA |
-| 6 | `landing-media-accordion.liquid` | white | "Piercings and sports don't mix" — photo **right**, copy left |
+| 6 | `landing-media-accordion.liquid` | white | "The Only Earring Designed for Success" — photo **right**, copy left |
 | 7 | `landing-social.liquid` | white | "Why do something permanent…" rotating photo carousel |
 | 8 | `landing-tone-shift.liquid` | white → black | Fades back down into the footer |
 
@@ -83,16 +83,22 @@ store takes payments. Replace them with your own shoot before launch.
 - **Announcement bar** — cycles through the messages set in Customize, fading
   one out as the next fades in. Messages are stacked in a grid cell so the bar
   never changes height.
-- **Tone transition** — the black → white band plays `diamond-man.mp4` behind
-  the fade, desaturated to match the palette. The clip is 0.3s, so it runs at
-  0.4x (**Playback speed** in the section) to slow the loop. The gradient is
-  opaque at both ends and clear through the middle, so the footage only shows in
-  the gap and neither join is visible.
+- **Tone transition** has two modes. *Gradient band* is the short static fade
+  (used before the footer). *Scroll stage* is a tall block with a pinned
+  viewport: `initToneStages` maps scroll progress through the block onto
+  `--stage-video-opacity` (the diamond fades in over the first third) and
+  `--stage-rise` (white climbs from the bottom edge to **White rises to**, 50vh
+  by default, over the rest). The next section then continues from that line.
+  The clip is 0.3s so it runs at 0.4x. With JS off, the resting values leave the
+  stage in its finished state rather than blank.
 - **Photo carousel** — drifts right to left forever. Each card is turned away
   from the viewer at the edges, squares up as it crosses the middle, and turns
   the other way as it leaves; the angle is a function of distance from centre
   (`CAROUSEL_MAX_ANGLE`, `turnCards`). The row is duplicated so the loop is
-  seamless, and the drift pauses on hover or keyboard focus.
+  seamless. Hovering does **not** stop the drift: the card under the cursor
+  squares to the front and steps toward the viewer
+  (`CAROUSEL_HOVER_LIFT`), and the row keeps moving. Only the arrows pause it,
+  briefly.
 - All of the above no-op under `prefers-reduced-motion`; the carousel falls back
   to a plain scroll-snap row.
 
@@ -122,6 +128,11 @@ Or `shopify theme push` with the CLI once a store exists.
   video in `assets/`, so `diamond-man.mp4` is in the repo but excluded from the
   zip. Either push with the Shopify CLI, or upload the clip under
   **Content → Files** and pick it in **Customize → Tone transition → Video**.
+- **Check the three quotes.** The "Designed for Success" section quotes Mark
+  Twain (*More Maxims of Mark*), Tom Ford and Epictetus (*Discourses*). All
+  three are commonly sourced, but Twain's and Ford's are traditional
+  attributions rather than citations to a primary text. Misattributed quotes on
+  a brand page are an easy own-goal — verify before launch.
 - **Claims to verify**: the 10% offer and the material and sizing copy
   throughout. Confirm each against your supplier and your actual policies.
 

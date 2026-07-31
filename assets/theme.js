@@ -224,7 +224,8 @@
      on the right, squares up as it crosses the middle, then turns the other way
      as it leaves — so the angle is a pure function of distance from centre. */
   const CAROUSEL_MAX_ANGLE = 34;   // degrees at the edges of the track
-  const CAROUSEL_SPEED = 0.4;      // px per millisecond
+  const CAROUSEL_SPEED = 0.14;     // px per millisecond
+  const CAROUSEL_HOVER_LIFT = 70;  // px toward the viewer on hover
 
   function initCarousels() {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -260,14 +261,29 @@
 
       if (reduced) return;
 
-      // Pause the drift while someone is looking at or using the carousel.
+      // Hovering does not stop the drift. The card under the cursor squares up
+      // and comes toward the viewer instead, so the row keeps moving.
+      let hovered = null;
+      track.addEventListener('pointerover', function (e) {
+        const item = e.target.closest('.carousel__item');
+        if (item) hovered = item;
+      });
+      track.addEventListener('pointerout', function (e) {
+        const item = e.target.closest('.carousel__item');
+        if (item && item === hovered && !item.contains(e.relatedTarget)) hovered = null;
+      });
+      carousel.addEventListener('pointerleave', function () { hovered = null; });
+
+      // Manual scrolling (arrows, trackpad) should not fight the drift.
       let paused = false;
-      ['pointerenter', 'focusin'].forEach(function (evt) {
-        carousel.addEventListener(evt, function () { paused = true; });
-      });
-      ['pointerleave', 'focusout'].forEach(function (evt) {
-        carousel.addEventListener(evt, function () { paused = false; });
-      });
+      let resume = null;
+      function holdDrift() {
+        paused = true;
+        window.clearTimeout(resume);
+        resume = window.setTimeout(function () { paused = false; }, 1200);
+      }
+      if (prev) prev.addEventListener('click', holdDrift);
+      if (next) next.addEventListener('click', holdDrift);
 
       function turnCards() {
         const bounds = track.getBoundingClientRect();
@@ -280,6 +296,16 @@
           const box = item.getBoundingClientRect();
           const offset = (box.left + box.width / 2 - centre) / reach;
           const t = Math.max(-1, Math.min(1, offset));
+
+          if (item === hovered) {
+            // Square to the front and step toward the viewer.
+            figure.style.transform =
+              'rotateY(0deg) translateZ(' + CAROUSEL_HOVER_LIFT + 'px) scale(1.04)';
+            figure.style.zIndex = '3';
+            return;
+          }
+
+          figure.style.zIndex = '';
           // Negative rotateY turns the card's right edge away from the viewer,
           // which is what "turned to the right" looks like on the right side.
           figure.style.transform =
@@ -429,6 +455,60 @@
   }
 
   document.addEventListener('DOMContentLoaded', initToneVideos);
+
+  /* ------------------------------------------------------------------ */
+  /* Scroll stage                                                         */
+  /* Maps how far the shopper has scrolled through the (tall) stage onto   */
+  /* two properties: the clip fades in over the first stretch, then the    */
+  /* white edge rises from the bottom over the rest.                       */
+  /* ------------------------------------------------------------------ */
+  const STAGE_FADE_END = 0.34;   // clip is fully in by here
+  const STAGE_RISE_START = 0.42; // white starts climbing here
+
+  function initToneStages() {
+    const stages = document.querySelectorAll('[data-tone-stage]');
+    if (!stages.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let ticking = false;
+
+    function update() {
+      stages.forEach(function (stage) {
+        const rect = stage.getBoundingClientRect();
+        const travel = rect.height - window.innerHeight;
+        if (travel <= 0) return;
+
+        const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
+
+        const fade = Math.min(progress / STAGE_FADE_END, 1);
+        const rise = Math.min(
+          Math.max((progress - STAGE_RISE_START) / (1 - STAGE_RISE_START), 0),
+          1
+        );
+
+        const stop = parseFloat(
+          getComputedStyle(stage).getPropertyValue('--stage-white-stop')
+        ) || 50;
+
+        stage.style.setProperty('--stage-video-opacity', fade.toFixed(3));
+        stage.style.setProperty('--stage-rise', (rise * stop).toFixed(2) + 'vh');
+      });
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+
+  document.addEventListener('DOMContentLoaded', initToneStages);
 
   /* ------------------------------------------------------------------ */
   /* Product gallery thumbnails                                           */

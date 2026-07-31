@@ -134,8 +134,8 @@
         "s2": {
           "type": "size",
           "settings": {
-            "image_asset": "athlete-shades.png",
-            "image_alt": "Man in sunglasses wearing a mid-size stud",
+            "image_asset": "athlete-sweater.png",
+            "image_alt": "Profile of a man wearing a stud",
             "size": "5mm",
             "name": "Standard",
             "text": "The one most guys land on. Visible from across the court, not from space."
@@ -144,8 +144,8 @@
         "s3": {
           "type": "size",
           "settings": {
-            "image_asset": "athlete-sweater.png",
-            "image_alt": "Profile of a man wearing a stud",
+            "image_asset": "athlete-shades.png",
+            "image_alt": "Man in sunglasses wearing a mid-size stud",
             "size": "6mm",
             "name": "Loud",
             "text": "You want people to notice. They will."
@@ -168,32 +168,32 @@
     "why-this-exists": {
       "type": "landing-media-accordion",
       "blocks": {
-        "p1": {
+        "q1": {
           "type": "item",
           "settings": {
-            "title": "The rulebook",
-            "body": "<p>Most leagues won't let you play in pierced jewelry. Tape over it, take it out, or sit out. A magnetic stud comes off in a second when a ref asks, and goes straight back in after the whistle.</p>"
+            "title": "Clothes make the man.",
+            "body": "<p>\"Clothes make the man. Naked people have little or no influence on society.\"</p><p>Mark Twain, <em>More Maxims of Mark</em></p><p>Nobody is asking you to be loud. They are noticing either way, so the only question is what they notice.</p>"
           }
         },
-        "p2": {
+        "q2": {
           "type": "item",
           "settings": {
-            "title": "The healing",
-            "body": "<p>A fresh piercing wants weeks of downtime and no contact, and it can reject or get infected if you sweat into it. Nobody is giving up a season for an earring. There is nothing to heal here because there is no hole.</p>"
+            "title": "Dressing well is a form of good manners.",
+            "body": "<p>\"Dressing well is a form of good manners.\"</p><p>Tom Ford</p><p>Turning up put together is something you do for the room, not just for the mirror. A stud is the smallest version of that.</p>"
           }
         },
-        "p3": {
+        "q3": {
           "type": "item",
           "settings": {
-            "title": "The one you lose",
-            "body": "<p>Backs work loose. Helmets and headgear rip them out. You find one stud in the gym bag and never the other. Every kit ships with both sizes, so losing one is an inconvenience instead of a write-off.</p>"
+            "title": "Know first who you are.",
+            "body": "<p>\"Know, first, who you are, and then adorn yourself accordingly.\"</p><p>Epictetus, <em>Discourses</em></p><p>Two thousand years old and still the whole argument: decide who you are, then dress the part until it is true.</p>"
           }
         }
       },
       "block_order": [
-        "p1",
-        "p2",
-        "p3"
+        "q1",
+        "q2",
+        "q3"
       ],
       "settings": {
         "media_side": "right",
@@ -203,9 +203,9 @@
         "image_asset": "athlete-barber.jpg",
         "image_alt": "Man wearing a stud in the barber chair",
         "eyebrow": "Why this exists",
-        "heading": "Piercings and sports don't mix.",
-        "intro": "Every athlete who has wanted a stud has run into the same three walls.",
-        "closer": "So we built one that doesn't need a hole.",
+        "heading": "The Only Earring Designed for Success",
+        "intro": "How you present yourself is not vanity. It is the first thing anyone learns about you, and in time it becomes the thing you believe about yourself.",
+        "closer": "Put it on in two seconds. Take it off when you decide.",
         "button_label": "Save 10%",
         "button_link": ""
       }
@@ -272,7 +272,10 @@
         "height": 60,
         "video_asset": "diamond-man.mp4",
         "desaturate": true,
-        "playback_rate": 0.4
+        "playback_rate": 0.4,
+        "mode": "scroll",
+        "scroll_length": 260,
+        "white_stop": 50
       }
     },
     "tone-to-black": {
@@ -281,7 +284,8 @@
         "direction": "to-black",
         "height": 25,
         "desaturate": true,
-        "playback_rate": 0.4
+        "playback_rate": 0.4,
+        "mode": "gradient"
       }
     }
   },
