@@ -66,6 +66,7 @@ s { text-decoration: line-through; }
 .display--md { font-size: clamp(2rem, 4.6vw, 3.5rem); }
 .display--sm { font-size: clamp(1.6rem, 3.2vw, 2.4rem); }
 .display--xs { font-size: clamp(1.2rem, 2.2vw, 1.6rem); letter-spacing: -0.02em; }
+.display--hero { font-size: clamp(2.1rem, 4.6vw, 3.6rem); }
 
 /* The STUD wordmark artwork. Black with transparent background, so --invert
    flips it to white for dark surfaces without needing a second file. */
@@ -89,6 +90,7 @@ s { text-decoration: line-through; }
 .rating { display: inline-flex; align-items: center; gap: 0.7rem; }
 .rating__stars { display: inline-flex; gap: 0.12em; }
 .rating__stars svg { width: 17px; height: 17px; }
+.rating__stars { color: var(--color-accent); }
 .rating__count {
   font-family: var(--font-display);
   font-weight: 700;
@@ -104,7 +106,7 @@ s { text-decoration: line-through; }
   font-size: 0.72rem;
   font-weight: 700;
   margin: 0 0 1.1rem;
-  color: var(--color-muted);
+  color: var(--color-accent);
 }
 
 .section-heading { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 1.5rem; }
@@ -339,7 +341,7 @@ input[type="password"], input[type="number"], select, textarea {
   background: var(--color-text);
   color: var(--color-background);
 }
-.landing-section--invert .eyebrow { color: rgba(255,255,255,0.55); }
+.landing-section--invert .eyebrow { color: var(--color-accent); }
 .landing-section--invert .section-head__intro { color: rgba(255,255,255,0.72); }
 
 /* Dark-surface overrides. Anything that leans on the light palette — muted
@@ -396,55 +398,61 @@ input[type="password"], input[type="number"], select, textarea {
 .section-head--center .section-head__intro { margin-left: auto; margin-right: auto; }
 
 /* ==========================================================================
-   1. Hero — copy left, photograph right
+   1. Hero — photograph covers the section, copy sits over it
    ========================================================================== */
-.hero-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: min(84vh, 820px);
-}
-.hero-split__content {
-  display: flex;
-  align-items: center;
-  /* Left edge lines up with the .page-width gutter the header uses. */
-  padding: clamp(3rem, 7vw, 6rem) clamp(2rem, 4vw, 4.5rem)
-           clamp(3rem, 7vw, 6rem)
-           max(1.5rem, calc((100vw - var(--page-width)) / 2 + 1.5rem));
-}
-.hero-split__inner { width: 100%; }
-.hero-split__heading { margin-bottom: 0.5em; }
-/* Block-level, or the inline-flex rating and the inline-flex button share a
-   line and run into each other. Rating under the headline, button under that. */
-.hero-split__rating { display: flex; margin-bottom: 2.25rem; }
-.hero-split__cta { display: inline-flex; }
-.hero-split__note { margin: 1rem 0 0; font-size: 0.88rem; color: var(--color-muted); }
-/* Contained, centred artwork — not a full-bleed cover fill. Keeping the photo
-   at its own proportions also stops the small source being upscaled to death. */
-.hero-split__media {
+.hero-full {
   position: relative;
+  min-height: min(88vh, 880px);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4vw, 4rem);
-}
-/* width:100% + max-width, not min(100%, …): an intrinsic width here feeds back
-   into the grid column's min-content size and blows the layout past 100vw. */
-.hero-split__media img,
-.hero-split__media .placeholder-svg {
-  width: 100%;
-  max-width: 32rem;
-  height: auto;
-  max-height: 60vh;
-  object-fit: contain;
-}
-
-.hero-split--dark {
+  align-items: flex-end;
   background: var(--color-text);
   color: var(--color-background);
+  overflow: hidden;
 }
-.hero-split--dark .hero-split__note { color: rgba(255,255,255,0.6); }
-.hero-split--dark .rating__count { color: rgba(255,255,255,0.85); }
-.hero-split--dark .editor-note { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.7); }
+.hero-full__media { position: absolute; inset: 0; }
+.hero-full__media img,
+.hero-full__placeholder {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 45%;
+}
+.hero-full__scrim {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(18,18,18,0.78) 0%, rgba(18,18,18,0.35) 45%, rgba(18,18,18,0) 72%),
+    linear-gradient(180deg, rgba(18,18,18,0.5) 0%, rgba(18,18,18,0.08) 42%, rgba(18,18,18,0.72) 100%);
+}
+.hero-full__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: clamp(5rem, 12vw, 9rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+.hero-full__inner { max-width: 40rem; }
+.hero-full__heading { margin-bottom: 0.55em; }
+.hero-full__rating { display: flex; margin-bottom: 2rem; }
+/* Brighter than brand silver: the stars sit on photography, and #B4BABF
+   disappears against a mid-grey frame. */
+.hero-full__rating .rating__stars { color: #DCE0E3; }
+.hero-full__rating .rating__count { color: rgba(255,255,255,0.85); }
+.hero-full__cta { display: inline-flex; }
+.hero-full__note { margin: 1rem 0 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+.hero-full .editor-note { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.7); }
+
+/* ==========================================================================
+   Tone transition — fades one section background into the next
+   ========================================================================== */
+.tone-shift {
+  height: var(--tone-shift-height, 30vh);
+  opacity: 1;
+}
+.tone-shift--to-white { background: linear-gradient(180deg, var(--color-text) 0%, var(--color-background) 100%); }
+.tone-shift--to-black { background: linear-gradient(180deg, var(--color-background) 0%, var(--color-text) 100%); }
+/* The reveal transform would shift the gradient out of alignment with the
+   sections it bridges, so these only fade. */
+.tone-shift[data-reveal] { transform: none; }
+.tone-shift[data-reveal].is-revealed { transform: none; }
 
 /* ==========================================================================
    2. Press marquee
@@ -460,7 +468,7 @@ input[type="password"], input[type="number"], select, textarea {
   color: var(--color-background);
   border-color: rgba(255,255,255,0.18);
 }
-.marquee--invert .marquee__label { color: rgba(255,255,255,0.5); }
+.marquee--invert .marquee__label { color: var(--color-accent); }
 .marquee__label {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -589,47 +597,56 @@ input[type="password"], input[type="number"], select, textarea {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: var(--color-muted);
+  color: var(--color-accent);
   margin: 0.25rem 0 0.75rem;
 }
 .size-card__text { color: var(--color-muted); font-size: 0.95rem; margin: 0 auto; max-width: 26ch; }
 .sizing__cta { margin-top: clamp(2.5rem, 5vw, 4rem); text-align: center; }
 
 /* ==========================================================================
-   Photo carousel
+   Photo carousel — continuous right-to-left drift with a coverflow turn.
+   theme.js drives both; CSS only sets up the 3D space and the resting state.
    ========================================================================== */
 .carousel { position: relative; }
 .carousel__track {
   display: flex;
-  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  gap: clamp(0.75rem, 1.4vw, 1.15rem);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
   scrollbar-width: none;
-  padding: 0 max(1.5rem, calc((100vw - var(--page-width)) / 2 + 1.5rem));
+  padding: 2.5rem max(1.5rem, calc((100vw - var(--page-width)) / 2 + 1.5rem));
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
 }
 .carousel__track::-webkit-scrollbar { display: none; }
 .carousel__item {
-  flex: 0 0 clamp(240px, 26vw, 360px);
-  scroll-snap-align: center;
+  flex: 0 0 clamp(170px, 18vw, 250px);
+  transform-style: preserve-3d;
 }
-.carousel__figure { margin: 0; position: relative; }
+.carousel__figure {
+  margin: 0;
+  position: relative;
+  transform-origin: center center;
+  /* Angle is written per frame by JS; the transition only smooths the
+     hand-off when the script starts or the user drags. */
+  transition: transform 0.12s linear;
+  will-change: transform;
+}
 .carousel__figure img,
 .carousel__placeholder {
   width: 100%;
   aspect-ratio: 4/5;
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--color-background-alt);
 }
 .carousel__caption {
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  padding: 2.5rem 1.15rem 1rem;
+  padding: 2.5rem 1rem 0.9rem;
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 16px 16px;
   color: #fff;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
 }
 .carousel__arrow {
@@ -637,18 +654,24 @@ input[type="password"], input[type="number"], select, textarea {
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  width: 46px; height: 46px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   background: var(--color-background);
   border: 1px solid var(--color-border);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 14px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 14px rgba(0,0,0,0.1);
 }
 .carousel__arrow:hover { background: var(--color-text); color: var(--color-background); border-color: var(--color-text); }
 .carousel__arrow--prev { left: clamp(0.5rem, 2vw, 1.75rem); }
 .carousel__arrow--next { right: clamp(0.5rem, 2vw, 1.75rem); }
 .carousel__arrow--prev svg { transform: rotate(180deg); }
-.carousel__arrow[disabled] { opacity: 0.25; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* No drift, no turn — a plain scrollable row. */
+  .carousel__track { scroll-snap-type: x mandatory; }
+  .carousel__item { scroll-snap-align: center; }
+  .carousel__figure { transform: none !important; transition: none; }
+}
 
 .social__cta { margin-top: clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
 .social__quotes {
@@ -843,7 +866,7 @@ input[type="password"], input[type="number"], select, textarea {
 
   .sizing__grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .size-card__media { max-width: 20rem; margin-inline: auto; }
-  .carousel__item { flex-basis: 74vw; }
+  .carousel__item { flex-basis: 56vw; }
   .carousel__arrow { display: none; }
   .site-footer__newsletter-inner { flex-direction: column; align-items: flex-start; }
   .site-footer__newsletter-form { width: 100%; flex-direction: column; }

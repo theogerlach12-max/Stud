@@ -8,10 +8,9 @@
         "rating": 5,
         "button_label": "Save 10%",
         "button_link": "",
-        "note": "Enter your email, get 10% off launch day.",
-        "image_asset": "hero-porsche.png",
-        "image_alt": "Man in a suit lying across the hood of a Porsche at night",
-        "light": false
+        "note": "",
+        "image_asset": "hero-rolls.png",
+        "image_alt": "Man stepping out of a black Rolls-Royce at night"
       }
     },
     "marquee": {
@@ -154,7 +153,7 @@
         "intro": "Every kit ships with both sizes. Put each one on, look in the mirror, keep the one that looks like it was made for your face. No measuring, no guessing, no exchange.",
         "button_label": "Save 10%",
         "button_link": "",
-        "invert": true
+        "invert": false
       }
     },
     "stay-on": {
@@ -188,8 +187,8 @@
         "e3"
       ],
       "settings": {
-        "media_side": "left",
-        "invert": true,
+        "media_side": "right",
+        "invert": false,
         "open_first": true,
         "anchor": "stay-on",
         "image_asset": "athlete-barber.jpg",
@@ -254,23 +253,21 @@
         "intro": "",
         "button_label": "Save 10%",
         "button_link": "",
-        "invert": true
+        "invert": false
       }
     },
-    "final-cta": {
-      "type": "landing-final-cta",
+    "tone-to-white": {
+      "type": "landing-tone-shift",
       "settings": {
-        "image_asset": "athlete-vest.png",
-        "image_alt": "Man in a tactical vest wearing a stud, waterfront at dusk",
-        "eyebrow": "Last thing",
-        "heading": "Look good, feel good, play good.",
-        "text": "Two sizes, one kit, no holes in your ear.",
-        "button_label": "Save 10%",
-        "button_link": "",
-        "use_product_price": false,
-        "price_text": "",
-        "urgency": "",
-        "footnote": "10% off launch day when you sign up"
+        "direction": "to-white",
+        "height": 30
+      }
+    },
+    "tone-to-black": {
+      "type": "landing-tone-shift",
+      "settings": {
+        "direction": "to-black",
+        "height": 25
       }
     }
   },
@@ -278,9 +275,10 @@
     "hero",
     "marquee",
     "problem",
+    "tone-to-white",
     "sizing",
     "stay-on",
     "social",
-    "final-cta"
+    "tone-to-black"
   ]
 }

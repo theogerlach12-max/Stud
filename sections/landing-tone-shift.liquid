@@ -1,0 +1,50 @@
+{%- comment -%}
+  A band that fades one section's background into the next, so the page changes
+  tone as you scroll instead of butting two flat colours together.
+
+  The gradient does the work on its own as the band scrolls past. theme.js adds
+  .is-revealed as it enters view, which eases the fade in a little further.
+{%- endcomment -%}
+
+<div
+  class="tone-shift tone-shift--{{ section.settings.direction }}"
+  style="--tone-shift-height: {{ section.settings.height }}vh;"
+  data-reveal
+  aria-hidden="true"
+></div>
+
+{% schema %}
+{
+  "name": "Tone transition",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Place this between two sections of different colours. Set the direction to match the section above and the section below."
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Fades",
+      "options": [
+        { "value": "to-white", "label": "Black into white" },
+        { "value": "to-black", "label": "White into black" }
+      ],
+      "default": "to-white"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "vh",
+      "label": "Height",
+      "default": 30
+    }
+  ],
+  "presets": [
+    { "name": "Tone transition" }
+  ]
+}
+{% endschema %}

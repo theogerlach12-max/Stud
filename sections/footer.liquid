@@ -1,25 +1,4 @@
 <footer class="site-footer">
-  {%- if section.settings.show_newsletter -%}
-    <div class="site-footer__newsletter" id="signup">
-      <div class="page-width site-footer__newsletter-inner">
-        <div>
-          <h3 class="display display--xs">{{ section.settings.newsletter_heading }}</h3>
-          <p>{{ section.settings.newsletter_subtext }}</p>
-        </div>
-        {% form 'customer' %}
-          {%- if form.posted_successfully? -%}
-            <p class="form-success">Thanks — you're on the list.</p>
-          {%- endif -%}
-          <input type="hidden" name="contact[tags]" value="newsletter">
-          <div class="site-footer__newsletter-form">
-            <input type="email" name="contact[email]" placeholder="Email address" required aria-label="Email address">
-            <button type="submit" class="button button--invert">Get my 10%</button>
-          </div>
-        {% endform %}
-      </div>
-    </div>
-  {%- endif -%}
-
   <div class="page-width site-footer__main">
     <div class="site-footer__brand">
       {%- comment -%} logo-mark--invert flips the black artwork to white for the dark footer. {%- endcomment -%}
@@ -64,24 +43,6 @@
 {
   "name": "Footer",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_newsletter",
-      "label": "Show newsletter signup",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "newsletter_heading",
-      "label": "Newsletter heading",
-      "default": "Save 10% on launch day"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_subtext",
-      "label": "Newsletter subtext",
-      "default": "Drop your email. We'll send your code the day we open."
-    },
     {
       "type": "textarea",
       "id": "brand_text",

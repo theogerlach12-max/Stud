@@ -220,12 +220,33 @@
   /* Native scroll-snap does the work; the arrows just nudge it by one    */
   /* item and grey out at each end.                                       */
   /* ------------------------------------------------------------------ */
+  /* Cards drift right-to-left forever. Each one is turned away from the viewer
+     on the right, squares up as it crosses the middle, then turns the other way
+     as it leaves — so the angle is a pure function of distance from centre. */
+  const CAROUSEL_MAX_ANGLE = 34;   // degrees at the edges of the track
+  const CAROUSEL_SPEED = 0.4;      // px per millisecond
+
   function initCarousels() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     document.querySelectorAll('[data-carousel]').forEach(function (carousel) {
       const track = carousel.querySelector('[data-carousel-track]');
       const prev = carousel.querySelector('[data-carousel-prev]');
       const next = carousel.querySelector('[data-carousel-next]');
       if (!track) return;
+
+      const auto = carousel.hasAttribute('data-carousel-auto') && !reduced;
+
+      // A second copy of the row is what makes the loop seamless: when the
+      // scroll passes the halfway mark we jump back by exactly one copy, and
+      // the pixels under the cursor are identical.
+      if (auto) {
+        Array.prototype.slice.call(track.children).forEach(function (item) {
+          const clone = item.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          track.appendChild(clone);
+        });
+      }
 
       function step() {
         const item = track.querySelector('.carousel__item');
@@ -234,17 +255,62 @@
         return item.getBoundingClientRect().width + gap;
       }
 
-      function syncArrows() {
-        const max = track.scrollWidth - track.clientWidth;
-        if (prev) prev.disabled = track.scrollLeft <= 1;
-        if (next) next.disabled = track.scrollLeft >= max - 1;
-      }
-
       if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
       if (next) next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
-      track.addEventListener('scroll', syncArrows, { passive: true });
-      window.addEventListener('resize', syncArrows);
-      syncArrows();
+
+      if (reduced) return;
+
+      // Pause the drift while someone is looking at or using the carousel.
+      let paused = false;
+      ['pointerenter', 'focusin'].forEach(function (evt) {
+        carousel.addEventListener(evt, function () { paused = true; });
+      });
+      ['pointerleave', 'focusout'].forEach(function (evt) {
+        carousel.addEventListener(evt, function () { paused = false; });
+      });
+
+      function turnCards() {
+        const bounds = track.getBoundingClientRect();
+        const centre = bounds.left + bounds.width / 2;
+        const reach = bounds.width / 2;
+
+        Array.prototype.forEach.call(track.children, function (item) {
+          const figure = item.firstElementChild;
+          if (!figure) return;
+          const box = item.getBoundingClientRect();
+          const offset = (box.left + box.width / 2 - centre) / reach;
+          const t = Math.max(-1, Math.min(1, offset));
+          // Negative rotateY turns the card's right edge away from the viewer,
+          // which is what "turned to the right" looks like on the right side.
+          figure.style.transform =
+            'rotateY(' + (-t * CAROUSEL_MAX_ANGLE).toFixed(2) + 'deg)' +
+            ' scale(' + (1 - Math.abs(t) * 0.07).toFixed(3) + ')';
+        });
+      }
+
+      let last = null;
+      let offsetPx = 0;
+
+      function frame(now) {
+        if (last === null) last = now;
+        const elapsed = now - last;
+        last = now;
+
+        if (auto && !paused) {
+          const half = track.scrollWidth / 2;
+          offsetPx += CAROUSEL_SPEED * elapsed;
+          if (half > 0 && offsetPx >= half) offsetPx -= half;
+          track.scrollLeft = offsetPx;
+        } else {
+          offsetPx = track.scrollLeft;
+        }
+
+        turnCards();
+        window.requestAnimationFrame(frame);
+      }
+
+      turnCards();
+      window.requestAnimationFrame(frame);
     });
   }
 

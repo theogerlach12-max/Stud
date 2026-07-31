@@ -1,64 +1,77 @@
 # Stud — Shopify theme
 
 A Shopify Online Store 2.0 theme for Stud, magnetic diamond studs for men who
-play sports. Black and white: a black page with white type, under a white
-header. No accent colour.
+play sports. Three colours only: **matte black `#121212`, stark white `#FFFFFF`,
+metallic silver `#B4BABF`**.
 
-The home page is a **single long-scroll landing page** with no nav links. It is
-currently a **pre-launch email capture** — there is no pricing section and no
-add-to-cart on the page. Every call to action points at `#signup`, the email
-form in the footer, offering 10% off on launch day.
+The home page is a single long-scroll landing page with no nav links. The top
+half is black, the bottom half is white, and the page fades between the two as
+you scroll rather than cutting.
 
 ## Page order
 
-| # | Section file | Does |
-|---|---|---|
-| 1 | `sections/landing-hero.liquid` | Split hero: headline, star rating and "Save 10%" on the left, photograph on the right |
-| 2 | `sections/landing-marquee.liquid` | Right-to-left scrolling row of publication names |
-| 3 | `sections/landing-media-accordion.liquid` | "Why this exists" — photo left, expandable copy right |
-| 4 | `sections/landing-sizing.liquid` | The sizes (5mm and 6mm), then the CTA |
-| 5 | `sections/landing-media-accordion.liquid` | Stay-on / easy on / off — photo left, expandable copy right, black background |
-| 6 | `sections/landing-social.liquid` | "Why do something permanent when you don't have to?" photo carousel |
-| 7 | `sections/landing-final-cta.liquid` | Repeat the offer |
+| # | Section file | Tone | Does |
+|---|---|---|---|
+| 1 | `landing-hero.liquid` | black | Full-bleed photograph, headline, star rating, "Save 10%" |
+| 2 | `landing-marquee.liquid` | black | Right-to-left scrolling row of publication names |
+| 3 | `landing-media-accordion.liquid` | black | "Why this exists" — photo left, expandable copy right |
+| 4 | `landing-tone-shift.liquid` | black → white | Gradient band that fades the page to white |
+| 5 | `landing-sizing.liquid` | white | The sizes (5mm and 6mm), then the CTA |
+| 6 | `landing-media-accordion.liquid` | white | Stay-on / easy on / off — photo **right**, copy left |
+| 7 | `landing-social.liquid` | white | "Why do something permanent…" rotating photo carousel |
+| 8 | `landing-tone-shift.liquid` | white → black | Fades back down into the footer |
 
-Sections 3 and 5 are the same section type used twice with different copy and
-`Image side` flipped. Order and content are editable in **Customize** — the copy
-lives in `templates/index.json`, not hardcoded in the sections.
+Sections 3 and 6 are the same section type used twice with `Image side` flipped.
+Sections 4 and 8 are the same tone-shift section with the direction reversed.
+Copy lives in `templates/index.json` and is editable in **Customize**.
 
 ## Brand
 
-- **Wordmark**: the supplied STUD artwork ships as `assets/logo-stud.png` —
-  black ink on a transparent background, trimmed to the letterforms. It is used
-  as-is in the header and flipped to white with `filter: invert(1)` in the
-  footer, so one file covers both surfaces. Swap it under **Theme settings →
-  Logo**, or clear it to fall back to CSS text.
+- **Wordmark**: the supplied STUD artwork ships as `assets/logo-stud.png` — black
+  ink, transparent background, trimmed to the letterforms. Used as-is on the
+  white header and flipped to white with `filter: invert(1)` in the footer, so
+  one file covers both. Swap it under **Theme settings → Logo**.
 - **Type**: headlines use a neo-grotesque stack (`Helvetica Neue → Helvetica →
-  Inter → Segoe UI → Arial`) at weight 800, matching the wordmark's family.
-  Set in `layout/theme.liquid` as `--font-grotesque` / `--font-display`.
-- **Colour**: the page is black with white type. The **header is the exception**
-  and stays white — that inversion is deliberate. Every section has a
-  "Black background" checkbox in Customize if you want to break the run.
+  Inter → Segoe UI → Arial`) at weight 800, the same family the wordmark is cut
+  from. Set in `layout/theme.liquid` as `--font-grotesque` / `--font-display`.
+- **Silver** is an accent only: eyebrows, small caps, star ratings, hairlines.
+  Never body copy — it does not have the contrast for it on white.
+- The **header stays white** against the black upper page. That inversion is
+  deliberate.
 
 ## Photography
 
-Seven black-and-white photos ship in `assets/` and are wired into the template:
-
 | File | Used in |
 |---|---|
-| `hero-porsche.png` | Hero |
-| `athlete-barber.jpg` | Stay-on, carousel |
+| `hero-rolls.png` | Hero (full bleed) |
 | `athlete-chain.png` | "Why this exists", carousel |
 | `athlete-shades.png` | 5mm size card, carousel |
 | `athlete-sweater.png` | 6mm size card, carousel |
-| `athlete-vest.png` | Carousel, final CTA |
+| `athlete-barber.jpg` | Stay-on, carousel |
+| `athlete-vest.png` | Carousel |
+| `hero-porsche.png` | unused — kept in case you want it back |
 
-Every image slot resolves in this order: **Theme Editor image → bundled
-`assets/` file → placeholder.** So the theme looks finished before a store
-exists, and picking an image in Customize silently takes over. The bundled
-filename is a per-slot text setting, so nothing needs a code change to swap.
+Every image slot resolves **Theme Editor image → bundled `assets/` file →
+placeholder**, so the theme looks finished before a store exists and picking an
+image in Customize silently takes over.
 
-**These photos are not licensed.** They are fine for a mockup and a real problem
-the day the store takes payments. Replace them with your own shoot before launch.
+**These photos are not licensed.** Fine for a mockup, a real problem the day the
+store takes payments. Replace them with your own shoot before launch.
+
+## Motion
+
+- **Scroll reveal** — sections ease up into place as they enter the viewport
+  (`[data-reveal]`, `initReveal` in `theme.js`).
+- **Header** — retracts on scroll down, returns on scroll up
+  (`initHeaderScroll`).
+- **Press marquee** — loops continuously.
+- **Photo carousel** — drifts right to left forever. Each card is turned away
+  from the viewer at the edges, squares up as it crosses the middle, and turns
+  the other way as it leaves; the angle is a function of distance from centre
+  (`CAROUSEL_MAX_ANGLE`, `turnCards`). The row is duplicated so the loop is
+  seamless, and the drift pauses on hover or keyboard focus.
+- All of the above no-op under `prefers-reduced-motion`; the carousel falls back
+  to a plain scroll-snap row.
 
 ## Uploading to Shopify
 
@@ -69,26 +82,20 @@ the day the store takes payments. Replace them with your own shoot before launch
 
 Or `shopify theme push` with the CLI once a store exists.
 
-## Motion
-
-- Sections ease in as they enter the viewport (`[data-reveal]` in the CSS,
-  `initReveal` in `theme.js`). Without JS or with reduced motion preferred,
-  everything is simply visible.
-- The header retracts on scroll down and returns on scroll up
-  (`initHeaderScroll`).
-- The press marquee loops continuously and stops for reduced-motion users.
-
 ## Before you publish
 
+- **The "Save 10%" buttons have no destination.** The on-page email signup was
+  removed, so each button needs a URL: **Customize → [section] → Button link**.
+  Four places — hero, sizing, stay-on, carousel — plus the header and sticky
+  bar under **Header**.
 - **The review count is empty on purpose.** The stars in the hero do not render
   until you fill in **Customize → Hero → Review count**. Publishing a review
   count you don't have is what the FTC's fake-review rule covers.
 - **The press marquee names are placeholders.** A scrolling row of publication
   names reads as press coverage. Keep only titles that have actually written
   about Stud, or delete the section.
-- **Claims to verify**: "free shipping" in the announcement bar, "10% off launch
-  day", and the material and sizing copy throughout. Confirm each against your
-  supplier and your actual policies.
+- **Claims to verify**: the 10% offer and the material and sizing copy
+  throughout. Confirm each against your supplier and your actual policies.
 
 ## Local preview
 
@@ -100,8 +107,8 @@ checked in a browser without a Shopify store:
 python ..\Stud-preview\build_preview.py
 ```
 
-Then open `..\Stud-preview\preview.html`. It is a mockup — the email form and
-cart do nothing, and it fills in the review count so the lockup can be judged.
+Then open `..\Stud-preview\preview.html`. It is a mockup — buttons do nothing,
+and it fills in the review count so the lockup can be judged.
 
 ## Structure
 
