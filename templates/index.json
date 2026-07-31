@@ -10,24 +10,69 @@
         "button_link": "",
         "note": "Enter your email, get 10% off launch day.",
         "image_asset": "hero-porsche.png",
-        "image_alt": "Man in a suit lying across the hood of a Porsche at night"
+        "image_alt": "Man in a suit lying across the hood of a Porsche at night",
+        "light": false
       }
     },
     "marquee": {
       "type": "landing-marquee",
       "blocks": {
-        "m1": { "type": "name", "settings": { "name": "GQ" } },
-        "m2": { "type": "name", "settings": { "name": "Esquire" } },
-        "m3": { "type": "name", "settings": { "name": "Highsnobiety" } },
-        "m4": { "type": "name", "settings": { "name": "Complex" } },
-        "m5": { "type": "name", "settings": { "name": "Hypebeast" } },
-        "m6": { "type": "name", "settings": { "name": "Men's Health" } },
-        "m7": { "type": "name", "settings": { "name": "Vogue" } }
+        "m1": {
+          "type": "name",
+          "settings": {
+            "name": "GQ"
+          }
+        },
+        "m2": {
+          "type": "name",
+          "settings": {
+            "name": "Esquire"
+          }
+        },
+        "m3": {
+          "type": "name",
+          "settings": {
+            "name": "Highsnobiety"
+          }
+        },
+        "m4": {
+          "type": "name",
+          "settings": {
+            "name": "Complex"
+          }
+        },
+        "m5": {
+          "type": "name",
+          "settings": {
+            "name": "Hypebeast"
+          }
+        },
+        "m6": {
+          "type": "name",
+          "settings": {
+            "name": "Men's Health"
+          }
+        },
+        "m7": {
+          "type": "name",
+          "settings": {
+            "name": "Vogue"
+          }
+        }
       },
-      "block_order": ["m1", "m2", "m3", "m4", "m5", "m6", "m7"],
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7"
+      ],
       "settings": {
         "label": "",
-        "speed": 40
+        "speed": 40,
+        "invert": true
       }
     },
     "problem": {
@@ -51,18 +96,22 @@
           "type": "item",
           "settings": {
             "title": "The one you lose",
-            "body": "<p>Backs work loose. Helmets and headgear rip them out. You find one stud in the gym bag and never the other. Every kit ships with three, so losing one is an inconvenience instead of a write-off.</p>"
+            "body": "<p>Backs work loose. Helmets and headgear rip them out. You find one stud in the gym bag and never the other. Every kit ships with both sizes, so losing one is an inconvenience instead of a write-off.</p>"
           }
         }
       },
-      "block_order": ["p1", "p2", "p3"],
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ],
       "settings": {
         "media_side": "left",
-        "invert": false,
+        "invert": true,
         "open_first": true,
         "anchor": "why",
-        "image_asset": "athlete-football.png",
-        "image_alt": "Footballer wearing a stud mid-match",
+        "image_asset": "athlete-chain.png",
+        "image_alt": "Man wearing a stud, shot in low light",
         "eyebrow": "Why this exists",
         "heading": "Piercings and sports don't mix.",
         "intro": "Every athlete who has wanted a stud has run into the same three walls.",
@@ -74,16 +123,6 @@
     "sizing": {
       "type": "landing-sizing",
       "blocks": {
-        "s1": {
-          "type": "size",
-          "settings": {
-            "image_asset": "athlete-sweater.png",
-            "image_alt": "Profile of a man wearing a small stud",
-            "size": "4mm",
-            "name": "Clean",
-            "text": "Subtle. Reads as jewelry, not a statement. The safe first pick."
-          }
-        },
         "s2": {
           "type": "size",
           "settings": {
@@ -97,21 +136,25 @@
         "s3": {
           "type": "size",
           "settings": {
-            "image_asset": "athlete-chain.png",
-            "image_alt": "Man in water wearing a large stud and chain",
+            "image_asset": "athlete-sweater.png",
+            "image_alt": "Profile of a man wearing a stud",
             "size": "6mm",
             "name": "Loud",
             "text": "You want people to notice. They will."
           }
         }
       },
-      "block_order": ["s1", "s2", "s3"],
+      "block_order": [
+        "s2",
+        "s3"
+      ],
       "settings": {
         "eyebrow": "The kit",
         "heading": "Find your fit in 10 seconds.",
-        "intro": "Every kit ships with all three sizes. Put each one on, look in the mirror, keep the one that looks like it was made for your face. No measuring, no guessing, no exchange.",
+        "intro": "Every kit ships with both sizes. Put each one on, look in the mirror, keep the one that looks like it was made for your face. No measuring, no guessing, no exchange.",
         "button_label": "Save 10%",
-        "button_link": ""
+        "button_link": "",
+        "invert": true
       }
     },
     "stay-on": {
@@ -139,7 +182,11 @@
           }
         }
       },
-      "block_order": ["e1", "e2", "e3"],
+      "block_order": [
+        "e1",
+        "e2",
+        "e3"
+      ],
       "settings": {
         "media_side": "left",
         "invert": true,
@@ -158,20 +205,56 @@
     "social": {
       "type": "landing-social",
       "blocks": {
-        "g1": { "type": "photo", "settings": { "image_asset": "athlete-vest.png", "image_alt": "Man in a tactical vest wearing a stud" } },
-        "g2": { "type": "photo", "settings": { "image_asset": "athlete-football.png", "image_alt": "Footballer wearing a stud mid-match" } },
-        "g3": { "type": "photo", "settings": { "image_asset": "athlete-chain.png", "image_alt": "Man in water wearing a stud and chain" } },
-        "g4": { "type": "photo", "settings": { "image_asset": "athlete-barber.jpg", "image_alt": "Man wearing a stud in the barber chair" } },
-        "g5": { "type": "photo", "settings": { "image_asset": "athlete-sweater.png", "image_alt": "Profile of a man wearing a stud" } },
-        "g6": { "type": "photo", "settings": { "image_asset": "athlete-shades.png", "image_alt": "Man in sunglasses wearing a stud" } }
+        "g1": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-vest.png",
+            "image_alt": "Man in a tactical vest wearing a stud"
+          }
+        },
+        "g3": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-chain.png",
+            "image_alt": "Man in water wearing a stud and chain"
+          }
+        },
+        "g4": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-barber.jpg",
+            "image_alt": "Man wearing a stud in the barber chair"
+          }
+        },
+        "g5": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-sweater.png",
+            "image_alt": "Profile of a man wearing a stud"
+          }
+        },
+        "g6": {
+          "type": "photo",
+          "settings": {
+            "image_asset": "athlete-shades.png",
+            "image_alt": "Man in sunglasses wearing a stud"
+          }
+        }
       },
-      "block_order": ["g1", "g2", "g3", "g4", "g5", "g6"],
+      "block_order": [
+        "g1",
+        "g3",
+        "g4",
+        "g5",
+        "g6"
+      ],
       "settings": {
         "eyebrow": "In the wild",
         "heading": "Why do something permanent when you don't have to?",
         "intro": "",
         "button_label": "Save 10%",
-        "button_link": ""
+        "button_link": "",
+        "invert": true
       }
     },
     "final-cta": {
@@ -181,7 +264,7 @@
         "image_alt": "Man in a tactical vest wearing a stud, waterfront at dusk",
         "eyebrow": "Last thing",
         "heading": "Look good, feel good, play good.",
-        "text": "Three sizes, one kit, no holes in your ear.",
+        "text": "Two sizes, one kit, no holes in your ear.",
         "button_label": "Save 10%",
         "button_link": "",
         "use_product_price": false,

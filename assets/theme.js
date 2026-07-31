@@ -251,6 +251,70 @@
   document.addEventListener('DOMContentLoaded', initCarousels);
 
   /* ------------------------------------------------------------------ */
+  /* Header: retract on scroll down, return on scroll up                  */
+  /* ------------------------------------------------------------------ */
+  function initHeaderScroll() {
+    const header = document.querySelector('[data-header]');
+    if (!header) return;
+
+    let lastY = window.pageYOffset;
+    let ticking = false;
+    // Ignore jitter, and never hide while still near the top of the page.
+    const DELTA = 6;
+    const REVEAL_ZONE = 120;
+
+    function update() {
+      const y = Math.max(0, window.pageYOffset);
+      if (Math.abs(y - lastY) > DELTA) {
+        const scrollingDown = y > lastY;
+        header.classList.toggle('site-header--hidden', scrollingDown && y > REVEAL_ZONE);
+        lastY = y;
+      }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  document.addEventListener('DOMContentLoaded', initHeaderScroll);
+
+  /* ------------------------------------------------------------------ */
+  /* Scroll reveal                                                        */
+  /* Elements marked [data-reveal] start hidden in CSS and ease in once   */
+  /* they enter the viewport. No observer support means show everything.  */
+  /* ------------------------------------------------------------------ */
+  function initReveal() {
+    const targets = document.querySelectorAll('[data-reveal]');
+    if (!targets.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-revealed'); });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
+    );
+
+    targets.forEach(function (el) { observer.observe(el); });
+  }
+
+  document.addEventListener('DOMContentLoaded', initReveal);
+
+  /* ------------------------------------------------------------------ */
   /* Product gallery thumbnails                                           */
   /* ------------------------------------------------------------------ */
   document.addEventListener('click', function (e) {

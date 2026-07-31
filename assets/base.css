@@ -67,8 +67,12 @@ s { text-decoration: line-through; }
 .display--sm { font-size: clamp(1.6rem, 3.2vw, 2.4rem); }
 .display--xs { font-size: clamp(1.2rem, 2.2vw, 1.6rem); letter-spacing: -0.02em; }
 
-/* The wordmark: capitalized, italic, neo-grotesque.
-   Weight and tracking match the HAUS reference — very heavy, very tight. */
+/* The STUD wordmark artwork. Black with transparent background, so --invert
+   flips it to white for dark surfaces without needing a second file. */
+.logo-mark { display: block; height: auto; width: 108px; }
+.logo-mark--invert { filter: invert(1); }
+
+/* Text fallback, used only when there is no logo image at all. */
 .wordmark {
   font-family: var(--font-grotesque);
   font-style: italic;
@@ -222,12 +226,21 @@ input[type="password"], input[type="number"], select, textarea {
 /* ==========================================================================
    Header
    ========================================================================== */
+/* The header stays white while most of the page is black, and it retracts on
+   scroll down / returns on scroll up (class toggled in theme.js). */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 40;
   background: var(--color-background);
+  color: var(--color-text);
   border-bottom: 1px solid var(--color-border);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.site-header--hidden { transform: translateY(-101%); }
+@media (prefers-reduced-motion: reduce) {
+  .site-header { transition: none; }
+  .site-header--hidden { transform: none; }
 }
 .site-header__inner {
   display: flex;
@@ -329,6 +342,49 @@ input[type="password"], input[type="number"], select, textarea {
 .landing-section--invert .eyebrow { color: rgba(255,255,255,0.55); }
 .landing-section--invert .section-head__intro { color: rgba(255,255,255,0.72); }
 
+/* Dark-surface overrides. Anything that leans on the light palette — muted
+   greys, hairlines, image backing — needs a counterpart here. */
+.landing-section--invert .size-card__media,
+.landing-section--invert .carousel__figure img,
+.landing-section--invert .carousel__placeholder,
+.landing-section--invert .media-accordion__media img,
+.landing-section--invert .media-accordion__placeholder { background: #141414; }
+.landing-section--invert .size-card__name,
+.landing-section--invert .size-card__text { color: rgba(255,255,255,0.65); }
+.landing-section--invert .sizing__steps { border-color: rgba(255,255,255,0.22); }
+.landing-section--invert .carousel__arrow {
+  background: var(--color-text);
+  color: var(--color-background);
+  border-color: rgba(255,255,255,0.35);
+  box-shadow: none;
+}
+.landing-section--invert .carousel__arrow:hover {
+  background: var(--color-background);
+  color: var(--color-text);
+}
+.landing-section--invert .quote-card { border-top-color: var(--color-background); }
+.landing-section--invert .quote-card__by span { color: rgba(255,255,255,0.6); }
+
+/* ==========================================================================
+   Scroll reveal — sections ease in as they enter the viewport.
+   theme.js adds .is-revealed; without JS the content stays visible.
+   ========================================================================== */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-reveal].is-revealed { opacity: 1; transform: none; }
+/* Cards in a row come in one after another rather than all at once. */
+.size-card[data-reveal]:nth-of-type(2) { transition-delay: 0.1s; }
+.size-card[data-reveal]:nth-of-type(3) { transition-delay: 0.2s; }
+.media-accordion__content[data-reveal] { transition-delay: 0.12s; }
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
 .section-head { max-width: 46rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
 .section-head--center { margin-left: auto; margin-right: auto; text-align: center; }
 .section-head__intro {
@@ -357,15 +413,38 @@ input[type="password"], input[type="number"], select, textarea {
 }
 .hero-split__inner { width: 100%; }
 .hero-split__heading { margin-bottom: 0.5em; }
-.hero-split__rating { margin-bottom: 2.25rem; }
+/* Block-level, or the inline-flex rating and the inline-flex button share a
+   line and run into each other. Rating under the headline, button under that. */
+.hero-split__rating { display: flex; margin-bottom: 2.25rem; }
+.hero-split__cta { display: inline-flex; }
 .hero-split__note { margin: 1rem 0 0; font-size: 0.88rem; color: var(--color-muted); }
-.hero-split__media { position: relative; overflow: hidden; background: var(--color-background-alt); }
+/* Contained, centred artwork — not a full-bleed cover fill. Keeping the photo
+   at its own proportions also stops the small source being upscaled to death. */
+.hero-split__media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4vw, 4rem);
+}
+/* width:100% + max-width, not min(100%, …): an intrinsic width here feeds back
+   into the grid column's min-content size and blows the layout past 100vw. */
 .hero-split__media img,
 .hero-split__media .placeholder-svg {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center 60%;
+  width: 100%;
+  max-width: 32rem;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
 }
+
+.hero-split--dark {
+  background: var(--color-text);
+  color: var(--color-background);
+}
+.hero-split--dark .hero-split__note { color: rgba(255,255,255,0.6); }
+.hero-split--dark .rating__count { color: rgba(255,255,255,0.85); }
+.hero-split--dark .editor-note { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.7); }
 
 /* ==========================================================================
    2. Press marquee
@@ -376,6 +455,12 @@ input[type="password"], input[type="number"], select, textarea {
   padding: 1.6rem 0;
   overflow: hidden;
 }
+.marquee--invert {
+  background: var(--color-text);
+  color: var(--color-background);
+  border-color: rgba(255,255,255,0.18);
+}
+.marquee--invert .marquee__label { color: rgba(255,255,255,0.5); }
 .marquee__label {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -476,10 +561,13 @@ input[type="password"], input[type="number"], select, textarea {
 /* ==========================================================================
    Sizing
    ========================================================================== */
+/* auto-fit + centred so the row stays balanced whether there are two cards or
+   three, instead of leaving a hole where a third used to be. */
 .sizing__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 360px));
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
 .size-card { text-align: center; }
 .size-card__media {
@@ -749,7 +837,8 @@ input[type="password"], input[type="number"], select, textarea {
 
   .hero-split { grid-template-columns: 1fr; min-height: 0; }
   .hero-split__content { padding: clamp(2.5rem, 8vw, 3.5rem) 1.5rem; }
-  .hero-split__media { aspect-ratio: 4/3; }
+  .hero-split__media { padding: 0 1.5rem clamp(2.5rem, 8vw, 3.5rem); }
+  .hero-split__media img { max-height: none; }
   .hero-split__cta { width: 100%; }
 
   .sizing__grid { grid-template-columns: 1fr; gap: 2.5rem; }

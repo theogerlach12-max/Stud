@@ -4,9 +4,9 @@
   purchasable product yet, so the whole page funnels to the 10% signup.
 {%- endcomment -%}
 
-<section class="hero-split" data-hero>
+<section class="hero-split{% unless section.settings.light %} hero-split--dark{% endunless %}" data-hero>
   <div class="hero-split__content">
-    <div class="hero-split__inner">
+    <div class="hero-split__inner" data-reveal>
       <h1 class="hero-split__heading display">{{ section.settings.heading }}</h1>
 
       {%- if section.settings.review_count != blank -%}
@@ -25,7 +25,7 @@
         </p>
       {%- endif -%}
 
-      <a href="{{ section.settings.button_link | default: '#signup' }}" class="button button--primary button--large hero-split__cta">
+      <a href="{{ section.settings.button_link | default: '#signup' }}" class="button {% if section.settings.light %}button--primary{% else %}button--invert{% endif %} button--large hero-split__cta">
         {{ section.settings.button_label }}
       </a>
 
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="hero-split__media">
+  <div class="hero-split__media" data-reveal>
     {%- if section.settings.image != blank -%}
       <img
         src="{{ section.settings.image | image_url: width: 1600 }}"
@@ -64,6 +64,13 @@
   "name": "Hero",
   "tag": "section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "light",
+      "label": "White background",
+      "default": false,
+      "info": "Off means a black hero with white type."
+    },
     {
       "type": "text",
       "id": "heading",

@@ -3,7 +3,7 @@
   the second copy is hidden from screen readers.
 {%- endcomment -%}
 
-<section class="marquee" aria-label="{{ section.settings.label | default: 'Featured in' | escape }}">
+<section class="marquee{% if section.settings.invert %} marquee--invert{% endif %}" aria-label="{{ section.settings.label | default: 'Featured in' | escape }}">
   {%- if section.settings.label != blank -%}
     <p class="marquee__label page-width">{{ section.settings.label }}</p>
   {%- endif -%}
@@ -26,6 +26,12 @@
   "name": "Press marquee",
   "tag": "section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "invert",
+      "label": "Black background",
+      "default": true
+    },
     {
       "type": "paragraph",
       "content": "A scrolling row of publication names reads as press coverage. Only keep names that have actually written about Stud — replace or delete the rest before you take payments."

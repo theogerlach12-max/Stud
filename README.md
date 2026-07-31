@@ -1,7 +1,8 @@
 # Stud — Shopify theme
 
 A Shopify Online Store 2.0 theme for Stud, magnetic diamond studs for men who
-play sports. Black and white: white background, black type, no accent colour.
+play sports. Black and white: a black page with white type, under a white
+header. No accent colour.
 
 The home page is a **single long-scroll landing page** with no nav links. It is
 currently a **pre-launch email capture** — there is no pricing section and no
@@ -15,7 +16,7 @@ form in the footer, offering 10% off on launch day.
 | 1 | `sections/landing-hero.liquid` | Split hero: headline, star rating and "Save 10%" on the left, photograph on the right |
 | 2 | `sections/landing-marquee.liquid` | Right-to-left scrolling row of publication names |
 | 3 | `sections/landing-media-accordion.liquid` | "Why this exists" — photo left, expandable copy right |
-| 4 | `sections/landing-sizing.liquid` | The 3 sizes, then the CTA |
+| 4 | `sections/landing-sizing.liquid` | The sizes (5mm and 6mm), then the CTA |
 | 5 | `sections/landing-media-accordion.liquid` | Stay-on / easy on / off — photo left, expandable copy right, black background |
 | 6 | `sections/landing-social.liquid` | "Why do something permanent when you don't have to?" photo carousel |
 | 7 | `sections/landing-final-cta.liquid` | Repeat the offer |
@@ -26,14 +27,17 @@ lives in `templates/index.json`, not hardcoded in the sections.
 
 ## Brand
 
-- **Wordmark**: "STUD", uppercase and italic, in a neo-grotesque stack
-  (`Helvetica Neue → Helvetica → Inter → Segoe UI → Arial`), weighted and
-  tracked to match the HAUS reference. Set in `layout/theme.liquid` as
-  `--font-grotesque`; the same stack drives every headline via `--font-display`.
-  Turn it off under **Theme settings → Typography** to fall back to the Shopify
-  heading font instead.
-- **Colour**: `#FFFFFF` background, `#000000` text, `#F4F4F4` for grey fills,
-  plus full-black inverted sections for rhythm. There is no accent colour.
+- **Wordmark**: the supplied STUD artwork ships as `assets/logo-stud.png` —
+  black ink on a transparent background, trimmed to the letterforms. It is used
+  as-is in the header and flipped to white with `filter: invert(1)` in the
+  footer, so one file covers both surfaces. Swap it under **Theme settings →
+  Logo**, or clear it to fall back to CSS text.
+- **Type**: headlines use a neo-grotesque stack (`Helvetica Neue → Helvetica →
+  Inter → Segoe UI → Arial`) at weight 800, matching the wordmark's family.
+  Set in `layout/theme.liquid` as `--font-grotesque` / `--font-display`.
+- **Colour**: the page is black with white type. The **header is the exception**
+  and stays white — that inversion is deliberate. Every section has a
+  "Black background" checkbox in Customize if you want to break the run.
 
 ## Photography
 
@@ -42,11 +46,10 @@ Seven black-and-white photos ship in `assets/` and are wired into the template:
 | File | Used in |
 |---|---|
 | `hero-porsche.png` | Hero |
-| `athlete-football.png` | "Why this exists", carousel |
 | `athlete-barber.jpg` | Stay-on, carousel |
-| `athlete-sweater.png` | 4mm size card, carousel |
+| `athlete-chain.png` | "Why this exists", carousel |
 | `athlete-shades.png` | 5mm size card, carousel |
-| `athlete-chain.png` | 6mm size card, carousel |
+| `athlete-sweater.png` | 6mm size card, carousel |
 | `athlete-vest.png` | Carousel, final CTA |
 
 Every image slot resolves in this order: **Theme Editor image → bundled
@@ -54,9 +57,8 @@ Every image slot resolves in this order: **Theme Editor image → bundled
 exists, and picking an image in Customize silently takes over. The bundled
 filename is a per-slot text setting, so nothing needs a code change to swap.
 
-**These photos are not licensed and one of them is a recognisable professional
-footballer.** They are fine for a mockup and a real problem the day the store
-takes payments. Replace them with your own shoot before launch.
+**These photos are not licensed.** They are fine for a mockup and a real problem
+the day the store takes payments. Replace them with your own shoot before launch.
 
 ## Uploading to Shopify
 
@@ -66,6 +68,15 @@ takes payments. Replace them with your own shoot before launch.
 3. **Customize** to preview, **Publish** to go live.
 
 Or `shopify theme push` with the CLI once a store exists.
+
+## Motion
+
+- Sections ease in as they enter the viewport (`[data-reveal]` in the CSS,
+  `initReveal` in `theme.js`). Without JS or with reduced motion preferred,
+  everything is simply visible.
+- The header retracts on scroll down and returns on scroll up
+  (`initHeaderScroll`).
+- The press marquee loops continuously and stops for reduced-motion users.
 
 ## Before you publish
 

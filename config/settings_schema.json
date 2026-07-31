@@ -12,19 +12,19 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Leave the logo image empty to use the STUD wordmark (italic, capitalized). That is the intended brand mark."
-      },
-      {
-        "type": "text",
-        "id": "wordmark",
-        "label": "Wordmark text",
-        "default": "Stud",
-        "info": "Rendered uppercase and italic."
+        "content": "The STUD wordmark artwork ships in assets/logo-stud.png. It is black with a transparent background, and it is flipped to white automatically on dark backgrounds."
       },
       {
         "type": "image_picker",
         "id": "logo",
-        "label": "Logo image (optional, replaces wordmark)"
+        "label": "Logo image (overrides the bundled wordmark)"
+      },
+      {
+        "type": "text",
+        "id": "logo_asset",
+        "label": "Bundled logo filename",
+        "default": "logo-stud.png",
+        "info": "A file in assets/. Used when no logo is picked above. Clear both to fall back to text."
       },
       {
         "type": "range",
@@ -34,7 +34,14 @@
         "step": 5,
         "unit": "px",
         "label": "Logo width",
-        "default": 110
+        "default": 108
+      },
+      {
+        "type": "text",
+        "id": "wordmark",
+        "label": "Wordmark text (fallback only)",
+        "default": "Stud",
+        "info": "Used only if there is no logo image at all."
       },
       {
         "type": "image_picker",

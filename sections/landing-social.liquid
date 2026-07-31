@@ -3,9 +3,9 @@
   assign quotes = section.blocks | where: 'type', 'quote'
 -%}
 
-<section class="landing-section social">
+<section class="landing-section social{% if section.settings.invert %} landing-section--invert{% endif %}">
   <div class="page-width">
-    <div class="section-head section-head--center">
+    <div class="section-head section-head--center" data-reveal>
       {%- if section.settings.eyebrow != blank -%}
         <p class="eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
@@ -17,7 +17,7 @@
   </div>
 
   {%- if photos.size > 0 -%}
-    <div class="carousel" data-carousel>
+    <div class="carousel" data-carousel data-reveal>
       <button type="button" class="carousel__arrow carousel__arrow--prev" data-carousel-prev aria-label="Previous">
         {% render 'icon-chevron' %}
       </button>
@@ -54,8 +54,8 @@
   {%- endif -%}
 
   {%- if section.settings.button_label != blank -%}
-    <div class="social__cta page-width">
-      <a href="{{ section.settings.button_link | default: '#signup' }}" class="button button--primary button--large">
+    <div class="social__cta page-width" data-reveal>
+      <a href="{{ section.settings.button_link | default: '#signup' }}" class="button {% if section.settings.invert %}button--invert{% else %}button--primary{% endif %} button--large">
         {{ section.settings.button_label }}
       </a>
     </div>
@@ -87,6 +87,7 @@
   "name": "Photo carousel",
   "tag": "section",
   "settings": [
+    { "type": "checkbox", "id": "invert", "label": "Black background", "default": true },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "In the wild" },
     {
       "type": "text",

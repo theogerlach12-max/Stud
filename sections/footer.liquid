@@ -22,8 +22,11 @@
 
   <div class="page-width site-footer__main">
     <div class="site-footer__brand">
+      {%- comment -%} logo-mark--invert flips the black artwork to white for the dark footer. {%- endcomment -%}
       {%- if settings.logo != blank -%}
-        <img src="{{ settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" width="100" loading="lazy">
+        <img class="logo-mark logo-mark--invert" src="{{ settings.logo | image_url: width: 500 }}" alt="{{ shop.name }}" loading="lazy" style="width: {{ settings.logo_width }}px;">
+      {%- elsif settings.logo_asset != blank -%}
+        <img class="logo-mark logo-mark--invert" src="{{ settings.logo_asset | asset_url }}" alt="{{ shop.name }}" loading="lazy" style="width: {{ settings.logo_width }}px;">
       {%- else -%}
         <span class="wordmark wordmark--footer">{{ settings.wordmark | default: shop.name }}</span>
       {%- endif -%}

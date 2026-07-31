@@ -1,6 +1,6 @@
-<section class="landing-section sizing" id="sizing">
+<section class="landing-section sizing{% if section.settings.invert %} landing-section--invert{% endif %}" id="sizing">
   <div class="page-width">
-    <div class="section-head section-head--center">
+    <div class="section-head section-head--center" data-reveal>
       {%- if section.settings.eyebrow != blank -%}
         <p class="eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
@@ -15,7 +15,7 @@
     {%- if sizes.size > 0 -%}
       <div class="sizing__grid">
         {%- for block in sizes -%}
-          <div class="size-card" {{ block.shopify_attributes }}>
+          <div class="size-card" data-reveal {{ block.shopify_attributes }}>
             <div class="size-card__media">
               {%- if block.settings.image != blank -%}
                 <img
@@ -40,8 +40,8 @@
     {%- endif -%}
 
     {%- if section.settings.button_label != blank -%}
-      <div class="sizing__cta">
-        <a href="{{ section.settings.button_link | default: '#signup' }}" class="button button--primary button--large">
+      <div class="sizing__cta" data-reveal>
+        <a href="{{ section.settings.button_link | default: '#signup' }}" class="button {% if section.settings.invert %}button--invert{% else %}button--primary{% endif %} button--large">
           {{ section.settings.button_label }}
         </a>
       </div>
@@ -54,6 +54,12 @@
   "name": "Sizing kit",
   "tag": "section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "invert",
+      "label": "Black background",
+      "default": true
+    },
     {
       "type": "text",
       "id": "eyebrow",

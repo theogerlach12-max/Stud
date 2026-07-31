@@ -8,7 +8,7 @@
          {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %}>
   <div class="page-width media-accordion__inner{% if section.settings.media_side == 'right' %} media-accordion__inner--flip{% endif %}">
 
-    <div class="media-accordion__media">
+    <div class="media-accordion__media" data-reveal>
       {%- if section.settings.video != blank -%}
         {{ section.settings.video
           | video_tag: image_size: '1200x', autoplay: true, loop: true, muted: true, controls: true, playsinline: true
@@ -32,7 +32,7 @@
       {%- endif -%}
     </div>
 
-    <div class="media-accordion__content">
+    <div class="media-accordion__content" data-reveal>
       {%- if section.settings.eyebrow != blank -%}
         <p class="eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
