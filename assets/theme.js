@@ -405,6 +405,32 @@
   document.addEventListener('DOMContentLoaded', initAnnouncementRotator);
 
   /* ------------------------------------------------------------------ */
+  /* Tone-transition background video                                     */
+  /* Very short clips spin frantically at 1x, so the section carries its   */
+  /* own playback rate.                                                   */
+  /* ------------------------------------------------------------------ */
+  function initToneVideos() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll('[data-tone-video]').forEach(function (video) {
+      if (reduced) {
+        video.pause();
+        return;
+      }
+      const rate = parseFloat(video.dataset.playbackRate);
+      if (rate > 0) video.playbackRate = rate;
+      // Autoplay can be refused until metadata is in; retry once it is.
+      video.addEventListener('loadedmetadata', function () {
+        if (rate > 0) video.playbackRate = rate;
+        const attempt = video.play();
+        if (attempt && attempt.catch) attempt.catch(function () { /* blocked, fine */ });
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initToneVideos);
+
+  /* ------------------------------------------------------------------ */
   /* Product gallery thumbnails                                           */
   /* ------------------------------------------------------------------ */
   document.addEventListener('click', function (e) {

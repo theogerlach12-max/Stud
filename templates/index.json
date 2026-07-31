@@ -19,43 +19,50 @@
         "m1": {
           "type": "name",
           "settings": {
-            "name": "GQ"
+            "name": "GQ",
+            "logo_asset": "press-gq.png"
           }
         },
         "m2": {
           "type": "name",
           "settings": {
-            "name": "Esquire"
+            "name": "Esquire",
+            "logo_asset": "press-esquire.png"
           }
         },
         "m3": {
           "type": "name",
           "settings": {
-            "name": "Highsnobiety"
+            "name": "Highsnobiety",
+            "logo_asset": ""
           }
         },
         "m4": {
           "type": "name",
           "settings": {
-            "name": "Complex"
+            "name": "Complex",
+            "logo_asset": "press-complex.png"
           }
         },
         "m5": {
           "type": "name",
           "settings": {
-            "name": "Hypebeast"
+            "name": "Hypebeast",
+            "logo_asset": "press-hypebeast.png"
           }
         },
         "m6": {
           "type": "name",
           "settings": {
-            "name": "Men's Health"
+            "name": "Men's Health",
+            "logo_asset": "press-menshealth.png"
           }
         },
         "m7": {
           "type": "name",
           "settings": {
-            "name": "Vogue"
+            "name": "Vogue",
+            "logo_asset": "press-vogue.png"
           }
         }
       },
@@ -262,14 +269,19 @@
       "type": "landing-tone-shift",
       "settings": {
         "direction": "to-white",
-        "height": 30
+        "height": 60,
+        "video_asset": "diamond-man.mp4",
+        "desaturate": true,
+        "playback_rate": 0.4
       }
     },
     "tone-to-black": {
       "type": "landing-tone-shift",
       "settings": {
         "direction": "to-black",
-        "height": 25
+        "height": 25,
+        "desaturate": true,
+        "playback_rate": 0.4
       }
     }
   },

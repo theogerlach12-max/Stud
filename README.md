@@ -15,7 +15,7 @@ you scroll rather than cutting.
 | 1 | `landing-hero.liquid` | black | Full-bleed photograph, headline, star rating, "Save 10%" |
 | 2 | `landing-marquee.liquid` | black | Right-to-left scrolling row of publication logos |
 | 3 | `landing-media-accordion.liquid` | black | "To be the best…" — photo left, expandable copy right |
-| 4 | `landing-tone-shift.liquid` | black → white | Gradient band that fades the page to white |
+| 4 | `landing-tone-shift.liquid` | black → white | Fades to white with the diamond clip playing behind it |
 | 5 | `landing-sizing.liquid` | white | The sizes (5mm and 6mm), then the CTA |
 | 6 | `landing-media-accordion.liquid` | white | "Piercings and sports don't mix" — photo **right**, copy left |
 | 7 | `landing-social.liquid` | white | "Why do something permanent…" rotating photo carousel |
@@ -38,6 +38,20 @@ Copy lives in `templates/index.json` and is editable in **Customize**.
   Never body copy — it does not have the contrast for it on white.
 - The **header stays white** against the black upper page. That inversion is
   deliberate.
+
+## Press logos
+
+The six mastheads in `assets/` (`press-gq.png`, `press-esquire.png`,
+`press-complex.png`, `press-hypebeast.png`, `press-menshealth.png`,
+`press-vogue.png`) came from Wikimedia Commons, where each is filed as public
+domain — plain typographic wordmarks fall below the threshold of originality, so
+there is no copyright in them. They were flattened to black on transparent alpha
+and trimmed, then normalised to 120px tall; the marquee flips them to white with
+a CSS filter and scales them by the section's logo-height setting.
+
+Trademark still applies. Showing a masthead states that the publication covered
+Stud, which is fine for genuine placements and a false-endorsement problem
+otherwise.
 
 ## Photography
 
@@ -69,6 +83,11 @@ store takes payments. Replace them with your own shoot before launch.
 - **Announcement bar** — cycles through the messages set in Customize, fading
   one out as the next fades in. Messages are stacked in a grid cell so the bar
   never changes height.
+- **Tone transition** — the black → white band plays `diamond-man.mp4` behind
+  the fade, desaturated to match the palette. The clip is 0.3s, so it runs at
+  0.4x (**Playback speed** in the section) to slow the loop. The gradient is
+  opaque at both ends and clear through the middle, so the footage only shows in
+  the gap and neither join is visible.
 - **Photo carousel** — drifts right to left forever. Each card is turned away
   from the viewer at the edges, squares up as it crosses the middle, and turns
   the other way as it leaves; the angle is a function of distance from centre
@@ -95,13 +114,14 @@ Or `shopify theme push` with the CLI once a store exists.
 - **The review count is empty on purpose.** The stars in the hero do not render
   until you fill in **Customize → Hero → Review count**. Publishing a review
   count you don't have is what the FTC's fake-review rule covers.
-- **The press marquee has no logo files in it.** Each block takes a logo image
-  (**Customize → Press marquee → [publication] → Logo image**, or drop a file in
-  `assets/` and name it in "Bundled logo filename"); it falls back to the
-  publication name as text, which is what you are seeing now. Logo height and
-  "Flip logos to white" are section settings. Only use mastheads for real
-  placements — an unearned logo is both a false endorsement and someone else's
-  trademark.
+- **Highsnobiety has no logo file.** The other six mastheads ship in `assets/`
+  as `press-*.png`. Highsnobiety is not on Wikimedia Commons, so it renders as
+  text until you supply artwork: drop a PNG in `assets/` and name it in
+  **Customize → Press marquee → Highsnobiety → Bundled logo filename**.
+- **The video is not in `stud-theme.zip`.** Shopify's Admin zip upload rejects
+  video in `assets/`, so `diamond-man.mp4` is in the repo but excluded from the
+  zip. Either push with the Shopify CLI, or upload the clip under
+  **Content → Files** and pick it in **Customize → Tone transition → Video**.
 - **Claims to verify**: the 10% offer and the material and sizing copy
   throughout. Confirm each against your supplier and your actual policies.
 

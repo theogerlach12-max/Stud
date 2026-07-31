@@ -2,16 +2,49 @@
   A band that fades one section's background into the next, so the page changes
   tone as you scroll instead of butting two flat colours together.
 
-  The gradient does the work on its own as the band scrolls past. theme.js adds
-  .is-revealed as it enters view, which eases the fade in a little further.
+  Optionally plays a video behind the fade. The gradient is opaque at both ends
+  and clear through the middle, so the footage only shows in the gap between the
+  two sections and the joins stay invisible.
+
+  Shopify's assets/ folder does not reliably accept video, so the primary source
+  is a video uploaded through the theme editor. "Bundled video filename" is a
+  fallback for anyone who does get an asset upload to stick.
 {%- endcomment -%}
 
+{%- liquid
+  assign has_video = false
+  if section.settings.video != blank or section.settings.video_asset != blank
+    assign has_video = true
+  endif
+-%}
+
 <div
-  class="tone-shift tone-shift--{{ section.settings.direction }}"
+  class="tone-shift tone-shift--{{ section.settings.direction }}{% if has_video %} tone-shift--has-video{% endif %}{% if section.settings.desaturate %} tone-shift--desaturate{% endif %}"
   style="--tone-shift-height: {{ section.settings.height }}vh;"
   data-reveal
-  aria-hidden="true"
-></div>
+>
+  {%- if has_video -%}
+    <div class="tone-shift__media" aria-hidden="true">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video
+          | video_tag: image_size: '1600x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true
+        }}
+      {%- else -%}
+        <video
+          src="{{ section.settings.video_asset | asset_url }}"
+          autoplay
+          loop
+          muted
+          playsinline
+          data-tone-video
+          data-playback-rate="{{ section.settings.playback_rate }}"
+        ></video>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="tone-shift__gradient" aria-hidden="true"></div>
+</div>
 
 {% schema %}
 {
@@ -36,11 +69,44 @@
       "type": "range",
       "id": "height",
       "min": 10,
-      "max": 60,
+      "max": 90,
       "step": 5,
       "unit": "vh",
       "label": "Height",
       "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Background video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Upload the clip in Shopify (Content → Files or this picker). Plays muted and looped behind the fade."
+    },
+    {
+      "type": "text",
+      "id": "video_asset",
+      "label": "Bundled video filename",
+      "info": "A file in assets/, used only if no video is picked above. Shopify often rejects video uploads to assets/, so the picker is the reliable route."
+    },
+    {
+      "type": "checkbox",
+      "id": "desaturate",
+      "label": "Desaturate the video",
+      "default": true,
+      "info": "Strips colour so the footage matches the black, white and silver palette."
+    },
+    {
+      "type": "range",
+      "id": "playback_rate",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "label": "Playback speed",
+      "default": 0.4,
+      "info": "Short clips loop very fast at full speed. Applies to bundled video only."
     }
   ],
   "presets": [

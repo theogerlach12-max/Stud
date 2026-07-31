@@ -463,14 +463,42 @@ input[type="password"], input[type="number"], select, textarea {
    Tone transition — fades one section background into the next
    ========================================================================== */
 .tone-shift {
+  position: relative;
   height: var(--tone-shift-height, 30vh);
-  opacity: 1;
+  overflow: hidden;
 }
 .tone-shift--to-white { background: linear-gradient(180deg, var(--color-text) 0%, var(--color-background) 100%); }
 .tone-shift--to-black { background: linear-gradient(180deg, var(--color-background) 0%, var(--color-text) 100%); }
+
+.tone-shift__media { position: absolute; inset: 0; }
+.tone-shift__media video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.tone-shift--desaturate .tone-shift__media video { filter: grayscale(1) contrast(1.08); }
+
+/* Opaque at both ends, clear through the middle: the footage only shows in the
+   gap between the two sections, so neither join is visible. */
+.tone-shift__gradient { position: absolute; inset: 0; }
+.tone-shift--has-video.tone-shift--to-white { background: var(--color-text); }
+.tone-shift--has-video.tone-shift--to-black { background: var(--color-background); }
+.tone-shift--has-video.tone-shift--to-white .tone-shift__gradient {
+  background: linear-gradient(180deg,
+    var(--color-text) 0%,
+    rgba(18,18,18,0) 34%,
+    rgba(255,255,255,0) 64%,
+    var(--color-background) 100%);
+}
+.tone-shift--has-video.tone-shift--to-black .tone-shift__gradient {
+  background: linear-gradient(180deg,
+    var(--color-background) 0%,
+    rgba(255,255,255,0) 34%,
+    rgba(18,18,18,0) 64%,
+    var(--color-text) 100%);
+}
 /* The reveal transform would shift the gradient out of alignment with the
    sections it bridges, so these only fade. */
-.tone-shift[data-reveal] { transform: none; }
+.tone-shift[data-reveal],
 .tone-shift[data-reveal].is-revealed { transform: none; }
 
 /* ==========================================================================
@@ -478,18 +506,26 @@ input[type="password"], input[type="number"], select, textarea {
    ========================================================================== */
 .marquee {
   /* No rules top or bottom: the marquee floats in the gap between sections
-     rather than being boxed off from them. */
-  padding: clamp(3rem, 6vw, 5rem) 0;
+     rather than being boxed off from them. Weighted so it sits low in that
+     gap instead of hanging off the section above. */
+  padding: clamp(5.5rem, 11vw, 9.5rem) 0 clamp(2.5rem, 5vw, 4rem);
   overflow: hidden;
 }
 .marquee--invert {
   background: var(--color-text);
   color: var(--color-background);
 }
+.marquee__label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-muted);
+  margin-bottom: 1rem;
+}
 .marquee--invert .marquee__label { color: var(--color-accent); }
 .marquee__viewport {
   overflow: hidden;
-  /* Fade the ends so names enter and leave instead of being chopped. */
+  /* Fade the ends so logos enter and leave instead of being chopped. */
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
@@ -518,7 +554,7 @@ input[type="password"], input[type="number"], select, textarea {
 .marquee__logo {
   height: var(--marquee-logo-height, 30px);
   width: auto;
-  max-width: 220px;
+  max-width: 240px;
   object-fit: contain;
   opacity: 0.9;
 }
