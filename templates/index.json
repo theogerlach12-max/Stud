@@ -275,7 +275,7 @@
         "playback_rate": 0.4,
         "mode": "scroll",
         "scroll_length": 260,
-        "white_stop": 50
+        "end_lightness": 85
       }
     },
     "tone-to-black": {

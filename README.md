@@ -15,7 +15,7 @@ you scroll rather than cutting.
 | 1 | `landing-hero.liquid` | black | Full-bleed photograph, headline, star rating, "Save 10%" |
 | 2 | `landing-marquee.liquid` | black | Right-to-left scrolling row of publication logos |
 | 3 | `landing-media-accordion.liquid` | black | "To be the best…" — photo left, expandable copy right |
-| 4 | `landing-tone-shift.liquid` | black → white | Pinned scroll stage: black, diamond fades in, white rises |
+| 4 | `landing-tone-shift.liquid` | black → white | Pinned scroll stage: the diamond, washing from black to white |
 | 5 | `landing-sizing.liquid` | white | The sizes (5mm and 6mm), then the CTA |
 | 6 | `landing-media-accordion.liquid` | white | "The Only Earring Designed for Success" — photo **right**, copy left |
 | 7 | `landing-social.liquid` | white | "Why do something permanent…" rotating photo carousel |
@@ -78,19 +78,23 @@ store takes payments. Replace them with your own shoot before launch.
   (`[data-reveal]`, `initReveal` in `theme.js`).
 - **Header** — retracts on scroll down, returns on scroll up
   (`initHeaderScroll`).
-- **Press marquee** — loops continuously, with no rules above or below so it
-  floats in the gap between sections.
+- **Press marquee** — loops continuously, with no rules above or below. Its
+  padding is deliberately asymmetric: the section beneath contributes its own
+  generous top padding to the gap while the hero contributes far less, so equal
+  padding would sit the row above the true midpoint. As set, the gap above and
+  below the row measures the same at desktop width.
 - **Announcement bar** — cycles through the messages set in Customize, fading
   one out as the next fades in. Messages are stacked in a grid cell so the bar
   never changes height.
 - **Tone transition** has two modes. *Gradient band* is the short static fade
   (used before the footer). *Scroll stage* is a tall block with a pinned
   viewport: `initToneStages` maps scroll progress through the block onto
-  `--stage-video-opacity` (the diamond fades in over the first third) and
-  `--stage-rise` (white climbs from the bottom edge to **White rises to**, 50vh
-  by default, over the rest). The next section then continues from that line.
-  The clip is 0.3s so it runs at 0.4x. With JS off, the resting values leave the
-  stage in its finished state rather than blank.
+  `--stage-veil`, the opacity of a white sheet over the clip. The diamond is on
+  screen the whole way; the frame simply gets lighter, ending at **Lightness at
+  the end** (85% by default) rather than pure white — the next section supplies
+  the last step, which is what makes the hand-off invisible. The clip is 0.3s so
+  it runs at 0.4x. With JS off, the resting value leaves the stage in its
+  finished state rather than blank.
 - **Photo carousel** — drifts right to left forever. Each card is turned away
   from the viewer at the edges, squares up as it crosses the middle, and turns
   the other way as it leaves; the angle is a function of distance from centre

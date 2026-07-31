@@ -462,9 +462,6 @@
   /* two properties: the clip fades in over the first stretch, then the    */
   /* white edge rises from the bottom over the rest.                       */
   /* ------------------------------------------------------------------ */
-  const STAGE_FADE_END = 0.34;   // clip is fully in by here
-  const STAGE_RISE_START = 0.42; // white starts climbing here
-
   function initToneStages() {
     const stages = document.querySelectorAll('[data-tone-stage]');
     if (!stages.length) return;
@@ -480,18 +477,15 @@
 
         const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
 
-        const fade = Math.min(progress / STAGE_FADE_END, 1);
-        const rise = Math.min(
-          Math.max((progress - STAGE_RISE_START) / (1 - STAGE_RISE_START), 0),
-          1
-        );
+        // Slightly delayed start so the clip reads on full black for a beat,
+        // then a steady climb. The stage deliberately stops short of opaque —
+        // the next section completes the step to pure white.
+        const max = parseFloat(
+          getComputedStyle(stage).getPropertyValue('--stage-veil-max')
+        ) || 0.85;
+        const eased = Math.pow(progress, 1.25);
 
-        const stop = parseFloat(
-          getComputedStyle(stage).getPropertyValue('--stage-white-stop')
-        ) || 50;
-
-        stage.style.setProperty('--stage-video-opacity', fade.toFixed(3));
-        stage.style.setProperty('--stage-rise', (rise * stop).toFixed(2) + 'vh');
+        stage.style.setProperty('--stage-veil', (eased * max).toFixed(3));
       });
       ticking = false;
     }

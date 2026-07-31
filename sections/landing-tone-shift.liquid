@@ -4,11 +4,12 @@
   "gradient" is a short static band that simply fades one background into the
   next.
 
-  "scroll" is a tall pinned stage driven by scroll position: black at the top,
-  the clip fading in, then white rising from the bottom edge until it covers the
-  lower half of the screen — at which point the pin releases and the next
-  (white) section carries on from exactly that line. theme.js writes the two
-  custom properties; with JS off the stage falls back to the plain gradient.
+  "scroll" is a tall pinned stage driven by scroll position. The clip is on
+  screen the whole way through; what changes is the veil over it, from clear at
+  the top to nearly opaque at the bottom, so the frame gets steadily lighter.
+  It stops short of pure white on purpose — the next section finishes the step.
+  theme.js writes --stage-veil; with JS off the resting value leaves the stage
+  in its finished state.
 
   Shopify's assets/ folder does not reliably accept video, so the primary source
   is a video uploaded through the theme editor. "Bundled video filename" is a
@@ -26,7 +27,7 @@
 
   <div
     class="tone-stage tone-stage--{{ section.settings.direction }}{% if section.settings.desaturate %} tone-stage--desaturate{% endif %}"
-    style="--stage-height: {{ section.settings.scroll_length }}vh; --stage-white-stop: {{ section.settings.white_stop }}vh;"
+    style="--stage-height: {{ section.settings.scroll_length }}vh; --stage-veil-max: {{ section.settings.end_lightness | divided_by: 100.0 }};"
     data-tone-stage
   >
     <div class="tone-stage__pin">
@@ -49,7 +50,7 @@
           {%- endif -%}
         </div>
       {%- endif -%}
-      <div class="tone-stage__rise" aria-hidden="true"></div>
+      <div class="tone-stage__veil" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -140,14 +141,14 @@
     },
     {
       "type": "range",
-      "id": "white_stop",
-      "min": 20,
+      "id": "end_lightness",
+      "min": 40,
       "max": 100,
       "step": 5,
-      "unit": "vh",
-      "label": "White rises to",
-      "default": 50,
-      "info": "How far up the screen the white reaches before the next section takes over."
+      "unit": "%",
+      "label": "Lightness at the end",
+      "default": 85,
+      "info": "How far toward white the stage gets before the next section takes over. Below 100 leaves the last step to the section itself, which is what makes the hand-off invisible."
     },
     {
       "type": "header",
