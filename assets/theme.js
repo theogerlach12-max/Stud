@@ -477,15 +477,17 @@
 
         const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
 
-        // Slightly delayed start so the clip reads on full black for a beat,
-        // then a steady climb. The stage deliberately stops short of opaque —
-        // the next section completes the step to pure white.
-        const max = parseFloat(
+        // The gradient sheet is 200vh tall. At +100vh it sits entirely below
+        // the fold (frame is black); at -100vh it has been pulled clear past
+        // the top (frame is white). Ending short of -100vh leaves a little
+        // darkness at the very top, so the next section finishes the job.
+        const reach = parseFloat(
           getComputedStyle(stage).getPropertyValue('--stage-veil-max')
         ) || 0.85;
-        const eased = Math.pow(progress, 1.25);
+        const eased = Math.pow(progress, 1.15);
+        const pull = (1 - eased * (1 + reach)) * 100;
 
-        stage.style.setProperty('--stage-veil', (eased * max).toFixed(3));
+        stage.style.setProperty('--stage-pull', pull.toFixed(2) + 'vh');
       });
       ticking = false;
     }

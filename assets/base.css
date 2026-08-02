@@ -495,19 +495,46 @@ input[type="password"], input[type="number"], select, textarea {
 .tone-stage__video { position: absolute; inset: 0; }
 .tone-stage__video video { width: 100%; height: 100%; object-fit: cover; }
 .tone-stage--desaturate .tone-stage__video video { filter: grayscale(1) contrast(1.08); }
+/* The light is a tall gradient sheet, twice the viewport, that starts entirely
+   below the fold and is pulled upward as the shopper scrolls. Because the ramp
+   is long and soft, any given frame reads as "dark at the top, bright at the
+   bottom" — the light climbing the screen rather than the whole frame dimming
+   up uniformly. theme.js writes --stage-pull in vh. */
 .tone-stage__veil {
   position: absolute;
-  inset: 0;
-  background: var(--color-background);
-  opacity: var(--stage-veil, var(--stage-veil-max, 0.85));
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 200%;
+  transform: translate3d(0, var(--stage-pull, -85vh), 0);
+  will-change: transform;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.16) 18%,
+    rgba(255, 255, 255, 0.45) 32%,
+    rgba(255, 255, 255, 0.8) 46%,
+    rgba(255, 255, 255, 1) 60%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
-.tone-stage--to-black .tone-stage__veil { background: var(--color-text); }
+.tone-stage--to-black .tone-stage__veil {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0) 0%,
+    rgba(18, 18, 18, 0.16) 18%,
+    rgba(18, 18, 18, 0.45) 32%,
+    rgba(18, 18, 18, 0.8) 46%,
+    rgba(18, 18, 18, 1) 60%,
+    rgba(18, 18, 18, 1) 100%
+  );
+}
 
 @media (prefers-reduced-motion: reduce) {
   /* No pinning and no scroll choreography: collapse to a short static band. */
   .tone-stage { height: 45vh; }
   .tone-stage__pin { position: relative; height: 45vh; }
-  .tone-stage__veil { opacity: 0.5; }
+  .tone-stage__veil { height: 100%; transform: none; }
 }
 
 .tone-shift__media { position: absolute; inset: 0; }

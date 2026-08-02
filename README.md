@@ -88,13 +88,17 @@ store takes payments. Replace them with your own shoot before launch.
   never changes height.
 - **Tone transition** has two modes. *Gradient band* is the short static fade
   (used before the footer). *Scroll stage* is a tall block with a pinned
-  viewport: `initToneStages` maps scroll progress through the block onto
-  `--stage-veil`, the opacity of a white sheet over the clip. The diamond is on
-  screen the whole way; the frame simply gets lighter, ending at **Lightness at
-  the end** (85% by default) rather than pure white — the next section supplies
-  the last step, which is what makes the hand-off invisible. The clip is 0.3s so
-  it runs at 0.4x. With JS off, the resting value leaves the stage in its
-  finished state rather than blank.
+  viewport. Over the clip sits a gradient sheet twice the viewport tall, running
+  from clear at its top to solid white at its middle. `initToneStages` maps
+  scroll progress onto `--stage-pull`, which slides that sheet upward: it starts
+  entirely below the fold and is drawn up past the top. Because the ramp is long
+  and soft, every frame reads as dark at the top and bright at the bottom, with
+  the light climbing the screen — the Gruns effect — rather than the whole frame
+  dimming up at once. The diamond is on screen the whole way and dissolves into
+  the light from its bottom edge. It stops short of clearing the top (**Lightness
+  at the end**, 85%) so the next section supplies the last step and the hand-off
+  never shows as a line. The clip is 0.3s so it runs at 0.4x. With JS off the
+  resting value leaves the stage in its finished state.
 - **Photo carousel** — drifts right to left forever. Each card is turned away
   from the viewer at the edges, squares up as it crosses the middle, and turns
   the other way as it leaves; the angle is a function of distance from centre
